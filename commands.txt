@@ -1,0 +1,3 @@
+CUDA_VISIBLE_DEVICES=6 python CAMDM_proxy.py --cam_type GradCAM --epoch_proxy 10 --proxy_model ResNet18 --dataset oct --ipc 10 --dsa_strategy color_crop_cutout_flip_scale_rotate --init real --lr_img 1 --num_exp 5 --num_eval 5
+
+CUDA_VISIBLE_DEVICES=0 nohup python CAMDM_proxy.py --cam_type GradCAM++ --epoch_proxy 10 --proxy_model ConvNet --dataset oct --ipc 10 --dsa_strategy color_crop_cutout_flip_scale_rotate --init real --lr_img 1 --num_exp 5 --num_eval 5 > output.log 2>&1 &

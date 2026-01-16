@@ -1,0 +1,875 @@
+CUDA_VISIBLE_DEVICES=7 python main_WCAMGM.py --dataset oct  --model ConvNet  --ipc 10 --init real  --lr_img 1  --num_exp 5  --num_eval 5
+eval_it_pool:  [0, 500, 1000]
+Found checkpoint at ./CAM_CKPT/ResNet18_GradCAM.pth, loading parameters...
+Model parameters loaded successfully!
+
+================== Exp 0 ==================
+
+Hyper-parameters:
+ {'method': 'DC', 'dataset': 'oct', 'model': 'ConvNet', 'ipc': 10, 'eval_mode': 'S', 'num_exp': 5, 'num_eval': 5, 'epoch_eval_train': 300, 'Iteration': 1000, 'lr_img': 1.0, 'lr_net': 0.01, 'lr_proxy': 0.0001, 'lr_w': 0.1, 'batch_real': 256, 'batch_train': 256, 'init': 'real', 'dsa_strategy': 'None', 'data_path': 'data', 'save_path': 'result', 'dis_metric': 'ours', 'proxy_model': 'ResNet18', 'epoch_proxy': 1, 'save_model_path': './Model_Saved_new', 'validation_step': 1, 'temperature': 0.5, 'mode': 'CAMDM', 'cam_path': './CAM_dir', 'cam_type': 'GradCAM', 'checkpoint_path': './CAM_CKPT/ResNet18_GradCAM.pth', 'outer_loop': 10, 'inner_loop': 50, 'device': 'cuda', 'dsa_param': <utils.ParamDiffAug object at 0x7f9e14e7d550>, 'dsa': False}
+Evaluation model pool:  ['ConvNet']
+class c = 0: 5743 real images
+class c = 1: 2591 real images
+class c = 2: 1453 real images
+class c = 3: 3057 real images
+class c = 4: 1952 real images
+real images channel 0, mean = -0.3062, std = 0.8858
+real images channel 1, mean = -0.3062, std = 0.8858
+real images channel 2, mean = -0.3062, std = 0.8858
+main_WCAMGM.py:121: DeprecationWarning: an integer is required (got type numpy.float64).  Implicit conversion to integers using __int__ is deprecated, and may be removed in a future version of Python.
+  label_syn = torch.tensor([np.ones(args.ipc)*i for i in range(num_classes)], dtype=torch.long, requires_grad=False, device=args.device).view(-1) # [0,0,0, 1,1,1, ..., 9,9,9]
+main_WCAMGM.py:121: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at /opt/conda/conda-bld/pytorch_1666642975312/work/torch/csrc/utils/tensor_new.cpp:230.)
+  label_syn = torch.tensor([np.ones(args.ipc)*i for i in range(num_classes)], dtype=torch.long, requires_grad=False, device=args.device).view(-1) # [0,0,0, 1,1,1, ..., 9,9,9]
+initialize synthetic data from random real images
+[2024-12-15 08:46:54] training begins
+-------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 0
+DC augmentation parameters:
+ {'crop': 4, 'scale': 0.2, 'rotate': 45, 'noise': 0.001, 'strategy': 'none'}
+[2024-12-15 08:47:01] Evaluate_00: epoch = 0300 train time = 3 s train loss = 0.000717 train acc = 1.0000, test acc = 0.3760, test_sen =0.3760, test_spe =0.8440, test_f1 =0.3411
+[2024-12-15 08:47:07] Evaluate_01: epoch = 0300 train time = 2 s train loss = 0.000447 train acc = 1.0000, test acc = 0.4000, test_sen =0.4000, test_spe =0.8500, test_f1 =0.3580
+[2024-12-15 08:47:14] Evaluate_02: epoch = 0300 train time = 2 s train loss = 0.000297 train acc = 1.0000, test acc = 0.3680, test_sen =0.3680, test_spe =0.8420, test_f1 =0.3304
+[2024-12-15 08:47:20] Evaluate_03: epoch = 0300 train time = 2 s train loss = 0.001005 train acc = 1.0000, test acc = 0.4120, test_sen =0.4120, test_spe =0.8530, test_f1 =0.3713
+[2024-12-15 08:47:26] Evaluate_04: epoch = 0300 train time = 2 s train loss = 0.000427 train acc = 1.0000, test acc = 0.4320, test_sen =0.4320, test_spe =0.8580, test_f1 =0.3837
+Evaluate 5 random ConvNet, ACCmean = 0.3976 ACCstd = 0.0234
+-------------------------
+Evaluate 5 random ConvNet, SENmean = 0.3976 SENstd = 0.0234
+-------------------------
+Evaluate 5 random ConvNet, SPEmean = 0.8494 SPEstd = 0.0059
+-------------------------
+Evaluate 5 random ConvNet, F1mean = 0.3569 F1std = 0.0194
+-------------------------
+[2024-12-15 08:47:33] iter = 0000, loss = 89.7870
+[2024-12-15 08:48:52] iter = 0010, loss = 96.2305
+[2024-12-15 08:50:12] iter = 0020, loss = 88.3135
+[2024-12-15 08:51:32] iter = 0030, loss = 83.9479
+[2024-12-15 08:52:52] iter = 0040, loss = 91.5634
+[2024-12-15 08:54:13] iter = 0050, loss = 76.0105
+[2024-12-15 08:55:34] iter = 0060, loss = 71.3894
+[2024-12-15 08:56:54] iter = 0070, loss = 72.0896
+[2024-12-15 08:58:15] iter = 0080, loss = 69.7905
+[2024-12-15 08:59:36] iter = 0090, loss = 73.9317
+[2024-12-15 09:00:58] iter = 0100, loss = 73.3241
+[2024-12-15 09:02:19] iter = 0110, loss = 67.8962
+[2024-12-15 09:03:39] iter = 0120, loss = 66.9630
+[2024-12-15 09:05:00] iter = 0130, loss = 67.6332
+[2024-12-15 09:06:20] iter = 0140, loss = 67.2406
+[2024-12-15 09:07:41] iter = 0150, loss = 63.9429
+[2024-12-15 09:09:02] iter = 0160, loss = 56.2795
+[2024-12-15 09:10:22] iter = 0170, loss = 60.3098
+[2024-12-15 09:11:43] iter = 0180, loss = 61.1579
+[2024-12-15 09:13:03] iter = 0190, loss = 56.6585
+[2024-12-15 09:14:25] iter = 0200, loss = 56.6217
+[2024-12-15 09:15:45] iter = 0210, loss = 59.8043
+[2024-12-15 09:17:07] iter = 0220, loss = 65.9734
+[2024-12-15 09:18:28] iter = 0230, loss = 57.4254
+[2024-12-15 09:19:48] iter = 0240, loss = 60.1227
+[2024-12-15 09:21:09] iter = 0250, loss = 63.3669
+[2024-12-15 09:22:30] iter = 0260, loss = 50.3540
+[2024-12-15 09:23:50] iter = 0270, loss = 51.7974
+[2024-12-15 09:25:10] iter = 0280, loss = 53.6168
+[2024-12-15 09:26:30] iter = 0290, loss = 67.5558
+[2024-12-15 09:27:50] iter = 0300, loss = 55.2534
+[2024-12-15 09:29:10] iter = 0310, loss = 66.5698
+[2024-12-15 09:30:30] iter = 0320, loss = 67.9405
+[2024-12-15 09:31:50] iter = 0330, loss = 57.0443
+[2024-12-15 09:33:10] iter = 0340, loss = 54.3691
+[2024-12-15 09:34:31] iter = 0350, loss = 55.7099
+[2024-12-15 09:35:51] iter = 0360, loss = 53.6671
+[2024-12-15 09:37:11] iter = 0370, loss = 51.2921
+[2024-12-15 09:38:31] iter = 0380, loss = 47.4103
+[2024-12-15 09:39:52] iter = 0390, loss = 58.3637
+[2024-12-15 09:41:12] iter = 0400, loss = 49.2237
+[2024-12-15 09:42:32] iter = 0410, loss = 54.5766
+[2024-12-15 09:43:52] iter = 0420, loss = 55.7476
+[2024-12-15 09:45:13] iter = 0430, loss = 50.8414
+[2024-12-15 09:46:33] iter = 0440, loss = 57.4695
+[2024-12-15 09:47:54] iter = 0450, loss = 55.9427
+[2024-12-15 09:49:15] iter = 0460, loss = 57.1200
+[2024-12-15 09:50:35] iter = 0470, loss = 52.2475
+[2024-12-15 09:51:55] iter = 0480, loss = 53.8300
+[2024-12-15 09:53:16] iter = 0490, loss = 53.0412
+-------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 500
+DC augmentation parameters:
+ {'crop': 4, 'scale': 0.2, 'rotate': 45, 'noise': 0.001, 'strategy': 'none'}
+[2024-12-15 09:54:35] Evaluate_00: epoch = 0300 train time = 2 s train loss = 0.055434 train acc = 1.0000, test acc = 0.5440, test_sen =0.5440, test_spe =0.8860, test_f1 =0.5146
+[2024-12-15 09:54:41] Evaluate_01: epoch = 0300 train time = 2 s train loss = 0.061802 train acc = 1.0000, test acc = 0.5840, test_sen =0.5840, test_spe =0.8960, test_f1 =0.5568
+[2024-12-15 09:54:48] Evaluate_02: epoch = 0300 train time = 2 s train loss = 0.083058 train acc = 1.0000, test acc = 0.4840, test_sen =0.4840, test_spe =0.8710, test_f1 =0.4576
+[2024-12-15 09:54:54] Evaluate_03: epoch = 0300 train time = 2 s train loss = 0.053079 train acc = 1.0000, test acc = 0.5120, test_sen =0.5120, test_spe =0.8780, test_f1 =0.4819
+[2024-12-15 09:55:01] Evaluate_04: epoch = 0300 train time = 2 s train loss = 0.084507 train acc = 1.0000, test acc = 0.5080, test_sen =0.5080, test_spe =0.8770, test_f1 =0.4780
+Evaluate 5 random ConvNet, ACCmean = 0.5264 ACCstd = 0.0346
+-------------------------
+Evaluate 5 random ConvNet, SENmean = 0.5264 SENstd = 0.0346
+-------------------------
+Evaluate 5 random ConvNet, SPEmean = 0.8816 SPEstd = 0.0086
+-------------------------
+Evaluate 5 random ConvNet, F1mean = 0.4978 F1std = 0.0347
+-------------------------
+[2024-12-15 09:55:09] iter = 0500, loss = 51.4909
+[2024-12-15 09:56:28] iter = 0510, loss = 54.5729
+[2024-12-15 09:57:49] iter = 0520, loss = 47.5588
+[2024-12-15 09:59:10] iter = 0530, loss = 52.5446
+[2024-12-15 10:00:30] iter = 0540, loss = 62.1247
+[2024-12-15 10:01:51] iter = 0550, loss = 57.6970
+[2024-12-15 10:03:11] iter = 0560, loss = 54.5635
+[2024-12-15 10:04:32] iter = 0570, loss = 51.6574
+[2024-12-15 10:05:52] iter = 0580, loss = 55.6348
+[2024-12-15 10:07:13] iter = 0590, loss = 54.8141
+[2024-12-15 10:08:34] iter = 0600, loss = 49.1466
+[2024-12-15 10:09:55] iter = 0610, loss = 53.2215
+[2024-12-15 10:11:16] iter = 0620, loss = 56.2711
+[2024-12-15 10:12:37] iter = 0630, loss = 53.4998
+[2024-12-15 10:13:58] iter = 0640, loss = 54.1546
+[2024-12-15 10:15:19] iter = 0650, loss = 54.5723
+[2024-12-15 10:16:41] iter = 0660, loss = 56.2519
+[2024-12-15 10:18:01] iter = 0670, loss = 51.9493
+[2024-12-15 10:19:22] iter = 0680, loss = 59.6124
+[2024-12-15 10:20:42] iter = 0690, loss = 65.9672
+[2024-12-15 10:22:03] iter = 0700, loss = 53.2960
+[2024-12-15 10:23:23] iter = 0710, loss = 51.4239
+[2024-12-15 10:24:43] iter = 0720, loss = 65.7588
+[2024-12-15 10:26:03] iter = 0730, loss = 54.4956
+[2024-12-15 10:27:24] iter = 0740, loss = 55.5303
+[2024-12-15 10:28:44] iter = 0750, loss = 62.7839
+[2024-12-15 10:30:04] iter = 0760, loss = 56.1077
+[2024-12-15 10:31:24] iter = 0770, loss = 49.9198
+[2024-12-15 10:32:46] iter = 0780, loss = 49.0302
+[2024-12-15 10:34:06] iter = 0790, loss = 48.8865
+[2024-12-15 10:35:27] iter = 0800, loss = 51.0525
+[2024-12-15 10:36:48] iter = 0810, loss = 51.5530
+[2024-12-15 10:38:08] iter = 0820, loss = 50.4206
+[2024-12-15 10:39:29] iter = 0830, loss = 48.7757
+[2024-12-15 10:40:50] iter = 0840, loss = 46.5711
+[2024-12-15 10:42:12] iter = 0850, loss = 49.8977
+[2024-12-15 10:43:32] iter = 0860, loss = 46.8391
+[2024-12-15 10:44:53] iter = 0870, loss = 54.5586
+[2024-12-15 10:46:14] iter = 0880, loss = 55.0454
+[2024-12-15 10:47:36] iter = 0890, loss = 51.4569
+[2024-12-15 10:48:58] iter = 0900, loss = 48.2077
+[2024-12-15 10:50:20] iter = 0910, loss = 43.3444
+[2024-12-15 10:51:41] iter = 0920, loss = 43.3286
+[2024-12-15 10:53:02] iter = 0930, loss = 49.5166
+[2024-12-15 10:54:23] iter = 0940, loss = 60.7482
+[2024-12-15 10:55:44] iter = 0950, loss = 51.8410
+[2024-12-15 10:57:05] iter = 0960, loss = 44.7495
+[2024-12-15 10:58:26] iter = 0970, loss = 50.6383
+[2024-12-15 10:59:48] iter = 0980, loss = 56.8658
+[2024-12-15 11:01:09] iter = 0990, loss = 49.3763
+-------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 1000
+DC augmentation parameters:
+ {'crop': 4, 'scale': 0.2, 'rotate': 45, 'noise': 0.001, 'strategy': 'none'}
+[2024-12-15 11:02:28] Evaluate_00: epoch = 0300 train time = 2 s train loss = 0.068089 train acc = 1.0000, test acc = 0.5720, test_sen =0.5720, test_spe =0.8930, test_f1 =0.5473
+[2024-12-15 11:02:34] Evaluate_01: epoch = 0300 train time = 2 s train loss = 0.098795 train acc = 1.0000, test acc = 0.5360, test_sen =0.5360, test_spe =0.8840, test_f1 =0.5068
+[2024-12-15 11:02:41] Evaluate_02: epoch = 0300 train time = 2 s train loss = 0.054815 train acc = 1.0000, test acc = 0.5360, test_sen =0.5360, test_spe =0.8840, test_f1 =0.4908
+[2024-12-15 11:02:47] Evaluate_03: epoch = 0300 train time = 2 s train loss = 0.112090 train acc = 1.0000, test acc = 0.5920, test_sen =0.5920, test_spe =0.8980, test_f1 =0.5731
+[2024-12-15 11:02:53] Evaluate_04: epoch = 0300 train time = 2 s train loss = 0.062807 train acc = 1.0000, test acc = 0.5840, test_sen =0.5840, test_spe =0.8960, test_f1 =0.5536
+Evaluate 5 random ConvNet, ACCmean = 0.5640 ACCstd = 0.0237
+-------------------------
+Evaluate 5 random ConvNet, SENmean = 0.5640 SENstd = 0.0237
+-------------------------
+Evaluate 5 random ConvNet, SPEmean = 0.8910 SPEstd = 0.0059
+-------------------------
+Evaluate 5 random ConvNet, F1mean = 0.5343 F1std = 0.0306
+-------------------------
+[2024-12-15 11:03:01] iter = 1000, loss = 55.4233
+
+================== Exp 1 ==================
+
+Hyper-parameters:
+ {'method': 'DC', 'dataset': 'oct', 'model': 'ConvNet', 'ipc': 10, 'eval_mode': 'S', 'num_exp': 5, 'num_eval': 5, 'epoch_eval_train': 300, 'Iteration': 1000, 'lr_img': 1.0, 'lr_net': 0.01, 'lr_proxy': 0.0001, 'lr_w': 0.1, 'batch_real': 256, 'batch_train': 256, 'init': 'real', 'dsa_strategy': 'None', 'data_path': 'data', 'save_path': 'result', 'dis_metric': 'ours', 'proxy_model': 'ResNet18', 'epoch_proxy': 1, 'save_model_path': './Model_Saved_new', 'validation_step': 1, 'temperature': 0.5, 'mode': 'CAMDM', 'cam_path': './CAM_dir', 'cam_type': 'GradCAM', 'checkpoint_path': './CAM_CKPT/ResNet18_GradCAM.pth', 'outer_loop': 10, 'inner_loop': 50, 'device': 'cuda', 'dsa_param': <utils.ParamDiffAug object at 0x7f9e14e7d550>, 'dsa': False, 'dc_aug_param': None}
+Evaluation model pool:  ['ConvNet']
+class c = 0: 5743 real images
+class c = 1: 2591 real images
+class c = 2: 1453 real images
+class c = 3: 3057 real images
+class c = 4: 1952 real images
+real images channel 0, mean = -0.3062, std = 0.8858
+real images channel 1, mean = -0.3062, std = 0.8858
+real images channel 2, mean = -0.3062, std = 0.8858
+main_WCAMGM.py:121: DeprecationWarning: an integer is required (got type numpy.float64).  Implicit conversion to integers using __int__ is deprecated, and may be removed in a future version of Python.
+  label_syn = torch.tensor([np.ones(args.ipc)*i for i in range(num_classes)], dtype=torch.long, requires_grad=False, device=args.device).view(-1) # [0,0,0, 1,1,1, ..., 9,9,9]
+initialize synthetic data from random real images
+[2024-12-15 11:09:37] training begins
+-------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 0
+DC augmentation parameters:
+ {'crop': 4, 'scale': 0.2, 'rotate': 45, 'noise': 0.001, 'strategy': 'none'}
+[2024-12-15 11:09:43] Evaluate_00: epoch = 0300 train time = 2 s train loss = 0.002195 train acc = 1.0000, test acc = 0.3600, test_sen =0.3600, test_spe =0.8400, test_f1 =0.3491
+[2024-12-15 11:09:49] Evaluate_01: epoch = 0300 train time = 2 s train loss = 0.001355 train acc = 1.0000, test acc = 0.3880, test_sen =0.3880, test_spe =0.8470, test_f1 =0.3828
+[2024-12-15 11:09:55] Evaluate_02: epoch = 0300 train time = 2 s train loss = 0.003010 train acc = 1.0000, test acc = 0.3360, test_sen =0.3360, test_spe =0.8340, test_f1 =0.3312
+[2024-12-15 11:10:01] Evaluate_03: epoch = 0300 train time = 2 s train loss = 0.000518 train acc = 1.0000, test acc = 0.4120, test_sen =0.4120, test_spe =0.8530, test_f1 =0.4200
+[2024-12-15 11:10:07] Evaluate_04: epoch = 0300 train time = 2 s train loss = 0.002544 train acc = 1.0000, test acc = 0.3800, test_sen =0.3800, test_spe =0.8450, test_f1 =0.3692
+Evaluate 5 random ConvNet, ACCmean = 0.3752 ACCstd = 0.0257
+-------------------------
+Evaluate 5 random ConvNet, SENmean = 0.3752 SENstd = 0.0257
+-------------------------
+Evaluate 5 random ConvNet, SPEmean = 0.8438 SPEstd = 0.0064
+-------------------------
+Evaluate 5 random ConvNet, F1mean = 0.3705 F1std = 0.0303
+-------------------------
+[2024-12-15 11:10:15] iter = 0000, loss = 67.1167
+[2024-12-15 11:11:35] iter = 0010, loss = 101.5612
+[2024-12-15 11:12:55] iter = 0020, loss = 81.5395
+[2024-12-15 11:14:17] iter = 0030, loss = 62.4197
+[2024-12-15 11:15:37] iter = 0040, loss = 73.7939
+[2024-12-15 11:16:59] iter = 0050, loss = 77.2165
+[2024-12-15 11:18:20] iter = 0060, loss = 67.7227
+[2024-12-15 11:19:41] iter = 0070, loss = 74.5400
+[2024-12-15 11:21:02] iter = 0080, loss = 79.1369
+[2024-12-15 11:22:23] iter = 0090, loss = 72.9505
+[2024-12-15 11:23:43] iter = 0100, loss = 87.1136
+[2024-12-15 11:25:03] iter = 0110, loss = 78.0234
+[2024-12-15 11:26:23] iter = 0120, loss = 61.1609
+[2024-12-15 11:27:44] iter = 0130, loss = 71.6104
+[2024-12-15 11:29:04] iter = 0140, loss = 71.0464
+[2024-12-15 11:30:25] iter = 0150, loss = 82.6227
+[2024-12-15 11:31:46] iter = 0160, loss = 67.6389
+[2024-12-15 11:33:08] iter = 0170, loss = 55.2733
+[2024-12-15 11:34:29] iter = 0180, loss = 58.5387
+[2024-12-15 11:35:50] iter = 0190, loss = 59.7874
+[2024-12-15 11:37:11] iter = 0200, loss = 64.9090
+[2024-12-15 11:38:35] iter = 0210, loss = 75.2605
+[2024-12-15 11:39:57] iter = 0220, loss = 58.6980
+[2024-12-15 11:41:18] iter = 0230, loss = 59.9526
+[2024-12-15 11:42:40] iter = 0240, loss = 66.9122
+[2024-12-15 11:44:01] iter = 0250, loss = 59.1395
+[2024-12-15 11:45:22] iter = 0260, loss = 58.1305
+[2024-12-15 11:46:44] iter = 0270, loss = 65.3741
+[2024-12-15 11:48:05] iter = 0280, loss = 58.5720
+[2024-12-15 11:49:26] iter = 0290, loss = 58.0642
+[2024-12-15 11:50:47] iter = 0300, loss = 59.8098
+[2024-12-15 11:52:08] iter = 0310, loss = 48.9847
+[2024-12-15 11:53:29] iter = 0320, loss = 53.2246
+[2024-12-15 11:54:50] iter = 0330, loss = 59.9069
+[2024-12-15 11:56:12] iter = 0340, loss = 60.2670
+[2024-12-15 11:57:33] iter = 0350, loss = 50.1182
+[2024-12-15 11:58:54] iter = 0360, loss = 65.1228
+[2024-12-15 12:00:16] iter = 0370, loss = 55.4812
+[2024-12-15 12:01:37] iter = 0380, loss = 54.0780
+[2024-12-15 12:02:57] iter = 0390, loss = 56.7430
+[2024-12-15 12:04:19] iter = 0400, loss = 53.3942
+[2024-12-15 12:05:40] iter = 0410, loss = 54.3354
+[2024-12-15 12:07:01] iter = 0420, loss = 62.2370
+[2024-12-15 12:08:22] iter = 0430, loss = 64.4420
+[2024-12-15 12:09:43] iter = 0440, loss = 71.7951
+[2024-12-15 12:11:04] iter = 0450, loss = 53.5762
+[2024-12-15 12:12:25] iter = 0460, loss = 52.6274
+[2024-12-15 12:13:46] iter = 0470, loss = 55.1872
+[2024-12-15 12:15:09] iter = 0480, loss = 50.6836
+[2024-12-15 12:16:30] iter = 0490, loss = 57.1512
+-------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 500
+DC augmentation parameters:
+ {'crop': 4, 'scale': 0.2, 'rotate': 45, 'noise': 0.001, 'strategy': 'none'}
+[2024-12-15 12:17:49] Evaluate_00: epoch = 0300 train time = 2 s train loss = 0.080661 train acc = 1.0000, test acc = 0.5760, test_sen =0.5760, test_spe =0.8940, test_f1 =0.5559
+[2024-12-15 12:17:55] Evaluate_01: epoch = 0300 train time = 2 s train loss = 0.059097 train acc = 1.0000, test acc = 0.5760, test_sen =0.5760, test_spe =0.8940, test_f1 =0.5575
+[2024-12-15 12:18:02] Evaluate_02: epoch = 0300 train time = 2 s train loss = 0.050743 train acc = 1.0000, test acc = 0.5600, test_sen =0.5600, test_spe =0.8900, test_f1 =0.5346
+[2024-12-15 12:18:08] Evaluate_03: epoch = 0300 train time = 2 s train loss = 0.020748 train acc = 1.0000, test acc = 0.5880, test_sen =0.5880, test_spe =0.8970, test_f1 =0.5716
+[2024-12-15 12:18:14] Evaluate_04: epoch = 0300 train time = 2 s train loss = 0.036203 train acc = 1.0000, test acc = 0.5320, test_sen =0.5320, test_spe =0.8830, test_f1 =0.4847
+Evaluate 5 random ConvNet, ACCmean = 0.5664 ACCstd = 0.0194
+-------------------------
+Evaluate 5 random ConvNet, SENmean = 0.5664 SENstd = 0.0194
+-------------------------
+Evaluate 5 random ConvNet, SPEmean = 0.8916 SPEstd = 0.0048
+-------------------------
+Evaluate 5 random ConvNet, F1mean = 0.5408 F1std = 0.0305
+-------------------------
+[2024-12-15 12:18:22] iter = 0500, loss = 48.6743
+[2024-12-15 12:19:44] iter = 0510, loss = 52.1605
+[2024-12-15 12:21:06] iter = 0520, loss = 53.3001
+[2024-12-15 12:22:27] iter = 0530, loss = 54.8490
+[2024-12-15 12:23:49] iter = 0540, loss = 54.6877
+[2024-12-15 12:25:10] iter = 0550, loss = 46.3970
+[2024-12-15 12:26:31] iter = 0560, loss = 57.0926
+[2024-12-15 12:27:52] iter = 0570, loss = 52.9467
+[2024-12-15 12:29:13] iter = 0580, loss = 49.8955
+[2024-12-15 12:30:34] iter = 0590, loss = 54.3667
+[2024-12-15 12:31:54] iter = 0600, loss = 45.9649
+[2024-12-15 12:33:16] iter = 0610, loss = 53.2768
+[2024-12-15 12:34:37] iter = 0620, loss = 54.3646
+[2024-12-15 12:35:58] iter = 0630, loss = 56.4503
+[2024-12-15 12:37:19] iter = 0640, loss = 59.8848
+[2024-12-15 12:38:39] iter = 0650, loss = 64.1820
+[2024-12-15 12:40:00] iter = 0660, loss = 58.0978
+[2024-12-15 12:41:21] iter = 0670, loss = 54.3717
+[2024-12-15 12:42:41] iter = 0680, loss = 58.7056
+[2024-12-15 12:44:02] iter = 0690, loss = 57.1052
+[2024-12-15 12:45:23] iter = 0700, loss = 50.2797
+[2024-12-15 12:46:43] iter = 0710, loss = 44.9786
+[2024-12-15 12:48:04] iter = 0720, loss = 50.4809
+[2024-12-15 12:49:26] iter = 0730, loss = 50.4556
+[2024-12-15 12:50:47] iter = 0740, loss = 56.4602
+[2024-12-15 12:52:08] iter = 0750, loss = 54.6198
+[2024-12-15 12:53:29] iter = 0760, loss = 56.3071
+[2024-12-15 12:54:50] iter = 0770, loss = 50.3064
+[2024-12-15 12:56:12] iter = 0780, loss = 53.4805
+[2024-12-15 12:57:33] iter = 0790, loss = 49.7650
+[2024-12-15 12:58:54] iter = 0800, loss = 50.4142
+[2024-12-15 13:00:16] iter = 0810, loss = 50.4173
+[2024-12-15 13:01:38] iter = 0820, loss = 52.6087
+[2024-12-15 13:02:59] iter = 0830, loss = 49.7552
+[2024-12-15 13:04:20] iter = 0840, loss = 43.9061
+[2024-12-15 13:05:41] iter = 0850, loss = 54.2139
+[2024-12-15 13:07:02] iter = 0860, loss = 52.6311
+[2024-12-15 13:08:23] iter = 0870, loss = 55.6992
+[2024-12-15 13:09:45] iter = 0880, loss = 44.5402
+[2024-12-15 13:11:06] iter = 0890, loss = 46.0913
+[2024-12-15 13:12:26] iter = 0900, loss = 45.6757
+[2024-12-15 13:13:47] iter = 0910, loss = 62.3449
+[2024-12-15 13:15:08] iter = 0920, loss = 47.2607
+[2024-12-15 13:16:29] iter = 0930, loss = 55.4482
+[2024-12-15 13:17:50] iter = 0940, loss = 50.2816
+[2024-12-15 13:19:12] iter = 0950, loss = 47.8379
+[2024-12-15 13:20:33] iter = 0960, loss = 53.2976
+[2024-12-15 13:21:54] iter = 0970, loss = 47.3709
+[2024-12-15 13:23:16] iter = 0980, loss = 68.1685
+[2024-12-15 13:24:37] iter = 0990, loss = 54.8469
+-------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 1000
+DC augmentation parameters:
+ {'crop': 4, 'scale': 0.2, 'rotate': 45, 'noise': 0.001, 'strategy': 'none'}
+[2024-12-15 13:25:55] Evaluate_00: epoch = 0300 train time = 2 s train loss = 0.120247 train acc = 1.0000, test acc = 0.5200, test_sen =0.5200, test_spe =0.8800, test_f1 =0.4879
+[2024-12-15 13:26:01] Evaluate_01: epoch = 0300 train time = 2 s train loss = 0.070112 train acc = 1.0000, test acc = 0.5120, test_sen =0.5120, test_spe =0.8780, test_f1 =0.4818
+[2024-12-15 13:26:07] Evaluate_02: epoch = 0300 train time = 2 s train loss = 0.147791 train acc = 1.0000, test acc = 0.5120, test_sen =0.5120, test_spe =0.8780, test_f1 =0.4884
+[2024-12-15 13:26:19] Evaluate_03: epoch = 0300 train time = 2 s train loss = 0.076460 train acc = 1.0000, test acc = 0.4880, test_sen =0.4880, test_spe =0.8720, test_f1 =0.4536
+[2024-12-15 13:26:26] Evaluate_04: epoch = 0300 train time = 2 s train loss = 0.090836 train acc = 1.0000, test acc = 0.5480, test_sen =0.5480, test_spe =0.8870, test_f1 =0.5220
+Evaluate 5 random ConvNet, ACCmean = 0.5160 ACCstd = 0.0193
+-------------------------
+Evaluate 5 random ConvNet, SENmean = 0.5160 SENstd = 0.0193
+-------------------------
+Evaluate 5 random ConvNet, SPEmean = 0.8790 SPEstd = 0.0048
+-------------------------
+Evaluate 5 random ConvNet, F1mean = 0.4868 F1std = 0.0218
+-------------------------
+[2024-12-15 13:26:34] iter = 1000, loss = 46.5789
+
+================== Exp 2 ==================
+
+Hyper-parameters:
+ {'method': 'DC', 'dataset': 'oct', 'model': 'ConvNet', 'ipc': 10, 'eval_mode': 'S', 'num_exp': 5, 'num_eval': 5, 'epoch_eval_train': 300, 'Iteration': 1000, 'lr_img': 1.0, 'lr_net': 0.01, 'lr_proxy': 0.0001, 'lr_w': 0.1, 'batch_real': 256, 'batch_train': 256, 'init': 'real', 'dsa_strategy': 'None', 'data_path': 'data', 'save_path': 'result', 'dis_metric': 'ours', 'proxy_model': 'ResNet18', 'epoch_proxy': 1, 'save_model_path': './Model_Saved_new', 'validation_step': 1, 'temperature': 0.5, 'mode': 'CAMDM', 'cam_path': './CAM_dir', 'cam_type': 'GradCAM', 'checkpoint_path': './CAM_CKPT/ResNet18_GradCAM.pth', 'outer_loop': 10, 'inner_loop': 50, 'device': 'cuda', 'dsa_param': <utils.ParamDiffAug object at 0x7f9e14e7d550>, 'dsa': False, 'dc_aug_param': None}
+Evaluation model pool:  ['ConvNet']
+class c = 0: 5743 real images
+class c = 1: 2591 real images
+class c = 2: 1453 real images
+class c = 3: 3057 real images
+class c = 4: 1952 real images
+real images channel 0, mean = -0.3062, std = 0.8858
+real images channel 1, mean = -0.3062, std = 0.8858
+real images channel 2, mean = -0.3062, std = 0.8858
+main_WCAMGM.py:121: DeprecationWarning: an integer is required (got type numpy.float64).  Implicit conversion to integers using __int__ is deprecated, and may be removed in a future version of Python.
+  label_syn = torch.tensor([np.ones(args.ipc)*i for i in range(num_classes)], dtype=torch.long, requires_grad=False, device=args.device).view(-1) # [0,0,0, 1,1,1, ..., 9,9,9]
+initialize synthetic data from random real images
+[2024-12-15 13:36:25] training begins
+-------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 0
+DC augmentation parameters:
+ {'crop': 4, 'scale': 0.2, 'rotate': 45, 'noise': 0.001, 'strategy': 'none'}
+[2024-12-15 13:36:31] Evaluate_00: epoch = 0300 train time = 2 s train loss = 0.002298 train acc = 1.0000, test acc = 0.2720, test_sen =0.2720, test_spe =0.8180, test_f1 =0.2635
+[2024-12-15 13:36:37] Evaluate_01: epoch = 0300 train time = 2 s train loss = 0.001716 train acc = 1.0000, test acc = 0.2960, test_sen =0.2960, test_spe =0.8240, test_f1 =0.3023
+[2024-12-15 13:36:44] Evaluate_02: epoch = 0300 train time = 2 s train loss = 0.001131 train acc = 1.0000, test acc = 0.2880, test_sen =0.2880, test_spe =0.8220, test_f1 =0.2861
+[2024-12-15 13:36:50] Evaluate_03: epoch = 0300 train time = 2 s train loss = 0.001270 train acc = 1.0000, test acc = 0.2880, test_sen =0.2880, test_spe =0.8220, test_f1 =0.2896
+[2024-12-15 13:36:56] Evaluate_04: epoch = 0300 train time = 2 s train loss = 0.002005 train acc = 1.0000, test acc = 0.2440, test_sen =0.2440, test_spe =0.8110, test_f1 =0.2383
+Evaluate 5 random ConvNet, ACCmean = 0.2776 ACCstd = 0.0185
+-------------------------
+Evaluate 5 random ConvNet, SENmean = 0.2776 SENstd = 0.0185
+-------------------------
+Evaluate 5 random ConvNet, SPEmean = 0.8194 SPEstd = 0.0046
+-------------------------
+Evaluate 5 random ConvNet, F1mean = 0.2759 F1std = 0.0226
+-------------------------
+[2024-12-15 13:37:04] iter = 0000, loss = 71.7059
+[2024-12-15 13:38:24] iter = 0010, loss = 89.5935
+[2024-12-15 13:39:45] iter = 0020, loss = 81.4459
+[2024-12-15 13:41:07] iter = 0030, loss = 65.3930
+[2024-12-15 13:42:28] iter = 0040, loss = 68.0815
+[2024-12-15 13:43:49] iter = 0050, loss = 72.2396
+[2024-12-15 13:45:09] iter = 0060, loss = 86.7634
+[2024-12-15 13:46:30] iter = 0070, loss = 67.9244
+[2024-12-15 13:47:51] iter = 0080, loss = 64.2136
+[2024-12-15 13:49:12] iter = 0090, loss = 69.4986
+[2024-12-15 13:50:33] iter = 0100, loss = 72.3060
+[2024-12-15 13:51:55] iter = 0110, loss = 69.6340
+[2024-12-15 13:53:17] iter = 0120, loss = 71.3734
+[2024-12-15 13:54:38] iter = 0130, loss = 64.0660
+[2024-12-15 13:55:59] iter = 0140, loss = 54.2794
+[2024-12-15 13:57:20] iter = 0150, loss = 69.4310
+[2024-12-15 13:58:41] iter = 0160, loss = 60.2618
+[2024-12-15 14:00:02] iter = 0170, loss = 62.0376
+[2024-12-15 14:01:24] iter = 0180, loss = 58.9398
+[2024-12-15 14:02:45] iter = 0190, loss = 70.1308
+[2024-12-15 14:04:07] iter = 0200, loss = 62.0701
+[2024-12-15 14:05:29] iter = 0210, loss = 62.6263
+[2024-12-15 14:06:50] iter = 0220, loss = 59.5976
+[2024-12-15 14:08:12] iter = 0230, loss = 61.1574
+[2024-12-15 14:09:34] iter = 0240, loss = 66.2581
+[2024-12-15 14:10:56] iter = 0250, loss = 53.1168
+[2024-12-15 14:12:16] iter = 0260, loss = 56.7833
+[2024-12-15 14:13:37] iter = 0270, loss = 57.5286
+[2024-12-15 14:14:58] iter = 0280, loss = 60.8963
+[2024-12-15 14:16:20] iter = 0290, loss = 51.5803
+[2024-12-15 14:17:42] iter = 0300, loss = 64.9445
+[2024-12-15 14:19:03] iter = 0310, loss = 62.0011
+[2024-12-15 14:20:25] iter = 0320, loss = 55.2809
+[2024-12-15 14:21:46] iter = 0330, loss = 55.6386
+[2024-12-15 14:23:07] iter = 0340, loss = 58.8966
+[2024-12-15 14:24:28] iter = 0350, loss = 58.7574
+[2024-12-15 14:25:49] iter = 0360, loss = 53.0631
+[2024-12-15 14:27:11] iter = 0370, loss = 56.5677
+[2024-12-15 14:28:32] iter = 0380, loss = 57.7027
+[2024-12-15 14:29:53] iter = 0390, loss = 51.3746
+[2024-12-15 14:31:14] iter = 0400, loss = 55.9301
+[2024-12-15 14:32:36] iter = 0410, loss = 66.7960
+[2024-12-15 14:33:57] iter = 0420, loss = 54.4970
+[2024-12-15 14:35:18] iter = 0430, loss = 56.6530
+[2024-12-15 14:36:39] iter = 0440, loss = 54.9462
+[2024-12-15 14:38:00] iter = 0450, loss = 59.5280
+[2024-12-15 14:39:21] iter = 0460, loss = 55.7136
+[2024-12-15 14:40:42] iter = 0470, loss = 58.6833
+[2024-12-15 14:42:04] iter = 0480, loss = 53.5935
+[2024-12-15 14:43:25] iter = 0490, loss = 62.4643
+-------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 500
+DC augmentation parameters:
+ {'crop': 4, 'scale': 0.2, 'rotate': 45, 'noise': 0.001, 'strategy': 'none'}
+[2024-12-15 14:44:44] Evaluate_00: epoch = 0300 train time = 2 s train loss = 0.032821 train acc = 1.0000, test acc = 0.5840, test_sen =0.5840, test_spe =0.8960, test_f1 =0.5619
+[2024-12-15 14:44:50] Evaluate_01: epoch = 0300 train time = 2 s train loss = 0.044308 train acc = 1.0000, test acc = 0.5600, test_sen =0.5600, test_spe =0.8900, test_f1 =0.5404
+[2024-12-15 14:44:57] Evaluate_02: epoch = 0300 train time = 2 s train loss = 0.080576 train acc = 1.0000, test acc = 0.5560, test_sen =0.5560, test_spe =0.8890, test_f1 =0.5414
+[2024-12-15 14:45:03] Evaluate_03: epoch = 0300 train time = 2 s train loss = 0.050387 train acc = 1.0000, test acc = 0.5320, test_sen =0.5320, test_spe =0.8830, test_f1 =0.5159
+[2024-12-15 14:45:09] Evaluate_04: epoch = 0300 train time = 2 s train loss = 0.031017 train acc = 1.0000, test acc = 0.5520, test_sen =0.5520, test_spe =0.8880, test_f1 =0.5188
+Evaluate 5 random ConvNet, ACCmean = 0.5568 ACCstd = 0.0167
+-------------------------
+Evaluate 5 random ConvNet, SENmean = 0.5568 SENstd = 0.0167
+-------------------------
+Evaluate 5 random ConvNet, SPEmean = 0.8892 SPEstd = 0.0042
+-------------------------
+Evaluate 5 random ConvNet, F1mean = 0.5357 F1std = 0.0168
+-------------------------
+[2024-12-15 14:45:17] iter = 0500, loss = 60.6763
+[2024-12-15 14:46:39] iter = 0510, loss = 50.8720
+[2024-12-15 14:48:00] iter = 0520, loss = 52.7051
+[2024-12-15 14:49:22] iter = 0530, loss = 50.6705
+[2024-12-15 14:50:43] iter = 0540, loss = 59.5547
+[2024-12-15 14:52:05] iter = 0550, loss = 53.4183
+[2024-12-15 14:53:26] iter = 0560, loss = 62.2347
+[2024-12-15 14:54:48] iter = 0570, loss = 54.0741
+[2024-12-15 14:56:09] iter = 0580, loss = 48.8630
+[2024-12-15 14:57:30] iter = 0590, loss = 53.4591
+[2024-12-15 14:58:52] iter = 0600, loss = 54.5106
+[2024-12-15 15:00:13] iter = 0610, loss = 49.3320
+[2024-12-15 15:01:35] iter = 0620, loss = 60.8577
+[2024-12-15 15:02:56] iter = 0630, loss = 58.1048
+[2024-12-15 15:04:16] iter = 0640, loss = 64.1894
+[2024-12-15 15:05:37] iter = 0650, loss = 50.4989
+[2024-12-15 15:06:59] iter = 0660, loss = 52.0717
+[2024-12-15 15:08:21] iter = 0670, loss = 55.7374
+[2024-12-15 15:09:42] iter = 0680, loss = 55.7045
+[2024-12-15 15:11:03] iter = 0690, loss = 53.7597
+[2024-12-15 15:12:25] iter = 0700, loss = 58.4752
+[2024-12-15 15:13:47] iter = 0710, loss = 56.8713
+[2024-12-15 15:15:09] iter = 0720, loss = 49.5553
+[2024-12-15 15:16:30] iter = 0730, loss = 49.3694
+[2024-12-15 15:17:52] iter = 0740, loss = 50.5037
+[2024-12-15 15:19:13] iter = 0750, loss = 55.2352
+[2024-12-15 15:20:35] iter = 0760, loss = 55.0354
+[2024-12-15 15:21:56] iter = 0770, loss = 51.7314
+[2024-12-15 15:23:18] iter = 0780, loss = 59.6002
+[2024-12-15 15:24:39] iter = 0790, loss = 51.8236
+[2024-12-15 15:26:01] iter = 0800, loss = 49.3654
+[2024-12-15 15:27:21] iter = 0810, loss = 47.0290
+[2024-12-15 15:28:43] iter = 0820, loss = 49.3516
+[2024-12-15 15:30:05] iter = 0830, loss = 48.6487
+[2024-12-15 15:31:26] iter = 0840, loss = 53.7329
+[2024-12-15 15:32:46] iter = 0850, loss = 55.7528
+[2024-12-15 15:34:08] iter = 0860, loss = 43.6444
+[2024-12-15 15:35:28] iter = 0870, loss = 41.5013
+[2024-12-15 15:36:49] iter = 0880, loss = 52.2953
+[2024-12-15 15:38:10] iter = 0890, loss = 52.1542
+[2024-12-15 15:39:31] iter = 0900, loss = 52.3233
+[2024-12-15 15:40:53] iter = 0910, loss = 48.2394
+[2024-12-15 15:42:14] iter = 0920, loss = 57.9107
+[2024-12-15 15:43:35] iter = 0930, loss = 52.0667
+[2024-12-15 15:44:57] iter = 0940, loss = 53.2509
+[2024-12-15 15:46:17] iter = 0950, loss = 56.7144
+[2024-12-15 15:47:38] iter = 0960, loss = 58.7554
+[2024-12-15 15:48:59] iter = 0970, loss = 50.3911
+[2024-12-15 15:50:20] iter = 0980, loss = 48.9555
+[2024-12-15 15:51:39] iter = 0990, loss = 47.4610
+-------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 1000
+DC augmentation parameters:
+ {'crop': 4, 'scale': 0.2, 'rotate': 45, 'noise': 0.001, 'strategy': 'none'}
+[2024-12-15 15:53:01] Evaluate_00: epoch = 0300 train time = 2 s train loss = 0.067877 train acc = 1.0000, test acc = 0.5400, test_sen =0.5400, test_spe =0.8850, test_f1 =0.5212
+[2024-12-15 15:53:12] Evaluate_01: epoch = 0300 train time = 2 s train loss = 0.095936 train acc = 1.0000, test acc = 0.5440, test_sen =0.5440, test_spe =0.8860, test_f1 =0.5285
+[2024-12-15 15:53:22] Evaluate_02: epoch = 0300 train time = 2 s train loss = 0.042115 train acc = 1.0000, test acc = 0.5600, test_sen =0.5600, test_spe =0.8900, test_f1 =0.5345
+[2024-12-15 15:53:33] Evaluate_03: epoch = 0300 train time = 2 s train loss = 0.078246 train acc = 1.0000, test acc = 0.5840, test_sen =0.5840, test_spe =0.8960, test_f1 =0.5683
+[2024-12-15 15:53:43] Evaluate_04: epoch = 0300 train time = 2 s train loss = 0.102016 train acc = 1.0000, test acc = 0.5400, test_sen =0.5400, test_spe =0.8850, test_f1 =0.5242
+Evaluate 5 random ConvNet, ACCmean = 0.5536 ACCstd = 0.0169
+-------------------------
+Evaluate 5 random ConvNet, SENmean = 0.5536 SENstd = 0.0169
+-------------------------
+Evaluate 5 random ConvNet, SPEmean = 0.8884 SPEstd = 0.0042
+-------------------------
+Evaluate 5 random ConvNet, F1mean = 0.5353 F1std = 0.0171
+-------------------------
+[2024-12-15 15:53:51] iter = 1000, loss = 53.0645
+
+================== Exp 3 ==================
+
+Hyper-parameters:
+ {'method': 'DC', 'dataset': 'oct', 'model': 'ConvNet', 'ipc': 10, 'eval_mode': 'S', 'num_exp': 5, 'num_eval': 5, 'epoch_eval_train': 300, 'Iteration': 1000, 'lr_img': 1.0, 'lr_net': 0.01, 'lr_proxy': 0.0001, 'lr_w': 0.1, 'batch_real': 256, 'batch_train': 256, 'init': 'real', 'dsa_strategy': 'None', 'data_path': 'data', 'save_path': 'result', 'dis_metric': 'ours', 'proxy_model': 'ResNet18', 'epoch_proxy': 1, 'save_model_path': './Model_Saved_new', 'validation_step': 1, 'temperature': 0.5, 'mode': 'CAMDM', 'cam_path': './CAM_dir', 'cam_type': 'GradCAM', 'checkpoint_path': './CAM_CKPT/ResNet18_GradCAM.pth', 'outer_loop': 10, 'inner_loop': 50, 'device': 'cuda', 'dsa_param': <utils.ParamDiffAug object at 0x7f9e14e7d550>, 'dsa': False, 'dc_aug_param': None}
+Evaluation model pool:  ['ConvNet']
+class c = 0: 5743 real images
+class c = 1: 2591 real images
+class c = 2: 1453 real images
+class c = 3: 3057 real images
+class c = 4: 1952 real images
+real images channel 0, mean = -0.3062, std = 0.8858
+real images channel 1, mean = -0.3062, std = 0.8858
+real images channel 2, mean = -0.3062, std = 0.8858
+main_WCAMGM.py:121: DeprecationWarning: an integer is required (got type numpy.float64).  Implicit conversion to integers using __int__ is deprecated, and may be removed in a future version of Python.
+  label_syn = torch.tensor([np.ones(args.ipc)*i for i in range(num_classes)], dtype=torch.long, requires_grad=False, device=args.device).view(-1) # [0,0,0, 1,1,1, ..., 9,9,9]
+initialize synthetic data from random real images
+[2024-12-15 16:01:21] training begins
+-------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 0
+DC augmentation parameters:
+ {'crop': 4, 'scale': 0.2, 'rotate': 45, 'noise': 0.001, 'strategy': 'none'}
+[2024-12-15 16:01:27] Evaluate_00: epoch = 0300 train time = 2 s train loss = 0.000738 train acc = 1.0000, test acc = 0.4360, test_sen =0.4360, test_spe =0.8590, test_f1 =0.4222
+[2024-12-15 16:01:33] Evaluate_01: epoch = 0300 train time = 2 s train loss = 0.001999 train acc = 1.0000, test acc = 0.4680, test_sen =0.4680, test_spe =0.8670, test_f1 =0.4529
+[2024-12-15 16:01:39] Evaluate_02: epoch = 0300 train time = 2 s train loss = 0.001286 train acc = 1.0000, test acc = 0.4920, test_sen =0.4920, test_spe =0.8730, test_f1 =0.4719
+[2024-12-15 16:01:45] Evaluate_03: epoch = 0300 train time = 2 s train loss = 0.001329 train acc = 1.0000, test acc = 0.4720, test_sen =0.4720, test_spe =0.8680, test_f1 =0.4530
+[2024-12-15 16:01:51] Evaluate_04: epoch = 0300 train time = 2 s train loss = 0.003753 train acc = 1.0000, test acc = 0.4720, test_sen =0.4720, test_spe =0.8680, test_f1 =0.4485
+Evaluate 5 random ConvNet, ACCmean = 0.4680 ACCstd = 0.0181
+-------------------------
+Evaluate 5 random ConvNet, SENmean = 0.4680 SENstd = 0.0181
+-------------------------
+Evaluate 5 random ConvNet, SPEmean = 0.8670 SPEstd = 0.0045
+-------------------------
+Evaluate 5 random ConvNet, F1mean = 0.4497 F1std = 0.0160
+-------------------------
+[2024-12-15 16:01:59] iter = 0000, loss = 75.4581
+[2024-12-15 16:03:20] iter = 0010, loss = 79.3519
+[2024-12-15 16:04:41] iter = 0020, loss = 87.9766
+[2024-12-15 16:06:02] iter = 0030, loss = 77.0526
+[2024-12-15 16:07:23] iter = 0040, loss = 79.5853
+[2024-12-15 16:08:45] iter = 0050, loss = 74.8502
+[2024-12-15 16:10:07] iter = 0060, loss = 64.8693
+[2024-12-15 16:11:28] iter = 0070, loss = 72.5571
+[2024-12-15 16:12:49] iter = 0080, loss = 68.8825
+[2024-12-15 16:14:10] iter = 0090, loss = 68.2454
+[2024-12-15 16:15:31] iter = 0100, loss = 71.1987
+[2024-12-15 16:16:52] iter = 0110, loss = 72.1046
+[2024-12-15 16:18:13] iter = 0120, loss = 63.1448
+[2024-12-15 16:19:34] iter = 0130, loss = 66.8367
+[2024-12-15 16:20:55] iter = 0140, loss = 66.7396
+[2024-12-15 16:22:17] iter = 0150, loss = 60.1033
+[2024-12-15 16:23:38] iter = 0160, loss = 59.1837
+[2024-12-15 16:25:00] iter = 0170, loss = 67.3115
+[2024-12-15 16:26:21] iter = 0180, loss = 66.3808
+[2024-12-15 16:27:42] iter = 0190, loss = 55.3038
+[2024-12-15 16:29:03] iter = 0200, loss = 60.9186
+[2024-12-15 16:30:24] iter = 0210, loss = 57.7803
+[2024-12-15 16:31:46] iter = 0220, loss = 59.7515
+[2024-12-15 16:33:06] iter = 0230, loss = 62.8692
+[2024-12-15 16:34:28] iter = 0240, loss = 61.7737
+[2024-12-15 16:35:49] iter = 0250, loss = 58.1407
+[2024-12-15 16:37:11] iter = 0260, loss = 56.0891
+[2024-12-15 16:38:32] iter = 0270, loss = 64.3244
+[2024-12-15 16:39:54] iter = 0280, loss = 65.9113
+[2024-12-15 16:41:16] iter = 0290, loss = 66.2675
+[2024-12-15 16:42:37] iter = 0300, loss = 57.5947
+[2024-12-15 16:43:59] iter = 0310, loss = 60.0769
+[2024-12-15 16:45:19] iter = 0320, loss = 60.0892
+[2024-12-15 16:46:41] iter = 0330, loss = 59.9685
+[2024-12-15 16:48:02] iter = 0340, loss = 70.2912
+[2024-12-15 16:49:23] iter = 0350, loss = 52.0792
+[2024-12-15 16:50:44] iter = 0360, loss = 56.1088
+[2024-12-15 16:52:05] iter = 0370, loss = 56.2429
+[2024-12-15 16:53:27] iter = 0380, loss = 60.8754
+[2024-12-15 16:54:48] iter = 0390, loss = 62.6747
+[2024-12-15 16:56:09] iter = 0400, loss = 60.3180
+[2024-12-15 16:57:31] iter = 0410, loss = 53.1089
+[2024-12-15 16:58:51] iter = 0420, loss = 65.6036
+[2024-12-15 17:00:13] iter = 0430, loss = 51.7399
+[2024-12-15 17:01:35] iter = 0440, loss = 56.4228
+[2024-12-15 17:02:56] iter = 0450, loss = 59.7569
+[2024-12-15 17:04:17] iter = 0460, loss = 56.4365
+[2024-12-15 17:05:39] iter = 0470, loss = 54.2186
+[2024-12-15 17:07:00] iter = 0480, loss = 56.6283
+[2024-12-15 17:08:21] iter = 0490, loss = 48.8272
+-------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 500
+DC augmentation parameters:
+ {'crop': 4, 'scale': 0.2, 'rotate': 45, 'noise': 0.001, 'strategy': 'none'}
+[2024-12-15 17:09:40] Evaluate_00: epoch = 0300 train time = 2 s train loss = 0.090089 train acc = 1.0000, test acc = 0.5400, test_sen =0.5400, test_spe =0.8850, test_f1 =0.5077
+[2024-12-15 17:09:46] Evaluate_01: epoch = 0300 train time = 2 s train loss = 0.050002 train acc = 1.0000, test acc = 0.5320, test_sen =0.5320, test_spe =0.8830, test_f1 =0.4871
+[2024-12-15 17:09:53] Evaluate_02: epoch = 0300 train time = 2 s train loss = 0.082119 train acc = 1.0000, test acc = 0.6080, test_sen =0.6080, test_spe =0.9020, test_f1 =0.5731
+[2024-12-15 17:10:00] Evaluate_03: epoch = 0300 train time = 2 s train loss = 0.034138 train acc = 1.0000, test acc = 0.5760, test_sen =0.5760, test_spe =0.8940, test_f1 =0.5343
+[2024-12-15 17:10:06] Evaluate_04: epoch = 0300 train time = 2 s train loss = 0.109809 train acc = 1.0000, test acc = 0.5440, test_sen =0.5440, test_spe =0.8860, test_f1 =0.4999
+Evaluate 5 random ConvNet, ACCmean = 0.5600 ACCstd = 0.0283
+-------------------------
+Evaluate 5 random ConvNet, SENmean = 0.5600 SENstd = 0.0283
+-------------------------
+Evaluate 5 random ConvNet, SPEmean = 0.8900 SPEstd = 0.0071
+-------------------------
+Evaluate 5 random ConvNet, F1mean = 0.5204 F1std = 0.0305
+-------------------------
+[2024-12-15 17:10:14] iter = 0500, loss = 52.5231
+[2024-12-15 17:11:36] iter = 0510, loss = 48.0605
+[2024-12-15 17:12:57] iter = 0520, loss = 51.0801
+[2024-12-15 17:14:19] iter = 0530, loss = 51.9788
+[2024-12-15 17:15:40] iter = 0540, loss = 52.3658
+[2024-12-15 17:17:02] iter = 0550, loss = 52.6581
+[2024-12-15 17:18:24] iter = 0560, loss = 54.4658
+[2024-12-15 17:19:45] iter = 0570, loss = 51.5154
+[2024-12-15 17:21:08] iter = 0580, loss = 56.1553
+[2024-12-15 17:22:29] iter = 0590, loss = 55.1940
+[2024-12-15 17:23:51] iter = 0600, loss = 57.3297
+[2024-12-15 17:25:13] iter = 0610, loss = 60.0951
+[2024-12-15 17:26:34] iter = 0620, loss = 53.4129
+[2024-12-15 17:27:55] iter = 0630, loss = 52.5025
+[2024-12-15 17:29:17] iter = 0640, loss = 49.1161
+[2024-12-15 17:30:39] iter = 0650, loss = 53.4585
+[2024-12-15 17:32:02] iter = 0660, loss = 53.4744
+[2024-12-15 17:33:23] iter = 0670, loss = 49.5218
+[2024-12-15 17:34:44] iter = 0680, loss = 50.7903
+[2024-12-15 17:36:06] iter = 0690, loss = 56.5625
+[2024-12-15 17:37:27] iter = 0700, loss = 52.3723
+[2024-12-15 17:38:49] iter = 0710, loss = 43.8335
+[2024-12-15 17:40:10] iter = 0720, loss = 57.3856
+[2024-12-15 17:41:31] iter = 0730, loss = 50.2499
+[2024-12-15 17:42:53] iter = 0740, loss = 53.7068
+[2024-12-15 17:44:14] iter = 0750, loss = 47.3543
+[2024-12-15 17:45:35] iter = 0760, loss = 58.2388
+[2024-12-15 17:46:55] iter = 0770, loss = 54.0626
+[2024-12-15 17:48:15] iter = 0780, loss = 46.5543
+[2024-12-15 17:49:37] iter = 0790, loss = 44.7886
+[2024-12-15 17:50:58] iter = 0800, loss = 51.5664
+[2024-12-15 17:52:18] iter = 0810, loss = 51.7521
+[2024-12-15 17:53:39] iter = 0820, loss = 57.1639
+[2024-12-15 17:55:04] iter = 0830, loss = 42.4490
+[2024-12-15 17:56:32] iter = 0840, loss = 46.8040
+[2024-12-15 17:57:53] iter = 0850, loss = 49.2798
+[2024-12-15 17:59:17] iter = 0860, loss = 51.5626
+[2024-12-15 18:00:42] iter = 0870, loss = 46.6298
+[2024-12-15 18:02:09] iter = 0880, loss = 50.4228
+[2024-12-15 18:03:38] iter = 0890, loss = 46.8197
+[2024-12-15 18:05:07] iter = 0900, loss = 53.9806
+[2024-12-15 18:06:36] iter = 0910, loss = 50.8334
+[2024-12-15 18:08:05] iter = 0920, loss = 47.1976
+[2024-12-15 18:09:34] iter = 0930, loss = 54.9640
+[2024-12-15 18:11:04] iter = 0940, loss = 45.9821
+[2024-12-15 18:12:34] iter = 0950, loss = 47.9317
+[2024-12-15 18:14:05] iter = 0960, loss = 47.1454
+[2024-12-15 18:15:34] iter = 0970, loss = 50.7195
+[2024-12-15 18:17:00] iter = 0980, loss = 48.7879
+[2024-12-15 18:18:19] iter = 0990, loss = 49.8223
+-------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 1000
+DC augmentation parameters:
+ {'crop': 4, 'scale': 0.2, 'rotate': 45, 'noise': 0.001, 'strategy': 'none'}
+[2024-12-15 18:19:34] Evaluate_00: epoch = 0300 train time = 2 s train loss = 0.165137 train acc = 1.0000, test acc = 0.5480, test_sen =0.5480, test_spe =0.8870, test_f1 =0.5105
+[2024-12-15 18:19:40] Evaluate_01: epoch = 0300 train time = 2 s train loss = 0.085081 train acc = 1.0000, test acc = 0.5640, test_sen =0.5640, test_spe =0.8910, test_f1 =0.5212
+[2024-12-15 18:19:46] Evaluate_02: epoch = 0300 train time = 2 s train loss = 0.088851 train acc = 1.0000, test acc = 0.4800, test_sen =0.4800, test_spe =0.8700, test_f1 =0.4295
+[2024-12-15 18:19:52] Evaluate_03: epoch = 0300 train time = 2 s train loss = 0.063769 train acc = 1.0000, test acc = 0.5240, test_sen =0.5240, test_spe =0.8810, test_f1 =0.4868
+[2024-12-15 18:19:58] Evaluate_04: epoch = 0300 train time = 2 s train loss = 0.064401 train acc = 1.0000, test acc = 0.5000, test_sen =0.5000, test_spe =0.8750, test_f1 =0.4445
+Evaluate 5 random ConvNet, ACCmean = 0.5232 ACCstd = 0.0306
+-------------------------
+Evaluate 5 random ConvNet, SENmean = 0.5232 SENstd = 0.0306
+-------------------------
+Evaluate 5 random ConvNet, SPEmean = 0.8808 SPEstd = 0.0077
+-------------------------
+Evaluate 5 random ConvNet, F1mean = 0.4785 F1std = 0.0360
+-------------------------
+[2024-12-15 18:20:06] iter = 1000, loss = 52.1897
+
+================== Exp 4 ==================
+
+Hyper-parameters:
+ {'method': 'DC', 'dataset': 'oct', 'model': 'ConvNet', 'ipc': 10, 'eval_mode': 'S', 'num_exp': 5, 'num_eval': 5, 'epoch_eval_train': 300, 'Iteration': 1000, 'lr_img': 1.0, 'lr_net': 0.01, 'lr_proxy': 0.0001, 'lr_w': 0.1, 'batch_real': 256, 'batch_train': 256, 'init': 'real', 'dsa_strategy': 'None', 'data_path': 'data', 'save_path': 'result', 'dis_metric': 'ours', 'proxy_model': 'ResNet18', 'epoch_proxy': 1, 'save_model_path': './Model_Saved_new', 'validation_step': 1, 'temperature': 0.5, 'mode': 'CAMDM', 'cam_path': './CAM_dir', 'cam_type': 'GradCAM', 'checkpoint_path': './CAM_CKPT/ResNet18_GradCAM.pth', 'outer_loop': 10, 'inner_loop': 50, 'device': 'cuda', 'dsa_param': <utils.ParamDiffAug object at 0x7f9e14e7d550>, 'dsa': False, 'dc_aug_param': None}
+Evaluation model pool:  ['ConvNet']
+class c = 0: 5743 real images
+class c = 1: 2591 real images
+class c = 2: 1453 real images
+class c = 3: 3057 real images
+class c = 4: 1952 real images
+real images channel 0, mean = -0.3062, std = 0.8858
+real images channel 1, mean = -0.3062, std = 0.8858
+real images channel 2, mean = -0.3062, std = 0.8858
+main_WCAMGM.py:121: DeprecationWarning: an integer is required (got type numpy.float64).  Implicit conversion to integers using __int__ is deprecated, and may be removed in a future version of Python.
+  label_syn = torch.tensor([np.ones(args.ipc)*i for i in range(num_classes)], dtype=torch.long, requires_grad=False, device=args.device).view(-1) # [0,0,0, 1,1,1, ..., 9,9,9]
+initialize synthetic data from random real images
+[2024-12-15 18:27:03] training begins
+-------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 0
+DC augmentation parameters:
+ {'crop': 4, 'scale': 0.2, 'rotate': 45, 'noise': 0.001, 'strategy': 'none'}
+[2024-12-15 18:27:10] Evaluate_00: epoch = 0300 train time = 2 s train loss = 0.001746 train acc = 1.0000, test acc = 0.4040, test_sen =0.4040, test_spe =0.8510, test_f1 =0.3882
+[2024-12-15 18:27:17] Evaluate_01: epoch = 0300 train time = 2 s train loss = 0.003773 train acc = 1.0000, test acc = 0.3640, test_sen =0.3640, test_spe =0.8410, test_f1 =0.3570
+[2024-12-15 18:27:24] Evaluate_02: epoch = 0300 train time = 2 s train loss = 0.001274 train acc = 1.0000, test acc = 0.4320, test_sen =0.4320, test_spe =0.8580, test_f1 =0.4174
+[2024-12-15 18:27:32] Evaluate_03: epoch = 0300 train time = 2 s train loss = 0.001924 train acc = 1.0000, test acc = 0.3920, test_sen =0.3920, test_spe =0.8480, test_f1 =0.3723
+[2024-12-15 18:27:39] Evaluate_04: epoch = 0300 train time = 2 s train loss = 0.000643 train acc = 1.0000, test acc = 0.4680, test_sen =0.4680, test_spe =0.8670, test_f1 =0.4490
+Evaluate 5 random ConvNet, ACCmean = 0.4120 ACCstd = 0.0355
+-------------------------
+Evaluate 5 random ConvNet, SENmean = 0.4120 SENstd = 0.0355
+-------------------------
+Evaluate 5 random ConvNet, SPEmean = 0.8530 SPEstd = 0.0089
+-------------------------
+Evaluate 5 random ConvNet, F1mean = 0.3968 F1std = 0.0329
+-------------------------
+[2024-12-15 18:27:48] iter = 0000, loss = 68.0161
+[2024-12-15 18:29:16] iter = 0010, loss = 81.6823
+[2024-12-15 18:30:37] iter = 0020, loss = 88.2967
+[2024-12-15 18:31:57] iter = 0030, loss = 76.2526
+[2024-12-15 18:33:19] iter = 0040, loss = 81.5313
+[2024-12-15 18:34:40] iter = 0050, loss = 82.5935
+[2024-12-15 18:36:01] iter = 0060, loss = 70.7020
+[2024-12-15 18:37:22] iter = 0070, loss = 72.6774
+[2024-12-15 18:38:43] iter = 0080, loss = 62.0223
+[2024-12-15 18:40:03] iter = 0090, loss = 76.0226
+[2024-12-15 18:41:24] iter = 0100, loss = 63.6774
+[2024-12-15 18:42:45] iter = 0110, loss = 69.7950
+[2024-12-15 18:44:05] iter = 0120, loss = 62.5932
+[2024-12-15 18:45:26] iter = 0130, loss = 70.5035
+[2024-12-15 18:46:46] iter = 0140, loss = 61.2496
+[2024-12-15 18:48:07] iter = 0150, loss = 60.3917
+[2024-12-15 18:49:29] iter = 0160, loss = 60.0826
+[2024-12-15 18:50:50] iter = 0170, loss = 62.6208
+[2024-12-15 18:52:11] iter = 0180, loss = 58.5363
+[2024-12-15 18:53:33] iter = 0190, loss = 67.9943
+[2024-12-15 18:54:55] iter = 0200, loss = 62.2605
+[2024-12-15 18:56:16] iter = 0210, loss = 61.4370
+[2024-12-15 18:57:37] iter = 0220, loss = 65.1414
+[2024-12-15 18:58:58] iter = 0230, loss = 63.8388
+[2024-12-15 19:00:19] iter = 0240, loss = 57.0622
+[2024-12-15 19:01:39] iter = 0250, loss = 52.1745
+[2024-12-15 19:02:59] iter = 0260, loss = 55.8902
+[2024-12-15 19:04:20] iter = 0270, loss = 61.0515
+[2024-12-15 19:05:41] iter = 0280, loss = 62.3973
+[2024-12-15 19:07:02] iter = 0290, loss = 62.0560
+[2024-12-15 19:08:23] iter = 0300, loss = 57.7721
+[2024-12-15 19:09:44] iter = 0310, loss = 58.0773
+[2024-12-15 19:11:06] iter = 0320, loss = 50.2056
+[2024-12-15 19:12:26] iter = 0330, loss = 52.4938
+[2024-12-15 19:13:47] iter = 0340, loss = 70.4099
+[2024-12-15 19:15:08] iter = 0350, loss = 64.1011
+[2024-12-15 19:16:29] iter = 0360, loss = 59.4932
+[2024-12-15 19:17:50] iter = 0370, loss = 63.7848
+[2024-12-15 19:19:11] iter = 0380, loss = 56.3244
+[2024-12-15 19:20:32] iter = 0390, loss = 58.6834
+[2024-12-15 19:21:54] iter = 0400, loss = 57.7992
+[2024-12-15 19:23:15] iter = 0410, loss = 59.4176
+[2024-12-15 19:24:35] iter = 0420, loss = 50.6235
+[2024-12-15 19:25:56] iter = 0430, loss = 54.5881
+[2024-12-15 19:27:17] iter = 0440, loss = 53.2835
+[2024-12-15 19:28:38] iter = 0450, loss = 50.3366
+[2024-12-15 19:29:59] iter = 0460, loss = 54.0220
+[2024-12-15 19:31:20] iter = 0470, loss = 56.1722
+[2024-12-15 19:32:40] iter = 0480, loss = 49.0260
+[2024-12-15 19:34:01] iter = 0490, loss = 51.5584
+-------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 500
+DC augmentation parameters:
+ {'crop': 4, 'scale': 0.2, 'rotate': 45, 'noise': 0.001, 'strategy': 'none'}
+[2024-12-15 19:35:20] Evaluate_00: epoch = 0300 train time = 2 s train loss = 0.043095 train acc = 1.0000, test acc = 0.6000, test_sen =0.6000, test_spe =0.9000, test_f1 =0.5642
+[2024-12-15 19:35:27] Evaluate_01: epoch = 0300 train time = 2 s train loss = 0.039776 train acc = 1.0000, test acc = 0.5600, test_sen =0.5600, test_spe =0.8900, test_f1 =0.5442
+[2024-12-15 19:35:33] Evaluate_02: epoch = 0300 train time = 2 s train loss = 0.047487 train acc = 1.0000, test acc = 0.5120, test_sen =0.5120, test_spe =0.8780, test_f1 =0.4854
+[2024-12-15 19:35:40] Evaluate_03: epoch = 0300 train time = 2 s train loss = 0.032299 train acc = 1.0000, test acc = 0.6080, test_sen =0.6080, test_spe =0.9020, test_f1 =0.5760
+[2024-12-15 19:35:47] Evaluate_04: epoch = 0300 train time = 2 s train loss = 0.062811 train acc = 1.0000, test acc = 0.5080, test_sen =0.5080, test_spe =0.8770, test_f1 =0.4841
+Evaluate 5 random ConvNet, ACCmean = 0.5576 ACCstd = 0.0422
+-------------------------
+Evaluate 5 random ConvNet, SENmean = 0.5576 SENstd = 0.0422
+-------------------------
+Evaluate 5 random ConvNet, SPEmean = 0.8894 SPEstd = 0.0105
+-------------------------
+Evaluate 5 random ConvNet, F1mean = 0.5308 F1std = 0.0390
+-------------------------
+[2024-12-15 19:35:55] iter = 0500, loss = 55.3497
+[2024-12-15 19:37:15] iter = 0510, loss = 51.4389
+[2024-12-15 19:38:36] iter = 0520, loss = 58.6225
+[2024-12-15 19:39:57] iter = 0530, loss = 49.8911
+[2024-12-15 19:41:17] iter = 0540, loss = 53.2671
+[2024-12-15 19:42:38] iter = 0550, loss = 52.2845
+[2024-12-15 19:43:59] iter = 0560, loss = 49.3655
+[2024-12-15 19:45:20] iter = 0570, loss = 51.7841
+[2024-12-15 19:46:41] iter = 0580, loss = 50.8062
+[2024-12-15 19:48:02] iter = 0590, loss = 48.3640
+[2024-12-15 19:49:22] iter = 0600, loss = 52.9391
+[2024-12-15 19:50:44] iter = 0610, loss = 53.1943
+[2024-12-15 19:52:05] iter = 0620, loss = 52.8372
+[2024-12-15 19:53:26] iter = 0630, loss = 50.6640
+[2024-12-15 19:54:48] iter = 0640, loss = 47.6982
+[2024-12-15 19:56:08] iter = 0650, loss = 53.1970
+[2024-12-15 19:57:29] iter = 0660, loss = 53.3887
+[2024-12-15 19:58:50] iter = 0670, loss = 57.2901
+[2024-12-15 20:00:11] iter = 0680, loss = 46.4370
+[2024-12-15 20:01:33] iter = 0690, loss = 45.7532
+[2024-12-15 20:02:53] iter = 0700, loss = 45.9761
+[2024-12-15 20:04:15] iter = 0710, loss = 53.2905
+[2024-12-15 20:05:36] iter = 0720, loss = 45.7761
+[2024-12-15 20:06:57] iter = 0730, loss = 52.3777
+[2024-12-15 20:08:18] iter = 0740, loss = 50.4653
+[2024-12-15 20:09:39] iter = 0750, loss = 45.7108
+[2024-12-15 20:11:01] iter = 0760, loss = 48.4793
+[2024-12-15 20:12:21] iter = 0770, loss = 54.1618
+[2024-12-15 20:13:42] iter = 0780, loss = 52.8135
+[2024-12-15 20:15:04] iter = 0790, loss = 70.1791
+[2024-12-15 20:16:24] iter = 0800, loss = 54.2664
+[2024-12-15 20:17:45] iter = 0810, loss = 48.0910
+[2024-12-15 20:19:06] iter = 0820, loss = 52.1382
+[2024-12-15 20:20:27] iter = 0830, loss = 50.8823
+[2024-12-15 20:21:48] iter = 0840, loss = 48.0991
+[2024-12-15 20:23:09] iter = 0850, loss = 47.1664
+[2024-12-15 20:24:29] iter = 0860, loss = 51.4231
+[2024-12-15 20:25:50] iter = 0870, loss = 49.6757
+[2024-12-15 20:27:10] iter = 0880, loss = 52.6131
+[2024-12-15 20:28:31] iter = 0890, loss = 56.4847
+[2024-12-15 20:29:53] iter = 0900, loss = 51.3268
+[2024-12-15 20:31:14] iter = 0910, loss = 41.6286
+[2024-12-15 20:32:35] iter = 0920, loss = 55.0355
+[2024-12-15 20:33:57] iter = 0930, loss = 60.2682
+[2024-12-15 20:35:18] iter = 0940, loss = 53.9381
+[2024-12-15 20:36:40] iter = 0950, loss = 46.4918
+[2024-12-15 20:38:01] iter = 0960, loss = 48.2756
+[2024-12-15 20:39:22] iter = 0970, loss = 47.9465
+[2024-12-15 20:40:40] iter = 0980, loss = 49.4551
+[2024-12-15 20:41:59] iter = 0990, loss = 51.1970
+-------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 1000
+DC augmentation parameters:
+ {'crop': 4, 'scale': 0.2, 'rotate': 45, 'noise': 0.001, 'strategy': 'none'}
+[2024-12-15 20:43:15] Evaluate_00: epoch = 0300 train time = 2 s train loss = 0.070841 train acc = 1.0000, test acc = 0.5800, test_sen =0.5800, test_spe =0.8950, test_f1 =0.5530
+[2024-12-15 20:43:21] Evaluate_01: epoch = 0300 train time = 2 s train loss = 0.081189 train acc = 1.0000, test acc = 0.5120, test_sen =0.5120, test_spe =0.8780, test_f1 =0.4825
+[2024-12-15 20:43:27] Evaluate_02: epoch = 0300 train time = 2 s train loss = 0.063563 train acc = 1.0000, test acc = 0.5200, test_sen =0.5200, test_spe =0.8800, test_f1 =0.4908
+[2024-12-15 20:43:34] Evaluate_03: epoch = 0300 train time = 2 s train loss = 0.120927 train acc = 1.0000, test acc = 0.5680, test_sen =0.5680, test_spe =0.8920, test_f1 =0.5476
+[2024-12-15 20:43:40] Evaluate_04: epoch = 0300 train time = 2 s train loss = 0.057215 train acc = 1.0000, test acc = 0.5560, test_sen =0.5560, test_spe =0.8890, test_f1 =0.5197
+Evaluate 5 random ConvNet, ACCmean = 0.5472 ACCstd = 0.0267
+-------------------------
+Evaluate 5 random ConvNet, SENmean = 0.5472 SENstd = 0.0267
+-------------------------
+Evaluate 5 random ConvNet, SPEmean = 0.8868 SPEstd = 0.0067
+-------------------------
+Evaluate 5 random ConvNet, F1mean = 0.5187 F1std = 0.0286
+-------------------------
+[2024-12-15 20:43:47] iter = 1000, loss = 50.6133
+
+==================== Final Results ====================
+
+Run 5 experiments, train on ConvNet, evaluate 25 random ConvNet, mean  = 54.08%  std = 3.01%

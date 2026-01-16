@@ -1,0 +1,12 @@
+nohup: ignoring input
+2024-10-30 14:21:51: eval_it_pool: [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000, 20000]
+Using downloaded and verified file: /data/users/xiongyuxuan/.medmnist/bloodmnist.npz
+Using downloaded and verified file: /data/users/xiongyuxuan/.medmnist/bloodmnist.npz
+Traceback (most recent call last):
+  File "main_DM.py", line 262, in <module>
+    main()
+  File "main_DM.py", line 74, in main
+    channel, im_size, num_classes, class_names, mean, std, dst_train, dst_test, testloader, trainloader = get_dataset_med(args.dataset, args.data_path)
+  File "/data/users/xiongyuxuan/DD/CAMDM/DatasetCondensation-master/utils.py", line 283, in get_dataset_med
+    dst_test = list(zip(test_imgs.transpose(0, 3, 1, 2), test_labels))
+ValueError: axes don't match array

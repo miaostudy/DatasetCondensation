@@ -1,0 +1,1127 @@
+nohup: ignoring input
+2024-11-21 20:42:16: eval_it_pool: [0, 500, 1000]
+2024-11-21 20:42:18: 
+================== Exp 0 ==================
+ 
+2024-11-21 20:42:18: Hyper-parameters: 
+{'method': 'DSA', 'dataset': 'ChestMNIST', 'model': 'ConvNet', 'ipc': 10, 'eval_mode': 'S', 'num_exp': 5, 'num_eval': 5, 'epoch_eval_train': 300, 'Iteration': 1000, 'lr_img': 0.1, 'lr_net': 0.01, 'batch_real': 256, 'batch_train': 256, 'init': 'real', 'dsa_strategy': 'color_crop_cutout_flip_scale_rotate', 'data_path': 'data', 'save_path': 'result', 'dis_metric': 'ours', 'outer_loop': 10, 'inner_loop': 50, 'device': 'cuda', 'dsa_param': <utils.ParamDiffAug object at 0x7fbf96459ca0>, 'dsa': True, 'mode': 'DSA', 'logger': <Logger DSA_IPC_10_limg_0.1_Data_ChestMNIST (INFO)>}
+2024-11-21 20:42:18: Evaluation model pool: ['ConvNet']
+2024-11-21 20:42:23: class c = 0: 70472 real images
+2024-11-21 20:42:23: class c = 1: 7996 real images
+2024-11-21 20:42:23: real images channel 0, mean = 0.4936, std = 0.2380
+main_base.py:125: DeprecationWarning: an integer is required (got type numpy.float64).  Implicit conversion to integers using __int__ is deprecated, and may be removed in a future version of Python.
+  label_syn = torch.tensor([np.ones(args.ipc)*i for i in range(num_classes)], dtype=torch.long, requires_grad=False, device=args.device).view(-1) # [0,0,0, 1,1,1, ..., 9,9,9]
+main_base.py:125: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at /opt/conda/conda-bld/pytorch_1666642975312/work/torch/csrc/utils/tensor_new.cpp:230.)
+  label_syn = torch.tensor([np.ones(args.ipc)*i for i in range(num_classes)], dtype=torch.long, requires_grad=False, device=args.device).view(-1) # [0,0,0, 1,1,1, ..., 9,9,9]
+2024-11-21 20:42:23: initialize synthetic data from random real images
+2024-11-21 20:42:23: [2024-11-21 20:42:23] training begins
+2024-11-21 20:42:23: -------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 0
+2024-11-21 20:42:23: DSA augmentation strategy: 
+color_crop_cutout_flip_scale_rotate
+2024-11-21 20:42:23: DSA augmentation parameters: 
+{'aug_mode': 'S', 'prob_flip': 0.5, 'ratio_scale': 1.2, 'ratio_rotate': 15.0, 'ratio_crop_pad': 0.125, 'ratio_cutout': 0.5, 'brightness': 1.0, 'saturation': 2.0, 'contrast': 0.5}
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/functional.py:504: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at /opt/conda/conda-bld/pytorch_1666642975312/work/aten/src/ATen/native/TensorShape.cpp:3190.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-21 20:43:18: Evaluate 5 random ConvNet, ACCmean = 0.4928 ACCstd = 0.0106
+-------------------------
+2024-11-21 20:43:18: Evaluate 5 random ConvNet, F1mean = 0.4211 F!std = 0.0063
+-------------------------
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-21 20:43:23: [2024-11-21 20:43:23] iter = 0000, loss = 70.0499
+2024-11-21 20:44:09: [2024-11-21 20:44:09] iter = 0010, loss = 62.2880
+2024-11-21 20:44:53: [2024-11-21 20:44:53] iter = 0020, loss = 44.8506
+2024-11-21 20:45:37: [2024-11-21 20:45:37] iter = 0030, loss = 61.7139
+2024-11-21 20:46:22: [2024-11-21 20:46:22] iter = 0040, loss = 43.1948
+2024-11-21 20:47:21: [2024-11-21 20:47:21] iter = 0050, loss = 54.4251
+2024-11-21 20:48:32: [2024-11-21 20:48:32] iter = 0060, loss = 50.9353
+2024-11-21 20:49:44: [2024-11-21 20:49:44] iter = 0070, loss = 59.3758
+2024-11-21 20:50:47: [2024-11-21 20:50:47] iter = 0080, loss = 41.1734
+2024-11-21 20:51:55: [2024-11-21 20:51:55] iter = 0090, loss = 38.3475
+2024-11-21 20:53:01: [2024-11-21 20:53:01] iter = 0100, loss = 54.5578
+2024-11-21 20:54:01: [2024-11-21 20:54:01] iter = 0110, loss = 41.3725
+2024-11-21 20:55:08: [2024-11-21 20:55:08] iter = 0120, loss = 44.7005
+2024-11-21 20:56:15: [2024-11-21 20:56:15] iter = 0130, loss = 66.6113
+2024-11-21 20:57:16: [2024-11-21 20:57:16] iter = 0140, loss = 52.7874
+2024-11-21 20:58:18: [2024-11-21 20:58:18] iter = 0150, loss = 49.9027
+2024-11-21 20:59:23: [2024-11-21 20:59:23] iter = 0160, loss = 55.2963
+2024-11-21 21:00:26: [2024-11-21 21:00:26] iter = 0170, loss = 38.1068
+2024-11-21 21:01:34: [2024-11-21 21:01:34] iter = 0180, loss = 36.1905
+2024-11-21 21:02:43: [2024-11-21 21:02:43] iter = 0190, loss = 50.8477
+2024-11-21 21:03:51: [2024-11-21 21:03:51] iter = 0200, loss = 40.4374
+2024-11-21 21:04:58: [2024-11-21 21:04:58] iter = 0210, loss = 42.4586
+2024-11-21 21:06:02: [2024-11-21 21:06:02] iter = 0220, loss = 47.9151
+2024-11-21 21:07:08: [2024-11-21 21:07:08] iter = 0230, loss = 46.7855
+2024-11-21 21:08:13: [2024-11-21 21:08:13] iter = 0240, loss = 51.7614
+2024-11-21 21:09:19: [2024-11-21 21:09:19] iter = 0250, loss = 58.3060
+2024-11-21 21:10:24: [2024-11-21 21:10:24] iter = 0260, loss = 33.0971
+2024-11-21 21:11:21: [2024-11-21 21:11:21] iter = 0270, loss = 50.4159
+2024-11-21 21:12:26: [2024-11-21 21:12:26] iter = 0280, loss = 40.4135
+2024-11-21 21:13:35: [2024-11-21 21:13:35] iter = 0290, loss = 39.5124
+2024-11-21 21:14:44: [2024-11-21 21:14:44] iter = 0300, loss = 33.9513
+2024-11-21 21:15:57: [2024-11-21 21:15:57] iter = 0310, loss = 43.8837
+2024-11-21 21:16:57: [2024-11-21 21:16:57] iter = 0320, loss = 38.5076
+2024-11-21 21:18:02: [2024-11-21 21:18:02] iter = 0330, loss = 44.2266
+2024-11-21 21:19:07: [2024-11-21 21:19:07] iter = 0340, loss = 89.6551
+2024-11-21 21:20:14: [2024-11-21 21:20:14] iter = 0350, loss = 44.6176
+2024-11-21 21:21:19: [2024-11-21 21:21:19] iter = 0360, loss = 51.7673
+2024-11-21 21:22:21: [2024-11-21 21:22:21] iter = 0370, loss = 47.7456
+2024-11-21 21:23:24: [2024-11-21 21:23:24] iter = 0380, loss = 39.7631
+2024-11-21 21:24:31: [2024-11-21 21:24:31] iter = 0390, loss = 44.9415
+2024-11-21 21:25:39: [2024-11-21 21:25:39] iter = 0400, loss = 41.1347
+2024-11-21 21:26:46: [2024-11-21 21:26:46] iter = 0410, loss = 64.3931
+2024-11-21 21:27:50: [2024-11-21 21:27:50] iter = 0420, loss = 42.3753
+2024-11-21 21:28:59: [2024-11-21 21:28:59] iter = 0430, loss = 45.7028
+2024-11-21 21:30:06: [2024-11-21 21:30:06] iter = 0440, loss = 33.7681
+2024-11-21 21:31:11: [2024-11-21 21:31:11] iter = 0450, loss = 41.5068
+2024-11-21 21:32:09: [2024-11-21 21:32:09] iter = 0460, loss = 29.2395
+2024-11-21 21:33:10: [2024-11-21 21:33:10] iter = 0470, loss = 39.4447
+2024-11-21 21:34:09: [2024-11-21 21:34:09] iter = 0480, loss = 38.9901
+2024-11-21 21:35:14: [2024-11-21 21:35:14] iter = 0490, loss = 34.7423
+2024-11-21 21:36:13: -------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 500
+2024-11-21 21:36:13: DSA augmentation strategy: 
+color_crop_cutout_flip_scale_rotate
+2024-11-21 21:36:13: DSA augmentation parameters: 
+{'aug_mode': 'S', 'prob_flip': 0.5, 'ratio_scale': 1.2, 'ratio_rotate': 15.0, 'ratio_crop_pad': 0.125, 'ratio_cutout': 0.5, 'brightness': 1.0, 'saturation': 2.0, 'contrast': 0.5, 'Siamese': True, 'latestseed': 73726}
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-21 21:37:28: Evaluate 5 random ConvNet, ACCmean = 0.5752 ACCstd = 0.0182
+-------------------------
+2024-11-21 21:37:28: Evaluate 5 random ConvNet, F1mean = 0.4704 F!std = 0.0090
+-------------------------
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-21 21:37:34: [2024-11-21 21:37:34] iter = 0500, loss = 24.8969
+2024-11-21 21:38:38: [2024-11-21 21:38:38] iter = 0510, loss = 38.2560
+2024-11-21 21:39:43: [2024-11-21 21:39:43] iter = 0520, loss = 49.2621
+2024-11-21 21:40:44: [2024-11-21 21:40:44] iter = 0530, loss = 26.7267
+2024-11-21 21:41:49: [2024-11-21 21:41:49] iter = 0540, loss = 21.1102
+2024-11-21 21:42:57: [2024-11-21 21:42:57] iter = 0550, loss = 34.2244
+2024-11-21 21:44:04: [2024-11-21 21:44:04] iter = 0560, loss = 22.2407
+2024-11-21 21:45:08: [2024-11-21 21:45:08] iter = 0570, loss = 31.3042
+2024-11-21 21:46:11: [2024-11-21 21:46:11] iter = 0580, loss = 23.5969
+2024-11-21 21:47:24: [2024-11-21 21:47:24] iter = 0590, loss = 40.7035
+2024-11-21 21:48:31: [2024-11-21 21:48:31] iter = 0600, loss = 25.1343
+2024-11-21 21:49:36: [2024-11-21 21:49:36] iter = 0610, loss = 25.7978
+2024-11-21 21:50:40: [2024-11-21 21:50:40] iter = 0620, loss = 34.2552
+2024-11-21 21:51:44: [2024-11-21 21:51:44] iter = 0630, loss = 43.0736
+2024-11-21 21:52:49: [2024-11-21 21:52:49] iter = 0640, loss = 35.7217
+2024-11-21 21:53:56: [2024-11-21 21:53:56] iter = 0650, loss = 28.7783
+2024-11-21 21:55:01: [2024-11-21 21:55:01] iter = 0660, loss = 44.7091
+2024-11-21 21:56:04: [2024-11-21 21:56:04] iter = 0670, loss = 47.0043
+2024-11-21 21:57:08: [2024-11-21 21:57:08] iter = 0680, loss = 24.6386
+2024-11-21 21:58:12: [2024-11-21 21:58:12] iter = 0690, loss = 26.1835
+2024-11-21 21:59:18: [2024-11-21 21:59:18] iter = 0700, loss = 34.3534
+2024-11-21 22:00:22: [2024-11-21 22:00:22] iter = 0710, loss = 26.5526
+2024-11-21 22:01:25: [2024-11-21 22:01:25] iter = 0720, loss = 27.5926
+2024-11-21 22:02:34: [2024-11-21 22:02:34] iter = 0730, loss = 41.6106
+2024-11-21 22:03:39: [2024-11-21 22:03:39] iter = 0740, loss = 27.5112
+2024-11-21 22:04:47: [2024-11-21 22:04:47] iter = 0750, loss = 36.9146
+2024-11-21 22:05:55: [2024-11-21 22:05:55] iter = 0760, loss = 18.8718
+2024-11-21 22:07:04: [2024-11-21 22:07:04] iter = 0770, loss = 50.8959
+2024-11-21 22:08:08: [2024-11-21 22:08:08] iter = 0780, loss = 33.8478
+2024-11-21 22:09:17: [2024-11-21 22:09:17] iter = 0790, loss = 22.8617
+2024-11-21 22:10:21: [2024-11-21 22:10:21] iter = 0800, loss = 24.7882
+2024-11-21 22:11:21: [2024-11-21 22:11:21] iter = 0810, loss = 25.5164
+2024-11-21 22:12:27: [2024-11-21 22:12:27] iter = 0820, loss = 27.7133
+2024-11-21 22:13:31: [2024-11-21 22:13:31] iter = 0830, loss = 32.4389
+2024-11-21 22:14:35: [2024-11-21 22:14:35] iter = 0840, loss = 27.1845
+2024-11-21 22:15:42: [2024-11-21 22:15:42] iter = 0850, loss = 35.5510
+2024-11-21 22:16:43: [2024-11-21 22:16:43] iter = 0860, loss = 30.5310
+2024-11-21 22:17:50: [2024-11-21 22:17:50] iter = 0870, loss = 25.3588
+2024-11-21 22:18:55: [2024-11-21 22:18:55] iter = 0880, loss = 16.8491
+2024-11-21 22:19:59: [2024-11-21 22:19:59] iter = 0890, loss = 28.5151
+2024-11-21 22:21:05: [2024-11-21 22:21:05] iter = 0900, loss = 27.9638
+2024-11-21 22:22:12: [2024-11-21 22:22:12] iter = 0910, loss = 27.2694
+2024-11-21 22:23:14: [2024-11-21 22:23:14] iter = 0920, loss = 37.5013
+2024-11-21 22:24:21: [2024-11-21 22:24:21] iter = 0930, loss = 26.1323
+2024-11-21 22:25:28: [2024-11-21 22:25:28] iter = 0940, loss = 30.1141
+2024-11-21 22:26:30: [2024-11-21 22:26:30] iter = 0950, loss = 26.2891
+2024-11-21 22:27:36: [2024-11-21 22:27:36] iter = 0960, loss = 17.1214
+2024-11-21 22:28:39: [2024-11-21 22:28:39] iter = 0970, loss = 35.9538
+2024-11-21 22:29:42: [2024-11-21 22:29:42] iter = 0980, loss = 17.3986
+2024-11-21 22:30:48: [2024-11-21 22:30:48] iter = 0990, loss = 33.9793
+2024-11-21 22:31:39: -------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 1000
+2024-11-21 22:31:39: DSA augmentation strategy: 
+color_crop_cutout_flip_scale_rotate
+2024-11-21 22:31:39: DSA augmentation parameters: 
+{'aug_mode': 'S', 'prob_flip': 0.5, 'ratio_scale': 1.2, 'ratio_rotate': 15.0, 'ratio_crop_pad': 0.125, 'ratio_cutout': 0.5, 'brightness': 1.0, 'saturation': 2.0, 'contrast': 0.5, 'Siamese': True, 'latestseed': 99234}
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-21 22:32:45: Evaluate 5 random ConvNet, ACCmean = 0.5625 ACCstd = 0.0271
+-------------------------
+2024-11-21 22:32:45: Evaluate 5 random ConvNet, F1mean = 0.4644 F!std = 0.0147
+-------------------------
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-21 22:32:50: [2024-11-21 22:32:50] iter = 1000, loss = 36.4990
+2024-11-21 22:32:50: 
+================== Exp 1 ==================
+ 
+2024-11-21 22:32:50: Hyper-parameters: 
+{'method': 'DSA', 'dataset': 'ChestMNIST', 'model': 'ConvNet', 'ipc': 10, 'eval_mode': 'S', 'num_exp': 5, 'num_eval': 5, 'epoch_eval_train': 1000, 'Iteration': 1000, 'lr_img': 0.1, 'lr_net': 0.01, 'batch_real': 256, 'batch_train': 256, 'init': 'real', 'dsa_strategy': 'color_crop_cutout_flip_scale_rotate', 'data_path': 'data', 'save_path': 'result', 'dis_metric': 'ours', 'outer_loop': 10, 'inner_loop': 50, 'device': 'cuda', 'dsa_param': <utils.ParamDiffAug object at 0x7fbf96459ca0>, 'dsa': True, 'mode': 'DSA', 'logger': <Logger DSA_IPC_10_limg_0.1_Data_ChestMNIST (INFO)>, 'dc_aug_param': None}
+2024-11-21 22:32:50: Evaluation model pool: ['ConvNet']
+2024-11-21 22:32:57: class c = 0: 70472 real images
+2024-11-21 22:32:57: class c = 1: 7996 real images
+2024-11-21 22:32:57: real images channel 0, mean = 0.4936, std = 0.2380
+main_base.py:125: DeprecationWarning: an integer is required (got type numpy.float64).  Implicit conversion to integers using __int__ is deprecated, and may be removed in a future version of Python.
+  label_syn = torch.tensor([np.ones(args.ipc)*i for i in range(num_classes)], dtype=torch.long, requires_grad=False, device=args.device).view(-1) # [0,0,0, 1,1,1, ..., 9,9,9]
+2024-11-21 22:32:57: initialize synthetic data from random real images
+2024-11-21 22:32:57: [2024-11-21 22:32:57] training begins
+2024-11-21 22:32:57: -------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 0
+2024-11-21 22:32:57: DSA augmentation strategy: 
+color_crop_cutout_flip_scale_rotate
+2024-11-21 22:32:57: DSA augmentation parameters: 
+{'aug_mode': 'S', 'prob_flip': 0.5, 'ratio_scale': 1.2, 'ratio_rotate': 15.0, 'ratio_crop_pad': 0.125, 'ratio_cutout': 0.5, 'brightness': 1.0, 'saturation': 2.0, 'contrast': 0.5, 'Siamese': True, 'latestseed': 70770}
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-21 22:34:01: Evaluate 5 random ConvNet, ACCmean = 0.5110 ACCstd = 0.0164
+-------------------------
+2024-11-21 22:34:01: Evaluate 5 random ConvNet, F1mean = 0.4205 F!std = 0.0075
+-------------------------
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-21 22:34:07: [2024-11-21 22:34:07] iter = 0000, loss = 60.0438
+2024-11-21 22:35:09: [2024-11-21 22:35:09] iter = 0010, loss = 95.2294
+2024-11-21 22:36:09: [2024-11-21 22:36:09] iter = 0020, loss = 49.0483
+2024-11-21 22:37:06: [2024-11-21 22:37:06] iter = 0030, loss = 74.3032
+2024-11-21 22:38:03: [2024-11-21 22:38:03] iter = 0040, loss = 53.5715
+2024-11-21 22:38:59: [2024-11-21 22:38:59] iter = 0050, loss = 49.8384
+2024-11-21 22:40:01: [2024-11-21 22:40:01] iter = 0060, loss = 59.4329
+2024-11-21 22:41:00: [2024-11-21 22:41:00] iter = 0070, loss = 65.4692
+2024-11-21 22:42:05: [2024-11-21 22:42:05] iter = 0080, loss = 44.2650
+2024-11-21 22:43:07: [2024-11-21 22:43:07] iter = 0090, loss = 51.7201
+2024-11-21 22:44:07: [2024-11-21 22:44:07] iter = 0100, loss = 59.0965
+2024-11-21 22:45:04: [2024-11-21 22:45:04] iter = 0110, loss = 63.5130
+2024-11-21 22:46:06: [2024-11-21 22:46:06] iter = 0120, loss = 43.1092
+2024-11-21 22:47:07: [2024-11-21 22:47:07] iter = 0130, loss = 43.6967
+2024-11-21 22:48:04: [2024-11-21 22:48:04] iter = 0140, loss = 43.1375
+2024-11-21 22:49:07: [2024-11-21 22:49:07] iter = 0150, loss = 40.4087
+2024-11-21 22:50:07: [2024-11-21 22:50:07] iter = 0160, loss = 55.6506
+2024-11-21 22:51:07: [2024-11-21 22:51:07] iter = 0170, loss = 46.0599
+2024-11-21 22:52:08: [2024-11-21 22:52:08] iter = 0180, loss = 44.5024
+2024-11-21 22:53:03: [2024-11-21 22:53:03] iter = 0190, loss = 47.3052
+2024-11-21 22:54:01: [2024-11-21 22:54:01] iter = 0200, loss = 59.9785
+2024-11-21 22:55:02: [2024-11-21 22:55:02] iter = 0210, loss = 57.4898
+2024-11-21 22:56:00: [2024-11-21 22:56:00] iter = 0220, loss = 53.2942
+2024-11-21 22:57:03: [2024-11-21 22:57:03] iter = 0230, loss = 46.8603
+2024-11-21 22:58:05: [2024-11-21 22:58:05] iter = 0240, loss = 43.2950
+2024-11-21 22:59:10: [2024-11-21 22:59:10] iter = 0250, loss = 35.7179
+2024-11-21 23:00:11: [2024-11-21 23:00:11] iter = 0260, loss = 42.3503
+2024-11-21 23:01:11: [2024-11-21 23:01:11] iter = 0270, loss = 38.3181
+2024-11-21 23:02:09: [2024-11-21 23:02:09] iter = 0280, loss = 50.8118
+2024-11-21 23:03:11: [2024-11-21 23:03:11] iter = 0290, loss = 62.0695
+2024-11-21 23:04:08: [2024-11-21 23:04:08] iter = 0300, loss = 54.0039
+2024-11-21 23:05:08: [2024-11-21 23:05:08] iter = 0310, loss = 48.4267
+2024-11-21 23:06:12: [2024-11-21 23:06:12] iter = 0320, loss = 41.4139
+2024-11-21 23:07:11: [2024-11-21 23:07:11] iter = 0330, loss = 41.4422
+2024-11-21 23:08:15: [2024-11-21 23:08:15] iter = 0340, loss = 45.7402
+2024-11-21 23:09:18: [2024-11-21 23:09:18] iter = 0350, loss = 53.1145
+2024-11-21 23:10:15: [2024-11-21 23:10:15] iter = 0360, loss = 38.5944
+2024-11-21 23:11:18: [2024-11-21 23:11:18] iter = 0370, loss = 38.1985
+2024-11-21 23:12:13: [2024-11-21 23:12:13] iter = 0380, loss = 42.7213
+2024-11-21 23:13:15: [2024-11-21 23:13:15] iter = 0390, loss = 41.4432
+2024-11-21 23:14:14: [2024-11-21 23:14:14] iter = 0400, loss = 36.6567
+2024-11-21 23:15:16: [2024-11-21 23:15:16] iter = 0410, loss = 54.9378
+2024-11-21 23:16:17: [2024-11-21 23:16:17] iter = 0420, loss = 33.1336
+2024-11-21 23:17:19: [2024-11-21 23:17:19] iter = 0430, loss = 34.9775
+2024-11-21 23:18:20: [2024-11-21 23:18:20] iter = 0440, loss = 27.6460
+2024-11-21 23:19:23: [2024-11-21 23:19:23] iter = 0450, loss = 31.3598
+2024-11-21 23:20:23: [2024-11-21 23:20:23] iter = 0460, loss = 40.1180
+2024-11-21 23:21:25: [2024-11-21 23:21:25] iter = 0470, loss = 44.0125
+2024-11-21 23:22:22: [2024-11-21 23:22:22] iter = 0480, loss = 22.5462
+2024-11-21 23:23:19: [2024-11-21 23:23:19] iter = 0490, loss = 34.4588
+2024-11-21 23:24:12: -------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 500
+2024-11-21 23:24:12: DSA augmentation strategy: 
+color_crop_cutout_flip_scale_rotate
+2024-11-21 23:24:12: DSA augmentation parameters: 
+{'aug_mode': 'S', 'prob_flip': 0.5, 'ratio_scale': 1.2, 'ratio_rotate': 15.0, 'ratio_crop_pad': 0.125, 'ratio_cutout': 0.5, 'brightness': 1.0, 'saturation': 2.0, 'contrast': 0.5, 'Siamese': True, 'latestseed': 52417}
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-21 23:25:14: Evaluate 5 random ConvNet, ACCmean = 0.5505 ACCstd = 0.0265
+-------------------------
+2024-11-21 23:25:14: Evaluate 5 random ConvNet, F1mean = 0.4412 F!std = 0.0116
+-------------------------
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-21 23:25:20: [2024-11-21 23:25:20] iter = 0500, loss = 52.0482
+2024-11-21 23:26:22: [2024-11-21 23:26:22] iter = 0510, loss = 34.0112
+2024-11-21 23:27:21: [2024-11-21 23:27:21] iter = 0520, loss = 32.2400
+2024-11-21 23:28:22: [2024-11-21 23:28:22] iter = 0530, loss = 31.8455
+2024-11-21 23:29:21: [2024-11-21 23:29:21] iter = 0540, loss = 19.5532
+2024-11-21 23:30:16: [2024-11-21 23:30:16] iter = 0550, loss = 23.2310
+2024-11-21 23:31:17: [2024-11-21 23:31:17] iter = 0560, loss = 27.4841
+2024-11-21 23:32:17: [2024-11-21 23:32:17] iter = 0570, loss = 34.8812
+2024-11-21 23:33:17: [2024-11-21 23:33:17] iter = 0580, loss = 25.1537
+2024-11-21 23:34:19: [2024-11-21 23:34:19] iter = 0590, loss = 50.4490
+2024-11-21 23:35:16: [2024-11-21 23:35:16] iter = 0600, loss = 20.3381
+2024-11-21 23:36:21: [2024-11-21 23:36:21] iter = 0610, loss = 26.5750
+2024-11-21 23:37:18: [2024-11-21 23:37:18] iter = 0620, loss = 37.2805
+2024-11-21 23:38:17: [2024-11-21 23:38:17] iter = 0630, loss = 29.9609
+2024-11-21 23:39:16: [2024-11-21 23:39:16] iter = 0640, loss = 36.9565
+2024-11-21 23:40:17: [2024-11-21 23:40:17] iter = 0650, loss = 38.7060
+2024-11-21 23:41:19: [2024-11-21 23:41:19] iter = 0660, loss = 51.9194
+2024-11-21 23:42:20: [2024-11-21 23:42:20] iter = 0670, loss = 31.2652
+2024-11-21 23:43:22: [2024-11-21 23:43:22] iter = 0680, loss = 44.3336
+2024-11-21 23:44:28: [2024-11-21 23:44:28] iter = 0690, loss = 21.5563
+2024-11-21 23:45:34: [2024-11-21 23:45:34] iter = 0700, loss = 36.7158
+2024-11-21 23:46:42: [2024-11-21 23:46:42] iter = 0710, loss = 27.3356
+2024-11-21 23:47:49: [2024-11-21 23:47:49] iter = 0720, loss = 25.7268
+2024-11-21 23:48:53: [2024-11-21 23:48:53] iter = 0730, loss = 30.0417
+2024-11-21 23:49:58: [2024-11-21 23:49:58] iter = 0740, loss = 21.4305
+2024-11-21 23:51:04: [2024-11-21 23:51:04] iter = 0750, loss = 26.1723
+2024-11-21 23:52:07: [2024-11-21 23:52:07] iter = 0760, loss = 25.5646
+2024-11-21 23:53:15: [2024-11-21 23:53:15] iter = 0770, loss = 36.4327
+2024-11-21 23:54:18: [2024-11-21 23:54:18] iter = 0780, loss = 24.0500
+2024-11-21 23:55:20: [2024-11-21 23:55:20] iter = 0790, loss = 39.9985
+2024-11-21 23:56:24: [2024-11-21 23:56:24] iter = 0800, loss = 56.6764
+2024-11-21 23:57:33: [2024-11-21 23:57:33] iter = 0810, loss = 20.6466
+2024-11-21 23:58:33: [2024-11-21 23:58:33] iter = 0820, loss = 20.9319
+2024-11-21 23:59:36: [2024-11-21 23:59:36] iter = 0830, loss = 20.5556
+2024-11-22 00:00:41: [2024-11-22 00:00:41] iter = 0840, loss = 42.3118
+2024-11-22 00:01:50: [2024-11-22 00:01:50] iter = 0850, loss = 34.1341
+2024-11-22 00:02:53: [2024-11-22 00:02:53] iter = 0860, loss = 22.3566
+2024-11-22 00:03:59: [2024-11-22 00:03:59] iter = 0870, loss = 40.6982
+2024-11-22 00:05:04: [2024-11-22 00:05:04] iter = 0880, loss = 43.4771
+2024-11-22 00:06:06: [2024-11-22 00:06:06] iter = 0890, loss = 55.2860
+2024-11-22 00:07:11: [2024-11-22 00:07:11] iter = 0900, loss = 25.4019
+2024-11-22 00:08:12: [2024-11-22 00:08:12] iter = 0910, loss = 35.4570
+2024-11-22 00:09:15: [2024-11-22 00:09:15] iter = 0920, loss = 41.4127
+2024-11-22 00:10:13: [2024-11-22 00:10:13] iter = 0930, loss = 47.6011
+2024-11-22 00:11:18: [2024-11-22 00:11:18] iter = 0940, loss = 33.0558
+2024-11-22 00:12:19: [2024-11-22 00:12:19] iter = 0950, loss = 50.4668
+2024-11-22 00:13:25: [2024-11-22 00:13:25] iter = 0960, loss = 33.8070
+2024-11-22 00:14:25: [2024-11-22 00:14:25] iter = 0970, loss = 59.1417
+2024-11-22 00:15:31: [2024-11-22 00:15:31] iter = 0980, loss = 33.3915
+2024-11-22 00:16:32: [2024-11-22 00:16:32] iter = 0990, loss = 26.8503
+2024-11-22 00:17:28: -------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 1000
+2024-11-22 00:17:28: DSA augmentation strategy: 
+color_crop_cutout_flip_scale_rotate
+2024-11-22 00:17:28: DSA augmentation parameters: 
+{'aug_mode': 'S', 'prob_flip': 0.5, 'ratio_scale': 1.2, 'ratio_rotate': 15.0, 'ratio_crop_pad': 0.125, 'ratio_cutout': 0.5, 'brightness': 1.0, 'saturation': 2.0, 'contrast': 0.5, 'Siamese': True, 'latestseed': 48510}
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 00:18:41: Evaluate 5 random ConvNet, ACCmean = 0.4802 ACCstd = 0.0695
+-------------------------
+2024-11-22 00:18:41: Evaluate 5 random ConvNet, F1mean = 0.4092 F!std = 0.0411
+-------------------------
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 00:18:47: [2024-11-22 00:18:47] iter = 1000, loss = 58.9901
+2024-11-22 00:18:47: 
+================== Exp 2 ==================
+ 
+2024-11-22 00:18:47: Hyper-parameters: 
+{'method': 'DSA', 'dataset': 'ChestMNIST', 'model': 'ConvNet', 'ipc': 10, 'eval_mode': 'S', 'num_exp': 5, 'num_eval': 5, 'epoch_eval_train': 1000, 'Iteration': 1000, 'lr_img': 0.1, 'lr_net': 0.01, 'batch_real': 256, 'batch_train': 256, 'init': 'real', 'dsa_strategy': 'color_crop_cutout_flip_scale_rotate', 'data_path': 'data', 'save_path': 'result', 'dis_metric': 'ours', 'outer_loop': 10, 'inner_loop': 50, 'device': 'cuda', 'dsa_param': <utils.ParamDiffAug object at 0x7fbf96459ca0>, 'dsa': True, 'mode': 'DSA', 'logger': <Logger DSA_IPC_10_limg_0.1_Data_ChestMNIST (INFO)>, 'dc_aug_param': None}
+2024-11-22 00:18:47: Evaluation model pool: ['ConvNet']
+2024-11-22 00:18:55: class c = 0: 70472 real images
+2024-11-22 00:18:55: class c = 1: 7996 real images
+2024-11-22 00:18:55: real images channel 0, mean = 0.4936, std = 0.2380
+main_base.py:125: DeprecationWarning: an integer is required (got type numpy.float64).  Implicit conversion to integers using __int__ is deprecated, and may be removed in a future version of Python.
+  label_syn = torch.tensor([np.ones(args.ipc)*i for i in range(num_classes)], dtype=torch.long, requires_grad=False, device=args.device).view(-1) # [0,0,0, 1,1,1, ..., 9,9,9]
+2024-11-22 00:18:55: initialize synthetic data from random real images
+2024-11-22 00:18:55: [2024-11-22 00:18:55] training begins
+2024-11-22 00:18:55: -------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 0
+2024-11-22 00:18:55: DSA augmentation strategy: 
+color_crop_cutout_flip_scale_rotate
+2024-11-22 00:18:55: DSA augmentation parameters: 
+{'aug_mode': 'S', 'prob_flip': 0.5, 'ratio_scale': 1.2, 'ratio_rotate': 15.0, 'ratio_crop_pad': 0.125, 'ratio_cutout': 0.5, 'brightness': 1.0, 'saturation': 2.0, 'contrast': 0.5, 'Siamese': True, 'latestseed': 27917}
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 00:20:01: Evaluate 5 random ConvNet, ACCmean = 0.5699 ACCstd = 0.0196
+-------------------------
+2024-11-22 00:20:01: Evaluate 5 random ConvNet, F1mean = 0.4587 F!std = 0.0097
+-------------------------
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 00:20:07: [2024-11-22 00:20:07] iter = 0000, loss = 88.7386
+2024-11-22 00:21:10: [2024-11-22 00:21:10] iter = 0010, loss = 88.5278
+2024-11-22 00:22:04: [2024-11-22 00:22:04] iter = 0020, loss = 60.9201
+2024-11-22 00:23:04: [2024-11-22 00:23:04] iter = 0030, loss = 71.1213
+2024-11-22 00:24:06: [2024-11-22 00:24:06] iter = 0040, loss = 57.6852
+2024-11-22 00:25:09: [2024-11-22 00:25:09] iter = 0050, loss = 49.3841
+2024-11-22 00:26:10: [2024-11-22 00:26:10] iter = 0060, loss = 43.1684
+2024-11-22 00:27:12: [2024-11-22 00:27:12] iter = 0070, loss = 76.0852
+2024-11-22 00:28:10: [2024-11-22 00:28:10] iter = 0080, loss = 56.0156
+2024-11-22 00:29:10: [2024-11-22 00:29:10] iter = 0090, loss = 30.2640
+2024-11-22 00:30:14: [2024-11-22 00:30:14] iter = 0100, loss = 46.4214
+2024-11-22 00:31:18: [2024-11-22 00:31:18] iter = 0110, loss = 45.7535
+2024-11-22 00:32:23: [2024-11-22 00:32:23] iter = 0120, loss = 43.4842
+2024-11-22 00:33:22: [2024-11-22 00:33:22] iter = 0130, loss = 44.0375
+2024-11-22 00:34:19: [2024-11-22 00:34:19] iter = 0140, loss = 33.2550
+2024-11-22 00:35:23: [2024-11-22 00:35:23] iter = 0150, loss = 50.6608
+2024-11-22 00:36:29: [2024-11-22 00:36:29] iter = 0160, loss = 50.4387
+2024-11-22 00:37:27: [2024-11-22 00:37:27] iter = 0170, loss = 52.8481
+2024-11-22 00:38:27: [2024-11-22 00:38:27] iter = 0180, loss = 42.8262
+2024-11-22 00:39:30: [2024-11-22 00:39:30] iter = 0190, loss = 38.6282
+2024-11-22 00:40:33: [2024-11-22 00:40:33] iter = 0200, loss = 61.5050
+2024-11-22 00:41:39: [2024-11-22 00:41:39] iter = 0210, loss = 55.8784
+2024-11-22 00:42:43: [2024-11-22 00:42:43] iter = 0220, loss = 49.7046
+2024-11-22 00:43:45: [2024-11-22 00:43:45] iter = 0230, loss = 59.6815
+2024-11-22 00:44:49: [2024-11-22 00:44:49] iter = 0240, loss = 58.9982
+2024-11-22 00:45:49: [2024-11-22 00:45:49] iter = 0250, loss = 59.0888
+2024-11-22 00:46:47: [2024-11-22 00:46:47] iter = 0260, loss = 39.3310
+2024-11-22 00:47:43: [2024-11-22 00:47:43] iter = 0270, loss = 49.8068
+2024-11-22 00:48:39: [2024-11-22 00:48:39] iter = 0280, loss = 44.8042
+2024-11-22 00:49:37: [2024-11-22 00:49:37] iter = 0290, loss = 35.9748
+2024-11-22 00:50:32: [2024-11-22 00:50:32] iter = 0300, loss = 40.0323
+2024-11-22 00:51:32: [2024-11-22 00:51:32] iter = 0310, loss = 50.4173
+2024-11-22 00:52:31: [2024-11-22 00:52:31] iter = 0320, loss = 48.1576
+2024-11-22 00:53:31: [2024-11-22 00:53:31] iter = 0330, loss = 32.2832
+2024-11-22 00:54:28: [2024-11-22 00:54:28] iter = 0340, loss = 31.9272
+2024-11-22 00:55:27: [2024-11-22 00:55:27] iter = 0350, loss = 46.8390
+2024-11-22 00:56:29: [2024-11-22 00:56:29] iter = 0360, loss = 29.2850
+2024-11-22 00:57:30: [2024-11-22 00:57:30] iter = 0370, loss = 36.0414
+2024-11-22 00:58:29: [2024-11-22 00:58:29] iter = 0380, loss = 38.3165
+2024-11-22 00:59:31: [2024-11-22 00:59:31] iter = 0390, loss = 42.4136
+2024-11-22 01:00:36: [2024-11-22 01:00:36] iter = 0400, loss = 49.4861
+2024-11-22 01:01:45: [2024-11-22 01:01:45] iter = 0410, loss = 63.8940
+2024-11-22 01:02:49: [2024-11-22 01:02:49] iter = 0420, loss = 40.8914
+2024-11-22 01:03:54: [2024-11-22 01:03:54] iter = 0430, loss = 35.9648
+2024-11-22 01:04:59: [2024-11-22 01:04:59] iter = 0440, loss = 30.4057
+2024-11-22 01:06:01: [2024-11-22 01:06:01] iter = 0450, loss = 37.6388
+2024-11-22 01:07:03: [2024-11-22 01:07:03] iter = 0460, loss = 61.7181
+2024-11-22 01:08:05: [2024-11-22 01:08:05] iter = 0470, loss = 41.6980
+2024-11-22 01:09:08: [2024-11-22 01:09:08] iter = 0480, loss = 33.9917
+2024-11-22 01:10:12: [2024-11-22 01:10:12] iter = 0490, loss = 31.6376
+2024-11-22 01:11:13: -------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 500
+2024-11-22 01:11:13: DSA augmentation strategy: 
+color_crop_cutout_flip_scale_rotate
+2024-11-22 01:11:13: DSA augmentation parameters: 
+{'aug_mode': 'S', 'prob_flip': 0.5, 'ratio_scale': 1.2, 'ratio_rotate': 15.0, 'ratio_crop_pad': 0.125, 'ratio_cutout': 0.5, 'brightness': 1.0, 'saturation': 2.0, 'contrast': 0.5, 'Siamese': True, 'latestseed': 73689}
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 01:12:31: Evaluate 5 random ConvNet, ACCmean = 0.1602 ACCstd = 0.0143
+-------------------------
+2024-11-22 01:12:31: Evaluate 5 random ConvNet, F1mean = 0.1581 F!std = 0.0154
+-------------------------
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 01:12:37: [2024-11-22 01:12:37] iter = 0500, loss = 36.0703
+2024-11-22 01:13:45: [2024-11-22 01:13:45] iter = 0510, loss = 31.5975
+2024-11-22 01:14:50: [2024-11-22 01:14:50] iter = 0520, loss = 35.6438
+2024-11-22 01:15:55: [2024-11-22 01:15:55] iter = 0530, loss = 31.8221
+2024-11-22 01:17:03: [2024-11-22 01:17:03] iter = 0540, loss = 48.2728
+2024-11-22 01:18:08: [2024-11-22 01:18:08] iter = 0550, loss = 30.8118
+2024-11-22 01:19:13: [2024-11-22 01:19:13] iter = 0560, loss = 35.6732
+2024-11-22 01:20:19: [2024-11-22 01:20:19] iter = 0570, loss = 42.4456
+2024-11-22 01:21:20: [2024-11-22 01:21:20] iter = 0580, loss = 56.9391
+2024-11-22 01:22:26: [2024-11-22 01:22:26] iter = 0590, loss = 40.4833
+2024-11-22 01:23:32: [2024-11-22 01:23:32] iter = 0600, loss = 49.3586
+2024-11-22 01:24:36: [2024-11-22 01:24:36] iter = 0610, loss = 32.6605
+2024-11-22 01:25:37: [2024-11-22 01:25:37] iter = 0620, loss = 42.1652
+2024-11-22 01:26:41: [2024-11-22 01:26:41] iter = 0630, loss = 34.7592
+2024-11-22 01:27:46: [2024-11-22 01:27:46] iter = 0640, loss = 44.4154
+2024-11-22 01:28:49: [2024-11-22 01:28:49] iter = 0650, loss = 38.4426
+2024-11-22 01:29:50: [2024-11-22 01:29:50] iter = 0660, loss = 43.2321
+2024-11-22 01:30:53: [2024-11-22 01:30:53] iter = 0670, loss = 30.5422
+2024-11-22 01:31:57: [2024-11-22 01:31:57] iter = 0680, loss = 50.6819
+2024-11-22 01:32:59: [2024-11-22 01:32:59] iter = 0690, loss = 32.8412
+2024-11-22 01:34:02: [2024-11-22 01:34:02] iter = 0700, loss = 45.4249
+2024-11-22 01:34:57: [2024-11-22 01:34:57] iter = 0710, loss = 30.6872
+2024-11-22 01:35:56: [2024-11-22 01:35:56] iter = 0720, loss = 26.2166
+2024-11-22 01:36:52: [2024-11-22 01:36:52] iter = 0730, loss = 31.8386
+2024-11-22 01:37:49: [2024-11-22 01:37:49] iter = 0740, loss = 25.7707
+2024-11-22 01:38:49: [2024-11-22 01:38:49] iter = 0750, loss = 44.5891
+2024-11-22 01:39:48: [2024-11-22 01:39:48] iter = 0760, loss = 26.1988
+2024-11-22 01:40:53: [2024-11-22 01:40:53] iter = 0770, loss = 34.7190
+2024-11-22 01:41:53: [2024-11-22 01:41:53] iter = 0780, loss = 34.4324
+2024-11-22 01:42:53: [2024-11-22 01:42:53] iter = 0790, loss = 38.2957
+2024-11-22 01:43:51: [2024-11-22 01:43:51] iter = 0800, loss = 38.1269
+2024-11-22 01:44:53: [2024-11-22 01:44:53] iter = 0810, loss = 56.1189
+2024-11-22 01:45:55: [2024-11-22 01:45:55] iter = 0820, loss = 36.2502
+2024-11-22 01:46:53: [2024-11-22 01:46:53] iter = 0830, loss = 39.8220
+2024-11-22 01:47:53: [2024-11-22 01:47:53] iter = 0840, loss = 41.6025
+2024-11-22 01:48:51: [2024-11-22 01:48:51] iter = 0850, loss = 39.7374
+2024-11-22 01:49:53: [2024-11-22 01:49:53] iter = 0860, loss = 23.7153
+2024-11-22 01:50:51: [2024-11-22 01:50:51] iter = 0870, loss = 35.4104
+2024-11-22 01:51:53: [2024-11-22 01:51:53] iter = 0880, loss = 46.0066
+2024-11-22 01:52:52: [2024-11-22 01:52:52] iter = 0890, loss = 51.5603
+2024-11-22 01:53:50: [2024-11-22 01:53:50] iter = 0900, loss = 48.7506
+2024-11-22 01:54:51: [2024-11-22 01:54:51] iter = 0910, loss = 42.8879
+2024-11-22 01:55:47: [2024-11-22 01:55:47] iter = 0920, loss = 35.9128
+2024-11-22 01:56:49: [2024-11-22 01:56:49] iter = 0930, loss = 30.5803
+2024-11-22 01:57:48: [2024-11-22 01:57:48] iter = 0940, loss = 32.2702
+2024-11-22 01:58:48: [2024-11-22 01:58:48] iter = 0950, loss = 36.1364
+2024-11-22 01:59:45: [2024-11-22 01:59:45] iter = 0960, loss = 40.0022
+2024-11-22 02:00:44: [2024-11-22 02:00:44] iter = 0970, loss = 35.4496
+2024-11-22 02:01:42: [2024-11-22 02:01:42] iter = 0980, loss = 28.9766
+2024-11-22 02:02:39: [2024-11-22 02:02:39] iter = 0990, loss = 19.5753
+2024-11-22 02:03:35: -------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 1000
+2024-11-22 02:03:35: DSA augmentation strategy: 
+color_crop_cutout_flip_scale_rotate
+2024-11-22 02:03:35: DSA augmentation parameters: 
+{'aug_mode': 'S', 'prob_flip': 0.5, 'ratio_scale': 1.2, 'ratio_rotate': 15.0, 'ratio_crop_pad': 0.125, 'ratio_cutout': 0.5, 'brightness': 1.0, 'saturation': 2.0, 'contrast': 0.5, 'Siamese': True, 'latestseed': 15529}
+Using downloaded and verified file: /data/users/xiongyuxuan/.medmnist/chestmnist.npz
+Using downloaded and verified file: /data/users/xiongyuxuan/.medmnist/chestmnist.npz
+Loaded the dataset:ChestMNIST
+[2024-11-21 20:42:37] Evaluate_00: epoch = 1000 train time = 12 s train loss = 0.016805 train acc = 1.0000, test acc = 0.4776, test_sen =0.5612, test_spe =0.5612, test_f1 =0.4122
+[2024-11-21 20:42:47] Evaluate_01: epoch = 1000 train time = 8 s train loss = 0.049628 train acc = 1.0000, test acc = 0.5095, test_sen =0.5682, test_spe =0.5682, test_f1 =0.4313
+[2024-11-21 20:42:56] Evaluate_02: epoch = 1000 train time = 8 s train loss = 0.018712 train acc = 1.0000, test acc = 0.4956, test_sen =0.5622, test_spe =0.5622, test_f1 =0.4224
+[2024-11-21 20:43:07] Evaluate_03: epoch = 1000 train time = 9 s train loss = 0.003001 train acc = 1.0000, test acc = 0.4948, test_sen =0.5630, test_spe =0.5630, test_f1 =0.4221
+[2024-11-21 20:43:18] Evaluate_04: epoch = 1000 train time = 9 s train loss = 0.004037 train acc = 1.0000, test acc = 0.4864, test_sen =0.5625, test_spe =0.5625, test_f1 =0.4174
+[2024-11-21 21:36:29] Evaluate_00: epoch = 1000 train time = 13 s train loss = 0.008981 train acc = 1.0000, test acc = 0.5672, test_sen =0.5989, test_spe =0.5989, test_f1 =0.4694
+[2024-11-21 21:36:43] Evaluate_01: epoch = 1000 train time = 12 s train loss = 0.265031 train acc = 0.8500, test acc = 0.6042, test_sen =0.5840, test_spe =0.5840, test_f1 =0.4833
+[2024-11-21 21:36:58] Evaluate_02: epoch = 1000 train time = 13 s train loss = 0.121638 train acc = 0.9500, test acc = 0.5495, test_sen =0.5830, test_spe =0.5830, test_f1 =0.4561
+[2024-11-21 21:37:13] Evaluate_03: epoch = 1000 train time = 12 s train loss = 0.069930 train acc = 1.0000, test acc = 0.5836, test_sen =0.5897, test_spe =0.5897, test_f1 =0.4751
+[2024-11-21 21:37:28] Evaluate_04: epoch = 1000 train time = 13 s train loss = 0.005502 train acc = 1.0000, test acc = 0.5714, test_sen =0.5858, test_spe =0.5858, test_f1 =0.4679
+[2024-11-21 22:31:52] Evaluate_00: epoch = 1000 train time = 11 s train loss = 0.344273 train acc = 0.9000, test acc = 0.5464, test_sen =0.5927, test_spe =0.5927, test_f1 =0.4570
+[2024-11-21 22:32:06] Evaluate_01: epoch = 1000 train time = 11 s train loss = 0.131058 train acc = 0.9500, test acc = 0.5831, test_sen =0.5855, test_spe =0.5855, test_f1 =0.4736
+[2024-11-21 22:32:19] Evaluate_02: epoch = 1000 train time = 11 s train loss = 0.227166 train acc = 0.9000, test acc = 0.5980, test_sen =0.5929, test_spe =0.5929, test_f1 =0.4831
+[2024-11-21 22:32:32] Evaluate_03: epoch = 1000 train time = 11 s train loss = 0.023760 train acc = 1.0000, test acc = 0.5208, test_sen =0.5798, test_spe =0.5798, test_f1 =0.4402
+[2024-11-21 22:32:45] Evaluate_04: epoch = 1000 train time = 11 s train loss = 0.055784 train acc = 1.0000, test acc = 0.5642, test_sen =0.5995, test_spe =0.5995, test_f1 =0.4680
+[2024-11-21 22:33:11] Evaluate_00: epoch = 1000 train time = 11 s train loss = 0.006873 train acc = 1.0000, test acc = 0.4902, test_sen =0.5246, test_spe =0.5246, test_f1 =0.4106
+[2024-11-21 22:33:24] Evaluate_01: epoch = 1000 train time = 11 s train loss = 0.004543 train acc = 1.0000, test acc = 0.4984, test_sen =0.5231, test_spe =0.5231, test_f1 =0.4144
+[2024-11-21 22:33:38] Evaluate_02: epoch = 1000 train time = 11 s train loss = 0.002770 train acc = 1.0000, test acc = 0.5096, test_sen =0.5259, test_spe =0.5259, test_f1 =0.4208
+[2024-11-21 22:33:48] Evaluate_03: epoch = 1000 train time = 9 s train loss = 0.070326 train acc = 0.9500, test acc = 0.5372, test_sen =0.5169, test_spe =0.5169, test_f1 =0.4314
+[2024-11-21 22:34:01] Evaluate_04: epoch = 1000 train time = 10 s train loss = 0.000864 train acc = 1.0000, test acc = 0.5195, test_sen =0.5246, test_spe =0.5246, test_f1 =0.4253
+[2024-11-21 23:24:24] Evaluate_00: epoch = 1000 train time = 10 s train loss = 0.017178 train acc = 1.0000, test acc = 0.5293, test_sen =0.5226, test_spe =0.5226, test_f1 =0.4294
+[2024-11-21 23:24:35] Evaluate_01: epoch = 1000 train time = 10 s train loss = 0.045037 train acc = 1.0000, test acc = 0.5797, test_sen =0.5311, test_spe =0.5311, test_f1 =0.4549
+[2024-11-21 23:24:48] Evaluate_02: epoch = 1000 train time = 10 s train loss = 0.037657 train acc = 1.0000, test acc = 0.5765, test_sen =0.5333, test_spe =0.5333, test_f1 =0.4542
+[2024-11-21 23:25:00] Evaluate_03: epoch = 1000 train time = 10 s train loss = 0.030284 train acc = 1.0000, test acc = 0.5556, test_sen =0.5168, test_spe =0.5168, test_f1 =0.4397
+[2024-11-21 23:25:14] Evaluate_04: epoch = 1000 train time = 11 s train loss = 0.006482 train acc = 1.0000, test acc = 0.5116, test_sen =0.5495, test_spe =0.5495, test_f1 =0.4278
+[2024-11-22 00:17:42] Evaluate_00: epoch = 1000 train time = 12 s train loss = 0.122907 train acc = 0.9500, test acc = 0.4379, test_sen =0.5767, test_spe =0.5767, test_f1 =0.3918
+[2024-11-22 00:17:56] Evaluate_01: epoch = 1000 train time = 12 s train loss = 0.068030 train acc = 1.0000, test acc = 0.5479, test_sen =0.5447, test_spe =0.5447, test_f1 =0.4446
+[2024-11-22 00:18:11] Evaluate_02: epoch = 1000 train time = 12 s train loss = 0.322715 train acc = 0.8500, test acc = 0.5443, test_sen =0.5637, test_spe =0.5637, test_f1 =0.4482
+[2024-11-22 00:18:26] Evaluate_03: epoch = 1000 train time = 12 s train loss = 0.098875 train acc = 0.9500, test acc = 0.3661, test_sen =0.5274, test_spe =0.5274, test_f1 =0.3374
+[2024-11-22 00:18:41] Evaluate_04: epoch = 1000 train time = 13 s train loss = 0.198313 train acc = 1.0000, test acc = 0.5047, test_sen =0.5477, test_spe =0.5477, test_f1 =0.4238
+[2024-11-22 00:19:09] Evaluate_00: epoch = 1000 train time = 12 s train loss = 0.038122 train acc = 1.0000, test acc = 0.6035, test_sen =0.5597, test_spe =0.5597, test_f1 =0.4750
+[2024-11-22 00:19:22] Evaluate_01: epoch = 1000 train time = 11 s train loss = 0.005129 train acc = 1.0000, test acc = 0.5565, test_sen =0.5598, test_spe =0.5598, test_f1 =0.4531
+[2024-11-22 00:19:35] Evaluate_02: epoch = 1000 train time = 11 s train loss = 0.015992 train acc = 1.0000, test acc = 0.5585, test_sen =0.5522, test_spe =0.5522, test_f1 =0.4519
+[2024-11-22 00:19:47] Evaluate_03: epoch = 1000 train time = 11 s train loss = 0.007937 train acc = 1.0000, test acc = 0.5804, test_sen =0.5605, test_spe =0.5605, test_f1 =0.4646
+[2024-11-22 00:20:01] Evaluate_04: epoch = 1000 train time = 12 s train loss = 0.001248 train acc = 1.0000, test acc = 0.5506, test_sen =0.5552, test_spe =0.5552, test_f1 =0.4489
+[2024-11-22 01:11:28] Evaluate_00: epoch = 1000 train time = 12 s train loss = 0.000342 train acc = 1.0000, test acc = 0.1444, test_sen =0.5076, test_spe =0.5076, test_f1 =0.1408
+[2024-11-22 01:11:44] Evaluate_01: epoch = 1000 train time = 13 s train loss = 0.002366 train acc = 1.0000, test acc = 0.1588, test_sen =0.5096, test_spe =0.5096, test_f1 =0.1569
+[2024-11-22 01:12:00] Evaluate_02: epoch = 1000 train time = 13 s train loss = 0.009125 train acc = 1.0000, test acc = 0.1508, test_sen =0.5054, test_spe =0.5054, test_f1 =0.1482
+[2024-11-22 01:12:14] Evaluate_03: epoch = 1000 train time = 12 s train loss = 0.015438 train acc = 1.0000, test acc = 0.1606, test_sen =0.5101, test_spe =0.5101, test_f1 =0.1589
+[2024-11-22 01:12:31] Evaluate_04: epoch = 1000 train time = 14 s train loss = 0.053208 train acc = 1.0000, test acc = 0.1862, test_sen =0.5174, test_spe =0.5174, test_f1 =0.1860
+[2024-11-22 02:03:49] Evaluate_00: epoch = 1000 train time = 11 s train loss = 0.335982 train acc = 0.8500, test acc = 0.4348, test_sen =0.5506, test_spe =0.5506, test_f1 =0.3851
+[2024-11-22 02:04:02] Evaluate_01: epoch = 1000 train time = 11 s train loss = 0.028394 train acc = 1.0000, test acc = 0.5573, test_sen =0.5639, test_spe =0.5639, test_f1 =0.4546
+[2024-11-22 02:04:16] Evaluate_02: epoch = 1000 train time = 12 s train loss = 0.096501 train acc = 1.0000, test acc = 0.6176, test_sen =0.6037, test_spe =0.6037, test_f1 =0.4960
+[2024-11-22 02:04:29] Evaluate_03: epoch = 1000 train time = 10 s train loss = 0.021721 train acc = 1.0000, test acc = 0.5472, test_sen =0.5573, test_spe =0.5573, test_f1 =0.4479
+[2024-11-22 02:04:43] Evaluate_04: epoch = 1000 train time = 12 s train loss = 0.365649 train acc = 0.8000, test acc = 0.5243, test_sen =0.5688, test_spe =0.5688, test_f1 =0.4393/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 02:04:43: Evaluate 5 random ConvNet, ACCmean = 0.5362 ACCstd = 0.0594
+-------------------------
+2024-11-22 02:04:43: Evaluate 5 random ConvNet, F1mean = 0.4446 F!std = 0.0355
+-------------------------
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 02:04:49: [2024-11-22 02:04:49] iter = 1000, loss = 36.4337
+2024-11-22 02:04:49: 
+================== Exp 3 ==================
+ 
+2024-11-22 02:04:49: Hyper-parameters: 
+{'method': 'DSA', 'dataset': 'ChestMNIST', 'model': 'ConvNet', 'ipc': 10, 'eval_mode': 'S', 'num_exp': 5, 'num_eval': 5, 'epoch_eval_train': 1000, 'Iteration': 1000, 'lr_img': 0.1, 'lr_net': 0.01, 'batch_real': 256, 'batch_train': 256, 'init': 'real', 'dsa_strategy': 'color_crop_cutout_flip_scale_rotate', 'data_path': 'data', 'save_path': 'result', 'dis_metric': 'ours', 'outer_loop': 10, 'inner_loop': 50, 'device': 'cuda', 'dsa_param': <utils.ParamDiffAug object at 0x7fbf96459ca0>, 'dsa': True, 'mode': 'DSA', 'logger': <Logger DSA_IPC_10_limg_0.1_Data_ChestMNIST (INFO)>, 'dc_aug_param': None}
+2024-11-22 02:04:49: Evaluation model pool: ['ConvNet']
+2024-11-22 02:04:58: class c = 0: 70472 real images
+2024-11-22 02:04:58: class c = 1: 7996 real images
+2024-11-22 02:04:58: real images channel 0, mean = 0.4936, std = 0.2380
+main_base.py:125: DeprecationWarning: an integer is required (got type numpy.float64).  Implicit conversion to integers using __int__ is deprecated, and may be removed in a future version of Python.
+  label_syn = torch.tensor([np.ones(args.ipc)*i for i in range(num_classes)], dtype=torch.long, requires_grad=False, device=args.device).view(-1) # [0,0,0, 1,1,1, ..., 9,9,9]
+2024-11-22 02:04:58: initialize synthetic data from random real images
+2024-11-22 02:04:58: [2024-11-22 02:04:58] training begins
+2024-11-22 02:04:58: -------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 0
+2024-11-22 02:04:58: DSA augmentation strategy: 
+color_crop_cutout_flip_scale_rotate
+2024-11-22 02:04:58: DSA augmentation parameters: 
+{'aug_mode': 'S', 'prob_flip': 0.5, 'ratio_scale': 1.2, 'ratio_rotate': 15.0, 'ratio_crop_pad': 0.125, 'ratio_cutout': 0.5, 'brightness': 1.0, 'saturation': 2.0, 'contrast': 0.5, 'Siamese': True, 'latestseed': 89872}
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 02:06:09: Evaluate 5 random ConvNet, ACCmean = 0.5618 ACCstd = 0.0186
+-------------------------
+2024-11-22 02:06:09: Evaluate 5 random ConvNet, F1mean = 0.4617 F!std = 0.0098
+-------------------------
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 02:06:15: [2024-11-22 02:06:15] iter = 0000, loss = 48.7339
+2024-11-22 02:07:18: [2024-11-22 02:07:18] iter = 0010, loss = 59.7031
+2024-11-22 02:08:22: [2024-11-22 02:08:22] iter = 0020, loss = 66.6557
+2024-11-22 02:09:34: [2024-11-22 02:09:34] iter = 0030, loss = 57.5821
+2024-11-22 02:10:41: [2024-11-22 02:10:41] iter = 0040, loss = 50.7049
+2024-11-22 02:11:41: [2024-11-22 02:11:41] iter = 0050, loss = 61.2446
+2024-11-22 02:12:42: [2024-11-22 02:12:42] iter = 0060, loss = 51.1344
+2024-11-22 02:13:40: [2024-11-22 02:13:40] iter = 0070, loss = 55.4545
+2024-11-22 02:14:41: [2024-11-22 02:14:41] iter = 0080, loss = 40.5028
+2024-11-22 02:15:43: [2024-11-22 02:15:43] iter = 0090, loss = 68.6386
+2024-11-22 02:16:43: [2024-11-22 02:16:43] iter = 0100, loss = 86.4347
+2024-11-22 02:17:44: [2024-11-22 02:17:44] iter = 0110, loss = 54.3670
+2024-11-22 02:18:47: [2024-11-22 02:18:47] iter = 0120, loss = 43.7670
+2024-11-22 02:19:45: [2024-11-22 02:19:45] iter = 0130, loss = 47.1682
+2024-11-22 02:20:44: [2024-11-22 02:20:44] iter = 0140, loss = 46.2145
+2024-11-22 02:21:50: [2024-11-22 02:21:50] iter = 0150, loss = 53.8174
+2024-11-22 02:22:50: [2024-11-22 02:22:50] iter = 0160, loss = 59.4300
+2024-11-22 02:23:50: [2024-11-22 02:23:50] iter = 0170, loss = 46.5416
+2024-11-22 02:24:51: [2024-11-22 02:24:51] iter = 0180, loss = 41.6140
+2024-11-22 02:25:53: [2024-11-22 02:25:53] iter = 0190, loss = 50.2156
+2024-11-22 02:27:01: [2024-11-22 02:27:01] iter = 0200, loss = 91.2872
+2024-11-22 02:28:08: [2024-11-22 02:28:08] iter = 0210, loss = 53.5574
+2024-11-22 02:29:15: [2024-11-22 02:29:15] iter = 0220, loss = 50.5270
+2024-11-22 02:30:18: [2024-11-22 02:30:18] iter = 0230, loss = 38.7571
+2024-11-22 02:31:27: [2024-11-22 02:31:27] iter = 0240, loss = 58.7151
+2024-11-22 02:32:33: [2024-11-22 02:32:33] iter = 0250, loss = 40.0857
+2024-11-22 02:33:37: [2024-11-22 02:33:37] iter = 0260, loss = 38.4226
+2024-11-22 02:34:42: [2024-11-22 02:34:42] iter = 0270, loss = 57.6625
+2024-11-22 02:35:47: [2024-11-22 02:35:47] iter = 0280, loss = 54.9849
+2024-11-22 02:36:50: [2024-11-22 02:36:50] iter = 0290, loss = 47.7155
+2024-11-22 02:37:57: [2024-11-22 02:37:57] iter = 0300, loss = 44.9206
+2024-11-22 02:39:01: [2024-11-22 02:39:01] iter = 0310, loss = 28.7661
+2024-11-22 02:40:04: [2024-11-22 02:40:04] iter = 0320, loss = 35.5917
+2024-11-22 02:41:06: [2024-11-22 02:41:06] iter = 0330, loss = 35.2489
+2024-11-22 02:42:08: [2024-11-22 02:42:08] iter = 0340, loss = 51.9498
+2024-11-22 02:43:14: [2024-11-22 02:43:14] iter = 0350, loss = 41.9420
+2024-11-22 02:44:22: [2024-11-22 02:44:22] iter = 0360, loss = 56.4965
+2024-11-22 02:45:25: [2024-11-22 02:45:25] iter = 0370, loss = 66.5560
+2024-11-22 02:46:24: [2024-11-22 02:46:24] iter = 0380, loss = 49.9824
+2024-11-22 02:47:26: [2024-11-22 02:47:26] iter = 0390, loss = 49.9431
+2024-11-22 02:48:28: [2024-11-22 02:48:28] iter = 0400, loss = 38.3662
+2024-11-22 02:49:24: [2024-11-22 02:49:24] iter = 0410, loss = 59.4519
+2024-11-22 02:50:33: [2024-11-22 02:50:33] iter = 0420, loss = 34.4972
+2024-11-22 02:51:33: [2024-11-22 02:51:33] iter = 0430, loss = 56.5256
+2024-11-22 02:52:42: [2024-11-22 02:52:42] iter = 0440, loss = 38.0735
+2024-11-22 02:53:47: [2024-11-22 02:53:47] iter = 0450, loss = 37.5422
+2024-11-22 02:54:50: [2024-11-22 02:54:50] iter = 0460, loss = 56.6937
+2024-11-22 02:55:54: [2024-11-22 02:55:54] iter = 0470, loss = 30.0511
+2024-11-22 02:56:59: [2024-11-22 02:56:59] iter = 0480, loss = 43.1142
+2024-11-22 02:58:00: [2024-11-22 02:58:00] iter = 0490, loss = 43.1456
+2024-11-22 02:58:55: -------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 500
+2024-11-22 02:58:55: DSA augmentation strategy: 
+color_crop_cutout_flip_scale_rotate
+2024-11-22 02:58:55: DSA augmentation parameters: 
+{'aug_mode': 'S', 'prob_flip': 0.5, 'ratio_scale': 1.2, 'ratio_rotate': 15.0, 'ratio_crop_pad': 0.125, 'ratio_cutout': 0.5, 'brightness': 1.0, 'saturation': 2.0, 'contrast': 0.5, 'Siamese': True, 'latestseed': 35857}
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 03:00:04: Evaluate 5 random ConvNet, ACCmean = 0.4411 ACCstd = 0.0134
+-------------------------
+2024-11-22 03:00:04: Evaluate 5 random ConvNet, F1mean = 0.3615 F!std = 0.0051
+-------------------------
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 03:00:11: [2024-11-22 03:00:11] iter = 0500, loss = 32.3228
+2024-11-22 03:01:16: [2024-11-22 03:01:16] iter = 0510, loss = 52.4779
+2024-11-22 03:02:23: [2024-11-22 03:02:23] iter = 0520, loss = 39.6955
+2024-11-22 03:03:28: [2024-11-22 03:03:28] iter = 0530, loss = 35.0781
+2024-11-22 03:04:32: [2024-11-22 03:04:32] iter = 0540, loss = 25.7241
+2024-11-22 03:05:33: [2024-11-22 03:05:33] iter = 0550, loss = 25.9475
+2024-11-22 03:06:40: [2024-11-22 03:06:40] iter = 0560, loss = 33.8752
+2024-11-22 03:07:44: [2024-11-22 03:07:44] iter = 0570, loss = 36.3931
+2024-11-22 03:08:45: [2024-11-22 03:08:45] iter = 0580, loss = 53.3642
+2024-11-22 03:09:50: [2024-11-22 03:09:50] iter = 0590, loss = 21.3044
+2024-11-22 03:10:57: [2024-11-22 03:10:57] iter = 0600, loss = 38.5808
+2024-11-22 03:12:02: [2024-11-22 03:12:02] iter = 0610, loss = 31.2841
+2024-11-22 03:13:05: [2024-11-22 03:13:05] iter = 0620, loss = 42.8289
+2024-11-22 03:14:07: [2024-11-22 03:14:07] iter = 0630, loss = 39.5464
+2024-11-22 03:15:09: [2024-11-22 03:15:09] iter = 0640, loss = 34.1532
+2024-11-22 03:16:15: [2024-11-22 03:16:15] iter = 0650, loss = 36.0760
+2024-11-22 03:17:17: [2024-11-22 03:17:17] iter = 0660, loss = 23.7920
+2024-11-22 03:18:22: [2024-11-22 03:18:22] iter = 0670, loss = 54.0107
+2024-11-22 03:19:23: [2024-11-22 03:19:23] iter = 0680, loss = 18.7849
+2024-11-22 03:20:20: [2024-11-22 03:20:20] iter = 0690, loss = 32.9340
+2024-11-22 03:21:18: [2024-11-22 03:21:18] iter = 0700, loss = 42.3236
+2024-11-22 03:22:16: [2024-11-22 03:22:16] iter = 0710, loss = 20.3694
+2024-11-22 03:23:16: [2024-11-22 03:23:16] iter = 0720, loss = 42.5329
+2024-11-22 03:24:18: [2024-11-22 03:24:18] iter = 0730, loss = 20.9510
+2024-11-22 03:25:23: [2024-11-22 03:25:23] iter = 0740, loss = 48.7438
+2024-11-22 03:26:26: [2024-11-22 03:26:26] iter = 0750, loss = 29.7522
+2024-11-22 03:27:28: [2024-11-22 03:27:28] iter = 0760, loss = 26.3310
+2024-11-22 03:28:34: [2024-11-22 03:28:34] iter = 0770, loss = 35.7709
+2024-11-22 03:29:36: [2024-11-22 03:29:36] iter = 0780, loss = 36.4263
+2024-11-22 03:30:38: [2024-11-22 03:30:38] iter = 0790, loss = 23.7597
+2024-11-22 03:31:40: [2024-11-22 03:31:40] iter = 0800, loss = 47.4064
+2024-11-22 03:32:40: [2024-11-22 03:32:40] iter = 0810, loss = 19.7267
+2024-11-22 03:33:41: [2024-11-22 03:33:41] iter = 0820, loss = 42.9833
+2024-11-22 03:34:47: [2024-11-22 03:34:47] iter = 0830, loss = 39.8603
+2024-11-22 03:35:48: [2024-11-22 03:35:48] iter = 0840, loss = 50.8027
+2024-11-22 03:36:51: [2024-11-22 03:36:51] iter = 0850, loss = 36.5610
+2024-11-22 03:37:49: [2024-11-22 03:37:49] iter = 0860, loss = 28.0935
+2024-11-22 03:38:51: [2024-11-22 03:38:51] iter = 0870, loss = 19.8538
+2024-11-22 03:39:57: [2024-11-22 03:39:57] iter = 0880, loss = 48.1709
+2024-11-22 03:41:00: [2024-11-22 03:41:00] iter = 0890, loss = 19.8664
+2024-11-22 03:42:02: [2024-11-22 03:42:02] iter = 0900, loss = 16.8684
+2024-11-22 03:43:06: [2024-11-22 03:43:06] iter = 0910, loss = 29.0946
+2024-11-22 03:44:11: [2024-11-22 03:44:11] iter = 0920, loss = 21.9891
+2024-11-22 03:45:14: [2024-11-22 03:45:14] iter = 0930, loss = 27.3324
+2024-11-22 03:46:16: [2024-11-22 03:46:16] iter = 0940, loss = 17.3442
+2024-11-22 03:47:19: [2024-11-22 03:47:19] iter = 0950, loss = 27.7746
+2024-11-22 03:48:20: [2024-11-22 03:48:20] iter = 0960, loss = 30.5315
+2024-11-22 03:49:23: [2024-11-22 03:49:23] iter = 0970, loss = 28.1023
+2024-11-22 03:50:20: [2024-11-22 03:50:20] iter = 0980, loss = 21.3204
+2024-11-22 03:51:21: [2024-11-22 03:51:21] iter = 0990, loss = 28.8529
+2024-11-22 03:52:21: -------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 1000
+2024-11-22 03:52:21: DSA augmentation strategy: 
+color_crop_cutout_flip_scale_rotate
+2024-11-22 03:52:21: DSA augmentation parameters: 
+{'aug_mode': 'S', 'prob_flip': 0.5, 'ratio_scale': 1.2, 'ratio_rotate': 15.0, 'ratio_crop_pad': 0.125, 'ratio_cutout': 0.5, 'brightness': 1.0, 'saturation': 2.0, 'contrast': 0.5, 'Siamese': True, 'latestseed': 41137}
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 03:53:34: Evaluate 5 random ConvNet, ACCmean = 0.5455 ACCstd = 0.0342
+-------------------------
+2024-11-22 03:53:34: Evaluate 5 random ConvNet, F1mean = 0.4562 F!std = 0.0171
+-------------------------
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 03:53:41: [2024-11-22 03:53:41] iter = 1000, loss = 17.8209
+2024-11-22 03:53:41: 
+================== Exp 4 ==================
+ 
+2024-11-22 03:53:41: Hyper-parameters: 
+{'method': 'DSA', 'dataset': 'ChestMNIST', 'model': 'ConvNet', 'ipc': 10, 'eval_mode': 'S', 'num_exp': 5, 'num_eval': 5, 'epoch_eval_train': 1000, 'Iteration': 1000, 'lr_img': 0.1, 'lr_net': 0.01, 'batch_real': 256, 'batch_train': 256, 'init': 'real', 'dsa_strategy': 'color_crop_cutout_flip_scale_rotate', 'data_path': 'data', 'save_path': 'result', 'dis_metric': 'ours', 'outer_loop': 10, 'inner_loop': 50, 'device': 'cuda', 'dsa_param': <utils.ParamDiffAug object at 0x7fbf96459ca0>, 'dsa': True, 'mode': 'DSA', 'logger': <Logger DSA_IPC_10_limg_0.1_Data_ChestMNIST (INFO)>, 'dc_aug_param': None}
+2024-11-22 03:53:41: Evaluation model pool: ['ConvNet']
+2024-11-22 03:53:49: class c = 0: 70472 real images
+2024-11-22 03:53:49: class c = 1: 7996 real images
+2024-11-22 03:53:49: real images channel 0, mean = 0.4936, std = 0.2380
+main_base.py:125: DeprecationWarning: an integer is required (got type numpy.float64).  Implicit conversion to integers using __int__ is deprecated, and may be removed in a future version of Python.
+  label_syn = torch.tensor([np.ones(args.ipc)*i for i in range(num_classes)], dtype=torch.long, requires_grad=False, device=args.device).view(-1) # [0,0,0, 1,1,1, ..., 9,9,9]
+2024-11-22 03:53:49: initialize synthetic data from random real images
+2024-11-22 03:53:49: [2024-11-22 03:53:49] training begins
+2024-11-22 03:53:49: -------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 0
+2024-11-22 03:53:49: DSA augmentation strategy: 
+color_crop_cutout_flip_scale_rotate
+2024-11-22 03:53:49: DSA augmentation parameters: 
+{'aug_mode': 'S', 'prob_flip': 0.5, 'ratio_scale': 1.2, 'ratio_rotate': 15.0, 'ratio_crop_pad': 0.125, 'ratio_cutout': 0.5, 'brightness': 1.0, 'saturation': 2.0, 'contrast': 0.5, 'Siamese': True, 'latestseed': 21469}
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 03:54:58: Evaluate 5 random ConvNet, ACCmean = 0.5699 ACCstd = 0.0136
+-------------------------
+2024-11-22 03:54:58: Evaluate 5 random ConvNet, F1mean = 0.4551 F!std = 0.0068
+-------------------------
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 03:55:05: [2024-11-22 03:55:05] iter = 0000, loss = 86.7858
+2024-11-22 03:56:09: [2024-11-22 03:56:09] iter = 0010, loss = 71.4690
+2024-11-22 03:57:14: [2024-11-22 03:57:14] iter = 0020, loss = 60.0695
+2024-11-22 03:58:22: [2024-11-22 03:58:22] iter = 0030, loss = 56.8259
+2024-11-22 03:59:25: [2024-11-22 03:59:25] iter = 0040, loss = 44.5112
+2024-11-22 04:00:32: [2024-11-22 04:00:32] iter = 0050, loss = 57.1528
+2024-11-22 04:01:37: [2024-11-22 04:01:37] iter = 0060, loss = 47.4309
+2024-11-22 04:02:44: [2024-11-22 04:02:44] iter = 0070, loss = 60.5015
+2024-11-22 04:03:46: [2024-11-22 04:03:46] iter = 0080, loss = 54.8411
+2024-11-22 04:04:50: [2024-11-22 04:04:50] iter = 0090, loss = 49.5417
+2024-11-22 04:05:54: [2024-11-22 04:05:54] iter = 0100, loss = 67.1356
+2024-11-22 04:06:56: [2024-11-22 04:06:56] iter = 0110, loss = 37.9881
+2024-11-22 04:08:01: [2024-11-22 04:08:01] iter = 0120, loss = 42.5761
+2024-11-22 04:09:05: [2024-11-22 04:09:05] iter = 0130, loss = 37.8096
+2024-11-22 04:10:07: [2024-11-22 04:10:07] iter = 0140, loss = 70.6614
+2024-11-22 04:11:09: [2024-11-22 04:11:09] iter = 0150, loss = 47.7431
+2024-11-22 04:12:16: [2024-11-22 04:12:16] iter = 0160, loss = 58.1308
+2024-11-22 04:13:19: [2024-11-22 04:13:19] iter = 0170, loss = 38.2863
+2024-11-22 04:14:22: [2024-11-22 04:14:22] iter = 0180, loss = 41.9929
+2024-11-22 04:15:26: [2024-11-22 04:15:26] iter = 0190, loss = 42.1343
+2024-11-22 04:16:25: [2024-11-22 04:16:25] iter = 0200, loss = 31.8219
+2024-11-22 04:17:28: [2024-11-22 04:17:28] iter = 0210, loss = 44.5666
+2024-11-22 04:18:38: [2024-11-22 04:18:38] iter = 0220, loss = 47.1293
+2024-11-22 04:19:41: [2024-11-22 04:19:41] iter = 0230, loss = 41.8190
+2024-11-22 04:20:46: [2024-11-22 04:20:46] iter = 0240, loss = 62.6111
+2024-11-22 04:21:46: [2024-11-22 04:21:46] iter = 0250, loss = 31.6076
+2024-11-22 04:22:55: [2024-11-22 04:22:55] iter = 0260, loss = 46.3624
+2024-11-22 04:23:54: [2024-11-22 04:23:54] iter = 0270, loss = 41.9391
+2024-11-22 04:24:56: [2024-11-22 04:24:56] iter = 0280, loss = 42.3655
+2024-11-22 04:25:58: [2024-11-22 04:25:58] iter = 0290, loss = 36.6963
+2024-11-22 04:27:00: [2024-11-22 04:27:00] iter = 0300, loss = 34.0572
+2024-11-22 04:28:04: [2024-11-22 04:28:04] iter = 0310, loss = 29.7368
+2024-11-22 04:29:06: [2024-11-22 04:29:06] iter = 0320, loss = 45.4039
+2024-11-22 04:30:08: [2024-11-22 04:30:08] iter = 0330, loss = 56.9617
+2024-11-22 04:31:08: [2024-11-22 04:31:08] iter = 0340, loss = 61.2330
+2024-11-22 04:32:12: [2024-11-22 04:32:12] iter = 0350, loss = 55.1577
+2024-11-22 04:33:14: [2024-11-22 04:33:14] iter = 0360, loss = 54.5983
+2024-11-22 04:34:13: [2024-11-22 04:34:13] iter = 0370, loss = 35.4117
+2024-11-22 04:35:18: [2024-11-22 04:35:18] iter = 0380, loss = 49.5534
+2024-11-22 04:36:19: [2024-11-22 04:36:19] iter = 0390, loss = 44.8390
+2024-11-22 04:37:19: [2024-11-22 04:37:19] iter = 0400, loss = 45.6568
+2024-11-22 04:38:20: [2024-11-22 04:38:20] iter = 0410, loss = 46.5785
+2024-11-22 04:39:23: [2024-11-22 04:39:23] iter = 0420, loss = 60.6730
+2024-11-22 04:40:26: [2024-11-22 04:40:26] iter = 0430, loss = 43.4401
+2024-11-22 04:41:30: [2024-11-22 04:41:30] iter = 0440, loss = 29.5094
+2024-11-22 04:42:35: [2024-11-22 04:42:35] iter = 0450, loss = 61.1159
+2024-11-22 04:43:40: [2024-11-22 04:43:40] iter = 0460, loss = 35.2331
+2024-11-22 04:44:39: [2024-11-22 04:44:39] iter = 0470, loss = 39.3560
+2024-11-22 04:45:46: [2024-11-22 04:45:46] iter = 0480, loss = 29.8225
+2024-11-22 04:46:45: [2024-11-22 04:46:45] iter = 0490, loss = 45.2022
+2024-11-22 04:47:42: -------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 500
+2024-11-22 04:47:42: DSA augmentation strategy: 
+color_crop_cutout_flip_scale_rotate
+2024-11-22 04:47:42: DSA augmentation parameters: 
+{'aug_mode': 'S', 'prob_flip': 0.5, 'ratio_scale': 1.2, 'ratio_rotate': 15.0, 'ratio_crop_pad': 0.125, 'ratio_cutout': 0.5, 'brightness': 1.0, 'saturation': 2.0, 'contrast': 0.5, 'Siamese': True, 'latestseed': 62220}
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 04:48:55: Evaluate 5 random ConvNet, ACCmean = 0.8152 ACCstd = 0.0144
+-------------------------
+2024-11-22 04:48:55: Evaluate 5 random ConvNet, F1mean = 0.5296 F!std = 0.0035
+-------------------------
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 04:49:02: [2024-11-22 04:49:02] iter = 0500, loss = 42.1927
+2024-11-22 04:50:04: [2024-11-22 04:50:04] iter = 0510, loss = 31.4438
+2024-11-22 04:51:04: [2024-11-22 04:51:04] iter = 0520, loss = 39.3245
+2024-11-22 04:52:08: [2024-11-22 04:52:08] iter = 0530, loss = 46.5766
+2024-11-22 04:53:11: [2024-11-22 04:53:11] iter = 0540, loss = 45.2257
+2024-11-22 04:54:08: [2024-11-22 04:54:08] iter = 0550, loss = 45.3057
+2024-11-22 04:55:11: [2024-11-22 04:55:11] iter = 0560, loss = 60.8993
+2024-11-22 04:56:15: [2024-11-22 04:56:14] iter = 0570, loss = 74.3312
+2024-11-22 04:57:15: [2024-11-22 04:57:15] iter = 0580, loss = 41.0325
+2024-11-22 04:58:18: [2024-11-22 04:58:18] iter = 0590, loss = 59.6173
+2024-11-22 04:59:22: [2024-11-22 04:59:22] iter = 0600, loss = 40.4430
+2024-11-22 05:00:21: [2024-11-22 05:00:21] iter = 0610, loss = 33.8972
+2024-11-22 05:01:23: [2024-11-22 05:01:23] iter = 0620, loss = 29.3809
+2024-11-22 05:02:27: [2024-11-22 05:02:27] iter = 0630, loss = 39.9148
+2024-11-22 05:03:35: [2024-11-22 05:03:35] iter = 0640, loss = 77.9917
+2024-11-22 05:04:42: [2024-11-22 05:04:42] iter = 0650, loss = 44.0962
+2024-11-22 05:05:44: [2024-11-22 05:05:44] iter = 0660, loss = 54.7412
+2024-11-22 05:06:51: [2024-11-22 05:06:51] iter = 0670, loss = 45.7649
+2024-11-22 05:07:59: [2024-11-22 05:07:59] iter = 0680, loss = 38.3208
+2024-11-22 05:09:02: [2024-11-22 05:09:02] iter = 0690, loss = 40.0291
+2024-11-22 05:10:01: [2024-11-22 05:10:01] iter = 0700, loss = 50.3708
+2024-11-22 05:11:08: [2024-11-22 05:11:08] iter = 0710, loss = 48.2239
+2024-11-22 05:12:13: [2024-11-22 05:12:13] iter = 0720, loss = 36.9856
+2024-11-22 05:13:18: [2024-11-22 05:13:18] iter = 0730, loss = 43.0092
+2024-11-22 05:14:27: [2024-11-22 05:14:27] iter = 0740, loss = 35.7966
+2024-11-22 05:15:31: [2024-11-22 05:15:31] iter = 0750, loss = 32.5250
+2024-11-22 05:16:34: [2024-11-22 05:16:34] iter = 0760, loss = 29.7475
+2024-11-22 05:17:36: [2024-11-22 05:17:36] iter = 0770, loss = 34.0120
+2024-11-22 05:18:41: [2024-11-22 05:18:41] iter = 0780, loss = 30.6431
+2024-11-22 05:19:43: [2024-11-22 05:19:43] iter = 0790, loss = 30.7817
+2024-11-22 05:20:45: [2024-11-22 05:20:45] iter = 0800, loss = 26.9831
+2024-11-22 05:21:49: [2024-11-22 05:21:49] iter = 0810, loss = 38.9377
+2024-11-22 05:22:52: [2024-11-22 05:22:52] iter = 0820, loss = 33.5479
+2024-11-22 05:23:57: [2024-11-22 05:23:57] iter = 0830, loss = 37.8814
+2024-11-22 05:25:01: [2024-11-22 05:25:01] iter = 0840, loss = 22.2938
+2024-11-22 05:26:07: [2024-11-22 05:26:07] iter = 0850, loss = 23.8983
+2024-11-22 05:27:15: [2024-11-22 05:27:15] iter = 0860, loss = 33.4468
+2024-11-22 05:28:18: [2024-11-22 05:28:18] iter = 0870, loss = 19.4490
+2024-11-22 05:29:25: [2024-11-22 05:29:25] iter = 0880, loss = 29.2758
+2024-11-22 05:30:33: [2024-11-22 05:30:33] iter = 0890, loss = 26.7296
+2024-11-22 05:31:37: [2024-11-22 05:31:37] iter = 0900, loss = 26.9307
+2024-11-22 05:32:43: [2024-11-22 05:32:43] iter = 0910, loss = 73.1621
+2024-11-22 05:33:45: [2024-11-22 05:33:45] iter = 0920, loss = 32.6509
+2024-11-22 05:34:48: [2024-11-22 05:34:48] iter = 0930, loss = 60.1527
+2024-11-22 05:35:48: [2024-11-22 05:35:48] iter = 0940, loss = 21.3825
+2024-11-22 05:36:45: [2024-11-22 05:36:45] iter = 0950, loss = 32.9994
+2024-11-22 05:37:45: [2024-11-22 05:37:45] iter = 0960, loss = 38.0043
+2024-11-22 05:38:43: [2024-11-22 05:38:43] iter = 0970, loss = 51.3484
+2024-11-22 05:39:38: [2024-11-22 05:39:38] iter = 0980, loss = 22.1337
+2024-11-22 05:40:40: [2024-11-22 05:40:40] iter = 0990, loss = 30.7126
+2024-11-22 05:41:30: -------------------------
+Evaluation
+model_train = ConvNet, model_eval = ConvNet, iteration = 1000
+2024-11-22 05:41:30: DSA augmentation strategy: 
+color_crop_cutout_flip_scale_rotate
+2024-11-22 05:41:30: DSA augmentation parameters: 
+{'aug_mode': 'S', 'prob_flip': 0.5, 'ratio_scale': 1.2, 'ratio_rotate': 15.0, 'ratio_crop_pad': 0.125, 'ratio_cutout': 0.5, 'brightness': 1.0, 'saturation': 2.0, 'contrast': 0.5, 'Siamese': True, 'latestseed': 90321}
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 05:42:43: Evaluate 5 random ConvNet, ACCmean = 0.5641 ACCstd = 0.0239
+-------------------------
+2024-11-22 05:42:43: Evaluate 5 random ConvNet, F1mean = 0.4542 F!std = 0.0118
+-------------------------
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4289: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+/data/users/xiongyuxuan/anaconda3/envs/DD/lib/python3.8/site-packages/torch/nn/functional.py:4227: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+2024-11-22 05:42:50: [2024-11-22 05:42:50] iter = 1000, loss = 21.6469
+2024-11-22 05:42:50: 
+==================== Final Results ====================
+
+2024-11-22 05:42:50: Run 5 experiments, train on ConvNet, evaluate 25 random ConvNet, mean  = 53.77%  std = 5.57%
+
+[2024-11-22 02:05:12] Evaluate_00: epoch = 1000 train time = 11 s train loss = 0.002937 train acc = 1.0000, test acc = 0.5495, test_sen =0.5835, test_spe =0.5835, test_f1 =0.4561
+[2024-11-22 02:05:26] Evaluate_01: epoch = 1000 train time = 12 s train loss = 0.005585 train acc = 1.0000, test acc = 0.5547, test_sen =0.5839, test_spe =0.5839, test_f1 =0.4589
+[2024-11-22 02:05:41] Evaluate_02: epoch = 1000 train time = 12 s train loss = 0.001186 train acc = 1.0000, test acc = 0.5974, test_sen =0.5856, test_spe =0.5856, test_f1 =0.4805
+[2024-11-22 02:05:55] Evaluate_03: epoch = 1000 train time = 12 s train loss = 0.032441 train acc = 1.0000, test acc = 0.5614, test_sen =0.5789, test_spe =0.5789, test_f1 =0.4609
+[2024-11-22 02:06:09] Evaluate_04: epoch = 1000 train time = 11 s train loss = 0.002243 train acc = 1.0000, test acc = 0.5459, test_sen =0.5755, test_spe =0.5755, test_f1 =0.4522
+[2024-11-22 02:59:10] Evaluate_00: epoch = 1000 train time = 12 s train loss = 0.003660 train acc = 1.0000, test acc = 0.4473, test_sen =0.4265, test_spe =0.4265, test_f1 =0.3645
+[2024-11-22 02:59:23] Evaluate_01: epoch = 1000 train time = 11 s train loss = 0.008335 train acc = 1.0000, test acc = 0.4503, test_sen =0.4238, test_spe =0.4238, test_f1 =0.3652
+[2024-11-22 02:59:37] Evaluate_02: epoch = 1000 train time = 12 s train loss = 0.120509 train acc = 1.0000, test acc = 0.4213, test_sen =0.4386, test_spe =0.4386, test_f1 =0.3544
+[2024-11-22 02:59:50] Evaluate_03: epoch = 1000 train time = 11 s train loss = 0.001356 train acc = 1.0000, test acc = 0.4297, test_sen =0.4283, test_spe =0.4283, test_f1 =0.3563
+[2024-11-22 03:00:04] Evaluate_04: epoch = 1000 train time = 12 s train loss = 0.006700 train acc = 1.0000, test acc = 0.4569, test_sen =0.4192, test_spe =0.4192, test_f1 =0.3670
+[2024-11-22 03:52:36] Evaluate_00: epoch = 1000 train time = 13 s train loss = 0.383167 train acc = 0.8500, test acc = 0.5623, test_sen =0.5805, test_spe =0.5805, test_f1 =0.4618
+[2024-11-22 03:52:52] Evaluate_01: epoch = 1000 train time = 13 s train loss = 0.038653 train acc = 1.0000, test acc = 0.5640, test_sen =0.5946, test_spe =0.5946, test_f1 =0.4666
+[2024-11-22 03:53:05] Evaluate_02: epoch = 1000 train time = 12 s train loss = 0.221081 train acc = 0.9500, test acc = 0.5462, test_sen =0.6022, test_spe =0.6022, test_f1 =0.4593
+[2024-11-22 03:53:19] Evaluate_03: epoch = 1000 train time = 12 s train loss = 0.394902 train acc = 0.7500, test acc = 0.4797, test_sen =0.6069, test_spe =0.6069, test_f1 =0.4229
+[2024-11-22 03:53:34] Evaluate_04: epoch = 1000 train time = 13 s train loss = 0.113014 train acc = 1.0000, test acc = 0.5753, test_sen =0.5874, test_spe =0.5874, test_f1 =0.4703
+[2024-11-22 03:54:03] Evaluate_00: epoch = 1000 train time = 12 s train loss = 0.032778 train acc = 1.0000, test acc = 0.5459, test_sen =0.5464, test_spe =0.5464, test_f1 =0.4441
+[2024-11-22 03:54:16] Evaluate_01: epoch = 1000 train time = 12 s train loss = 0.051742 train acc = 0.9500, test acc = 0.5852, test_sen =0.5483, test_spe =0.5483, test_f1 =0.4630
+[2024-11-22 03:54:31] Evaluate_02: epoch = 1000 train time = 12 s train loss = 0.141553 train acc = 0.9500, test acc = 0.5807, test_sen =0.5497, test_spe =0.5497, test_f1 =0.4614
+[2024-11-22 03:54:44] Evaluate_03: epoch = 1000 train time = 11 s train loss = 0.011469 train acc = 1.0000, test acc = 0.5688, test_sen =0.5391, test_spe =0.5391, test_f1 =0.4526
+[2024-11-22 03:54:58] Evaluate_04: epoch = 1000 train time = 11 s train loss = 0.005093 train acc = 1.0000, test acc = 0.5689, test_sen =0.5450, test_spe =0.5450, test_f1 =0.4546
+[2024-11-22 04:47:56] Evaluate_00: epoch = 1000 train time = 12 s train loss = 0.002425 train acc = 1.0000, test acc = 0.8354, test_sen =0.5236, test_spe =0.5236, test_f1 =0.5254
+[2024-11-22 04:48:10] Evaluate_01: epoch = 1000 train time = 11 s train loss = 0.003814 train acc = 1.0000, test acc = 0.7936, test_sen =0.5403, test_spe =0.5403, test_f1 =0.5335
+[2024-11-22 04:48:23] Evaluate_02: epoch = 1000 train time = 11 s train loss = 0.017902 train acc = 1.0000, test acc = 0.8084, test_sen =0.5281, test_spe =0.5281, test_f1 =0.5265
+[2024-11-22 04:48:38] Evaluate_03: epoch = 1000 train time = 13 s train loss = 0.008707 train acc = 1.0000, test acc = 0.8128, test_sen =0.5356, test_spe =0.5356, test_f1 =0.5340
+[2024-11-22 04:48:55] Evaluate_04: epoch = 1000 train time = 15 s train loss = 0.002142 train acc = 1.0000, test acc = 0.8258, test_sen =0.5278, test_spe =0.5278, test_f1 =0.5289
+[2024-11-22 05:41:43] Evaluate_00: epoch = 1000 train time = 11 s train loss = 0.040290 train acc = 1.0000, test acc = 0.5368, test_sen =0.5433, test_spe =0.5433, test_f1 =0.4389
+[2024-11-22 05:41:57] Evaluate_01: epoch = 1000 train time = 11 s train loss = 0.048660 train acc = 1.0000, test acc = 0.5338, test_sen =0.5560, test_spe =0.5560, test_f1 =0.4408
+[2024-11-22 05:42:12] Evaluate_02: epoch = 1000 train time = 13 s train loss = 0.492569 train acc = 0.8000, test acc = 0.5878, test_sen =0.5483, test_spe =0.5483, test_f1 =0.4641
+[2024-11-22 05:42:28] Evaluate_03: epoch = 1000 train time = 13 s train loss = 0.139951 train acc = 1.0000, test acc = 0.5760, test_sen =0.5549, test_spe =0.5549, test_f1 =0.4609
+[2024-11-22 05:42:43] Evaluate_04: epoch = 1000 train time = 12 s train loss = 0.149540 train acc = 1.0000, test acc = 0.5861, test_sen =0.5564, test_spe =0.5564, test_f1 =0.4660

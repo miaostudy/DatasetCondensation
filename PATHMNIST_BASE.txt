@@ -1,0 +1,17 @@
+nohup: ignoring input
+2024-10-29 11:52:39: eval_it_pool: [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000, 20000]
+2024-10-29 11:52:43: 
+================== Exp 0 ==================
+ 
+2024-10-29 11:52:43: Hyper-parameters: 
+{'dataset': 'PathMNIST', 'model': 'ConvNet', 'ipc': 10, 'eval_mode': 'SS', 'num_exp': 5, 'num_eval': 5, 'epoch_eval_train': 1000, 'Iteration': 20000, 'lr_img': 1.0, 'lr_net': 0.01, 'batch_real': 256, 'batch_train': 256, 'init': 'real', 'dsa_strategy': 'color_crop_cutout_flip_scale_rotate', 'data_path': '/data/users/xiongyuxuan/DD/OBJDD/DatasetCondensation-master/data', 'save_path': 'result', 'dis_metric': 'ours', 'method': 'DM', 'outer_loop': 10, 'inner_loop': 50, 'device': 'cuda', 'dsa_param': <utils.ParamDiffAug object at 0x7f3ca2537730>, 'dsa': True, 'logger': <Logger DM_IPC=10_Model_ConvNet_Data_PathMNIST (INFO)>}
+2024-10-29 11:52:43: Evaluation model pool: ['ConvNet']
+Using downloaded and verified file: /data/users/xiongyuxuan/.medmnist/pathmnist.npz
+Using downloaded and verified file: /data/users/xiongyuxuan/.medmnist/pathmnist.npz
+Loaded the dataset:PathMNIST
+Traceback (most recent call last):
+  File "main_DM.py", line 262, in <module>
+    main()
+  File "main_DM.py", line 104, in main
+    images_all = images_all.permute(0,3,1,2)
+RuntimeError: permute(sparse_coo): number of dimensions in the tensor input does not match the length of the desired ordering of dimensions i.e. input.dim() = 5 is not equal to len(dims) = 4
