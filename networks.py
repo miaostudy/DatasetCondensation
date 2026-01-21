@@ -298,7 +298,8 @@ class BasicBlock_AP(nn.Module):
     def forward(self, x):
         out = F.relu(self.bn1(self.conv1(x)))
         if self.stride != 1: # modification
-            out = F.avg_pool2d(out, kernel_size=2, stride=2)
+            # out = F.avg_pool2d(out, kernel_size=2, stride=2)
+            out = F.adaptive_avg_pool2d(out, (1, 1))
         out = self.bn2(self.conv2(out))
         out += self.shortcut(x)
         out = F.relu(out)
@@ -474,7 +475,8 @@ class ResNet(nn.Module):
         out = self.layer3(out)
         out = self.layer4(out)
         # out = F.avg_pool2d(out, 4)
-        out = F.avg_pool2d(out, 8)
+        # out = F.avg_pool2d(out, 8)
+        out = F.adaptive_avg_pool2d(out, (1, 1))
         out = out.view(out.size(0), -1)
         out = self.classifier(out)
         return out

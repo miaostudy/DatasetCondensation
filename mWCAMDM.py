@@ -5,121 +5,20 @@ import argparse
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import matplotlib.pyplot as plt
 import seaborn as sns
+# from tensorboardX import SummaryWriter
 from torchvision.utils import save_image
 from pytorch_grad_cam import GradCAM, GradCAMPlusPlus, XGradCAM
 from pytorch_grad_cam.utils.image import show_cam_on_image, preprocess_image
-# === FIX 1: 新增这个关键导入 ===
-from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
-# =============================
-from utils import train_CAM, get_loops, get_dataset, get_dataset_med, get_network, get_eval_pool, evaluate_synset, \
-    get_daparam, match_loss, get_time, TensorDataset, epoch, DiffAugment, ParamDiffAug, wavelet_transform, \
-    inverse_wavelet_transform, get_optimizer
+from utils import train_CAM, get_loops, get_dataset, get_dataset_med, get_network, get_eval_pool, evaluate_synset, get_daparam, match_loss, get_time, TensorDataset, epoch, DiffAugment, ParamDiffAug, wavelet_transform, inverse_wavelet_transform, get_optimizer
 from pytorch_wavelets import DWTForward, DWTInverse
+
+# from tensorboardX import SummaryWriter
 import logging
-import os
+# os.environ['CUDA_VISIBLE_DEVICES']='0'
 
-# 强制使用单个GPU，避免DataParallel问题
-# os.environ['CUDA_VISIBLE_DEVICES'] = '0'  <--- 保持注释，配合多卡脚本
-
-
-# 定义ResNet18的基础模块
-class BasicBlock(nn.Module):
-    expansion = 1
-
-    def __init__(self, inplanes, planes, stride=1, downsample=None):
-        super(BasicBlock, self).__init__()
-        self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=3, stride=stride, padding=1, bias=False)
-        self.bn1 = nn.BatchNorm2d(planes)
-        self.relu = nn.ReLU(inplace=True)
-        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=1, padding=1, bias=False)
-        self.bn2 = nn.BatchNorm2d(planes)
-        self.downsample = downsample
-        self.stride = stride
-
-    def forward(self, x):
-        residual = x
-
-        out = self.conv1(x)
-        out = self.bn1(out)
-        out = self.relu(out)
-
-        out = self.conv2(out)
-        out = self.bn2(out)
-
-        if self.downsample is not None:
-            residual = self.downsample(x)
-
-        out += residual
-        out = self.relu(out)
-
-        return out
-
-
-# 重新定义ResNet18类
-class ResNet18_CAM(nn.Module):
-    def __init__(self, num_classes=10, channel=3):
-        super(ResNet18_CAM, self).__init__()
-        self.inplanes = 64
-        self.conv1 = nn.Conv2d(channel, 64, kernel_size=3, stride=1, padding=1, bias=False)
-        self.bn1 = nn.BatchNorm2d(64)
-        self.relu = nn.ReLU(inplace=True)
-        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
-
-        self.layer1 = self._make_layer(BasicBlock, 64, 2, stride=1)
-        self.layer2 = self._make_layer(BasicBlock, 128, 2, stride=2)
-        self.layer3 = self._make_layer(BasicBlock, 256, 2, stride=2)
-        self.layer4 = self._make_layer(BasicBlock, 512, 2, stride=2)
-
-        # 使用AdaptiveAvgPool2d，确保输出1x1
-        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.fc = nn.Linear(512 * BasicBlock.expansion, num_classes)
-
-        # 初始化权重
-        for m in self.modules():
-            if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
-            elif isinstance(m, nn.BatchNorm2d):
-                nn.init.constant_(m.weight, 1)
-                nn.init.constant_(m.bias, 0)
-
-    def _make_layer(self, block, planes, blocks, stride=1):
-        downsample = None
-        if stride != 1 or self.inplanes != planes * block.expansion:
-            downsample = nn.Sequential(
-                nn.Conv2d(self.inplanes, planes * block.expansion,
-                          kernel_size=1, stride=stride, bias=False),
-                nn.BatchNorm2d(planes * block.expansion),
-            )
-
-        layers = []
-        layers.append(block(self.inplanes, planes, stride, downsample))
-        self.inplanes = planes * block.expansion
-        for _ in range(1, blocks):
-            layers.append(block(self.inplanes, planes))
-
-        return nn.Sequential(*layers)
-
-    def forward(self, x):
-        x = self.conv1(x)
-        x = self.bn1(x)
-        x = self.relu(x)
-        x = self.maxpool(x)
-
-        x = self.layer1(x)
-        x = self.layer2(x)
-        x = self.layer3(x)
-        x = self.layer4(x)
-
-        x = self.avgpool(x)
-        x = x.view(x.size(0), -1)
-        x = self.fc(x)
-
-        return x
-
-
+# 同时输出到文件和控制台
 def build_logger(work_dir, cfgname):
     assert cfgname is not None
     log_file = cfgname + '.log'
@@ -127,6 +26,7 @@ def build_logger(work_dir, cfgname):
 
     logger = logging.getLogger(cfgname)
     logger.setLevel(logging.INFO)
+    # formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
     formatter = logging.Formatter('%(asctime)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
     handler1 = logging.FileHandler(log_path)
@@ -140,34 +40,12 @@ def build_logger(work_dir, cfgname):
 
     return logger
 
+# os.environ['CUDA_VISIBLE_DEVICES']='7'
 
-def get_original_model(model):
-    if isinstance(model, nn.DataParallel):
-        return model.module
-    return model
+# 类别名称
+class_names = ['MI', 'CY', 'EP', 'HSIL', 'CC']
 
-
-def ensure_model_on_device(model, device):
-    model = model.to(device)
-    model = model.float()
-    for param in model.parameters():
-        param.data = param.data.to(device).float()
-        if param.grad is not None:
-            param.grad.data = param.grad.data.to(device).float()
-    for buf in model.buffers():
-        buf.data = buf.data.to(device).float()
-    return model
-
-
-def ensure_float32(tensor, device):
-    if tensor.dtype != torch.float32:
-        tensor = tensor.float()
-    return tensor.to(device)
-
-
-class_names = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
-
-
+# 混淆矩阵
 def plot_and_save_confusion_matrix(cm, class_names, save_path, args, exp):
     plt.figure(figsize=(10, 7))
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', cbar=False,
@@ -176,440 +54,360 @@ def plot_and_save_confusion_matrix(cm, class_names, save_path, args, exp):
     plt.ylabel('Actual')
     plt.title('Confusion Matrix')
 
+    # 保存图像
     if not os.path.exists(save_path):
         os.makedirs(save_path)
-    plt.savefig(os.path.join(save_path, args.method + '_' + str(exp) + '_confusion_matrix.png'))
+    plt.savefig(os.path.join(save_path, args.method+'_'+str(exp)+'_confusion_matrix.png'))
     plt.close()
-
 
 def main():
     parser = argparse.ArgumentParser(description='Parameter Processing')
-    parser.add_argument('--log_dir', type=str, default='./log_0905')
+    parser.add_argument('--log_dir',type=str,default='./log_0905' )
     parser.add_argument('--dataset', type=str, default='CIFAR10', help='dataset')
     parser.add_argument('--model', type=str, default='ConvNet', help='model')
     parser.add_argument('--ipc', type=int, default=50, help='image(s) per class')
-    parser.add_argument('--eval_mode', type=str, default='SS', help='eval_mode')
+    parser.add_argument('--eval_mode', type=str, default='SS', help='eval_mode') # S: the same to training model, M: multi architectures,  W: net width, D: net depth, A: activation function, P: pooling layer, N: normalization layer,
+    # parser.add_argument('--eval_mode', type=str, default='M', help='eval_mode') # S: the same to training model, M: multi architectures,  W: net width, D: net depth, A: activation function, P: pooling layer, N: normalization layer,
     parser.add_argument('--num_exp', type=int, default=5, help='the number of experiments')
     parser.add_argument('--num_eval', type=int, default=20, help='the number of evaluating randomly initialized models')
-    parser.add_argument('--epoch_eval_train', type=int, default=1000,
-                        help='epochs to train a model with synthetic data')
-    parser.add_argument('--Iteration', type=int, default=8000, help='training iterations')
+    # parser.add_argument('--num_eval', type=int, default=1, help='the number of evaluating randomly initialized models')
+    parser.add_argument('--epoch_eval_train', type=int, default=1000, help='epochs to train a model with synthetic data') # it can be small for speeding up with little performance drop
+    # parser.add_argument('--epoch_eval_train', type=int, default=1, help='epochs to train a model with synthetic data') # it can be small for speeding up with little performance drop
+    # parser.add_argument('--Iteration', type=int, default=20000, help='training iterations')
+    parser.add_argument('--Iteration', type=int, default=20000, help='training iterations')
     parser.add_argument('--lr_img', type=float, default=1.0, help='learning rate for updating synthetic images')
     parser.add_argument('--lr_net', type=float, default=0.01, help='learning rate for updating network parameters')
-    parser.add_argument('--lr_proxy', type=float, default=1e-4, help='learning rate for CAM proxy')
-    parser.add_argument('--lr_w', type=float, default=0.1)
-    parser.add_argument('--batch_real', type=int, default=256, help='batch size for real data')
+    parser.add_argument('--lr_proxy', type=float, default=1e-4, help='learning rate for updating synthetic images')
+    parser.add_argument('--lr_w',type=float,default=0.1)
+    parser.add_argument('--batch_real', type=int, default=256 ,help='batch size for real data')
     parser.add_argument('--batch_train', type=int, default=256, help='batch size for training networks')
-    parser.add_argument('--init', type=str, default='real',
-                        help='noise/real: initialize synthetic images from random noise or randomly sampled real images.')
-    parser.add_argument('--dsa_strategy', type=str, default='color_crop_cutout_flip_scale_rotate',
-                        help='differentiable Siamese augmentation strategy')
+    parser.add_argument('--init', type=str, default='real', help='noise/real: initialize synthetic images from random noise or randomly sampled real images.')
+    parser.add_argument('--dsa_strategy', type=str, default='color_crop_cutout_flip_scale_rotate', help='differentiable Siamese augmentation strategy')
     parser.add_argument('--data_path', type=str, default='data', help='dataset path')
     parser.add_argument('--save_path', type=str, default='result_0905', help='path to save results')
-    parser.add_argument('--checkpoint_path', type=str, default='./checkpoints', help='path to save model checkpoints')
     parser.add_argument('--dis_metric', type=str, default='ours', help='distance metric')
     parser.add_argument('--proxy_model', type=str, default='ResNet18', help='proxy model for uncertainty estimation')
     parser.add_argument('--epoch_proxy', type=int, default=5, help='epochs for training the CAM proxy')
-    parser.add_argument('--save_model_path', type=str, default='./Model_Saved_new',
-                        help='proxy model for uncertainty estimation')
-    parser.add_argument('--validation_step', type=int, default=1, help='validation interval')
+    # parser.add_argument('--epoch_proxy', type=int, default=1, help='epochs for training the CAM proxy')
+    parser.add_argument('--save_model_path', type=str, default='./Model_Saved_new', help='proxy model for uncertainty estimation')
+    parser.add_argument('--validation_step',type = int ,default= 1,help='validation interval' )
     parser.add_argument('--temperature', type=float, default=0.5, help='validation interval')
-    parser.add_argument('--mode', type=str, default='CAMDM')
-    parser.add_argument('--cam_path', type=str, default='./CAM_dir', help='CAM visualization path')
-    parser.add_argument('--cam_type', type=str, default='GradCAM', help='CAM type')
+    parser.add_argument('--mode',type=str,default='CAMDM')
+    parser.add_argument('--cam_path', type=str, default='./CAM_dir', help='dataset path')
+    parser.add_argument('--cam_type', type=str, default='GradCAM', help='dataset path')
+
 
     args = parser.parse_args()
+    if not os.path.exists(args.save_model_path):
+        os.makedirs(args.save_model_path)
+    args.checkpoint_path = os.path.join(args.save_model_path, f'{args.dataset}_{args.proxy_model}_checkpoint.pth')
     args.method = 'WCAMDM'
-    args.outer_loop, args.inner_loop = get_loops(args.ipc)
+    args.outer_loop, args.inner_loop = get_loops(args.ipc) # 内外循环次数
     args.device = 'cuda' if torch.cuda.is_available() else 'cpu'
     args.dsa_param = ParamDiffAug()
     args.dsa = False if args.dsa_strategy in ['none', 'None'] else True
+    # log_dir = args.log_dirs
+    # writer = SummaryWriter(log_dir=log_dir)
 
-    # 确保checkpoint目录存在
-    if not os.path.exists(args.checkpoint_path):
-        os.makedirs(args.checkpoint_path)
-
-    # 为train_CAM函数设置checkpoint路径
-    args.checkpoint_path = os.path.join(args.checkpoint_path, f'cam_proxy_{args.proxy_model}_{args.dataset}_exp0.pth')
-
-    # 打印设备信息
-    logger = build_logger('./log_1029', cfgname='temp_logger')
-    logger.info(f'Using device: {args.device}')
-    if args.device == 'cuda':
-        logger.info(f'GPU: {torch.cuda.get_device_name(0)}')
-
-    # 重新创建正式logger
     root = os.getcwd()
-    log_name = args.mode + '_IPC_{}_Model_{}_Proxy_{}_Epoch_{}_Eval_{}_CAM_{}_lrw_{}_limg_{}_Data_{}'.format(args.ipc,
-                                                                                                             args.model,
-                                                                                                             args.proxy_model,
-                                                                                                             args.epoch_proxy,
-                                                                                                             args.eval_mode,
-                                                                                                             args.cam_type,
-                                                                                                             args.lr_w,
-                                                                                                             args.lr_img,
-                                                                                                             args.dataset)
-    log_path = os.path.join(args.log_dir, log_name)
-    logger = build_logger(args.log_dir, cfgname=log_name)
+    # setup logger
+    log_name = args.mode+'_IPC_{}_Model_{}_Proxy_{}_Epoch_{}_Eval_{}_CAM_{}_lrw_{}_limg_{}_Data_{}'.format(args.ipc,args.model,args.proxy_model,args.epoch_proxy,args.eval_mode, args.cam_type, args.lr_w, args.lr_img,args.dataset)
+    log_path = os.path.join(args.log_dir,log_name)
+
+    logger = build_logger('./log_1029', cfgname=log_name)
     args.logger = logger
 
-    # 确保所有目录存在
-    for path in [args.log_dir, args.data_path, args.save_path, args.cam_path, args.checkpoint_path,
-                 args.save_model_path]:
-        if path and not os.path.exists(os.path.dirname(path) if '.' in os.path.basename(path) else path):
-            os.makedirs(os.path.dirname(path) if '.' in os.path.basename(path) else path)
+    if not os.path.exists(args.log_dir):
+        os.mkdir(args.log_dir)
 
-    eval_it_pool = np.arange(0, args.Iteration + 1,
-                             2000).tolist() if args.eval_mode == 'S' or args.eval_mode == 'SS' else [args.Iteration]
+    if not os.path.exists(args.data_path):
+        os.mkdir(args.data_path)
+
+    if not os.path.exists(args.save_path):
+        os.mkdir(args.save_path)
+    if not os.path.exists(args.cam_path):
+        os.mkdir(args.cam_path)
+
+
+    # 2000 评估一次
+    eval_it_pool = np.arange(0, args.Iteration+1, 2000).tolist() if args.eval_mode == 'S' or args.eval_mode == 'SS' else [args.Iteration] # The list of iterations when we evaluate models and record results.
     logger.info('eval_it_pool: {}'.format(eval_it_pool))
-    logger.info('Will output evaluation metrics at iterations: {}'.format(eval_it_pool))
 
-    # 加载数据集
-    logger.info('Loading dataset {}...'.format(args.dataset))
-    channel, im_size, num_classes, class_names, mean, std, dst_train, dst_test, testloader, trainloader = get_dataset_med(
-        args.dataset, args.data_path)
+    # 数据集信息
+    channel, im_size, num_classes, class_names, mean, std, dst_train, dst_test, testloader, trainloader = get_dataset_med(args.dataset, args.data_path)
+    # 验证模型池
     model_eval_pool = get_eval_pool(args.eval_mode, args.model, args.model)
 
-    accs_all_exps = dict()
+    accs_all_exps = dict() # record performances of all experiments
     for key in model_eval_pool:
         accs_all_exps[key] = []
 
     data_save = []
 
     for exp in range(args.num_exp):
-        args.exp = exp
-        args.checkpoint_path = os.path.join('./checkpoints',
-                                            f'cam_proxy_{args.proxy_model}_{args.dataset}_exp{exp}.pth')
-
         logger.info('\n================== Exp %d ==================\n ' % exp)
         logger.info('Hyper-parameters: \n{}'.format(args.__dict__))
         logger.info('Evaluation model pool: {}'.format(model_eval_pool))
-        logger.info('CAM proxy checkpoint will be saved to: {}'.format(args.checkpoint_path))
+        ''' organize the real dataset '''
 
-        images_all = []
+        # 所有图像和标签
         labels_all = []
+        images_list = []
         indices_class = [[] for c in range(num_classes)]
 
-        images_all = [torch.unsqueeze(dst_train[i][0], dim=0) for i in range(len(dst_train))]
+        for i in range(len(dst_train)):
+            img_data = dst_train[i][0]
+
+            # 如果是 numpy 转 tensor
+            if isinstance(img_data, np.ndarray):
+                img_data = torch.from_numpy(img_data).float()
+
+            # 如果是 HWC 或 HW，转 CHW
+            if img_data.ndim == 2:
+                img_data = img_data.unsqueeze(0)
+            elif img_data.ndim == 3 and img_data.shape[-1] <= 3 and img_data.shape[0] > 4:
+                img_data = img_data.permute(2, 0, 1)
+
+            images_list.append(torch.unsqueeze(img_data, dim=0))
+
+        images_all = torch.cat(images_list, dim=0).to(args.device)
+
         labels_all = [dst_train[i][1] for i in range(len(dst_train))]
         for i, lab in enumerate(labels_all):
             indices_class[lab].append(i)
-        images_all = torch.cat(images_all, dim=0).to(args.device)
-        images_all = ensure_float32(images_all, args.device)
         labels_all = torch.tensor(labels_all, dtype=torch.long, device=args.device)
 
         for c in range(num_classes):
-            logger.info('class c = %d: %d real images' % (c, len(indices_class[c])))
+            logger.info('class c = %d: %d real images'%(c, len(indices_class[c])))
 
-        def get_images(c, n):
+        # c类n张
+        def get_images(c, n): # get random n images from class c
             idx_shuffle = np.random.permutation(indices_class[c])[:n]
-            imgs = images_all[idx_shuffle]
-            return ensure_float32(imgs, args.device)
+            return images_all[idx_shuffle]
 
         for ch in range(channel):
-            logger.info('real images channel %d, mean = %.4f, std = %.4f' % (ch, torch.mean(images_all[:, ch]),
-                                                                             torch.std(images_all[:, ch])))
+            logger.info('real images channel %d, mean = %.4f, std = %.4f'%(ch, torch.mean(images_all[:, ch]), torch.std(images_all[:, ch])))
 
-        label_syn = torch.repeat_interleave(torch.arange(num_classes, device=args.device), args.ipc)
-        image_syn = torch.randn(size=(num_classes * args.ipc, channel, im_size[0], im_size[1]),
-                                dtype=torch.float32,
-                                requires_grad=True,
-                                device=args.device)
+
+        ''' initialize the synthetic data '''
+        # 随机初始化
+        image_syn = torch.randn(size=(num_classes*args.ipc, channel, im_size[0], im_size[1]), dtype=torch.float, requires_grad=True, device=args.device)
+        # 类别标签
+        label_syn = torch.tensor([np.ones(args.ipc)*i for i in range(num_classes)], dtype=torch.long, requires_grad=False, device=args.device).view(-1) # [0,0,0, 1,1,1, ..., 9,9,9]
 
         if args.init == 'real':
             logger.info('initialize synthetic data from random real images')
+            # 真实图像
             for c in range(num_classes):
-                imgs = get_images(c, args.ipc).detach().data
-                imgs = ensure_float32(imgs, args.device)
-                image_syn.data[c * args.ipc:(c + 1) * args.ipc] = imgs
+                image_syn.data[c*args.ipc:(c+1)*args.ipc] = get_images(c, args.ipc).detach().data
         else:
             logger.info('initialize synthetic data from random noise')
 
-        optimizer_img = torch.optim.SGD([image_syn, ], lr=args.lr_img, momentum=0.5)
+
+        ''' training '''
+        # 只优化合成图像
+        optimizer_img = torch.optim.SGD([image_syn, ], lr=args.lr_img, momentum=0.5) # optimizer_img for synthetic data
         optimizer_img.zero_grad()
-        logger.info('%s training begins' % get_time())
+        logger.info('%s training begins'%get_time())
 
-        ''' Train CAM proxy '''
-        logger.info('=' * 50)
-        logger.info('Training CAM proxy model: {}'.format(args.proxy_model))
-        logger.info('Proxy model training epochs: {}'.format(args.epoch_proxy))
-        logger.info('Proxy model learning rate: {}'.format(args.lr_proxy))
-
-        if args.proxy_model == 'ResNet18':
-            net_cam = ResNet18_CAM(num_classes=num_classes, channel=channel)
-            logger.info('Using custom ResNet18_CAM with AdaptiveAvgPool2d')
-        else:
-            net_cam = get_network(args.proxy_model, channel, num_classes, im_size)
-
-        net_cam = ensure_model_on_device(net_cam, args.device)
-        net_cam = net_cam.float()
-        original_net_cam = get_original_model(net_cam)
-
-        if hasattr(original_net_cam, 'avgpool'):
-            logger.info(f'Pooling layer type: {type(original_net_cam.avgpool)}')
-            if isinstance(original_net_cam.avgpool, nn.AdaptiveAvgPool2d):
-                logger.info(f'AdaptiveAvgPool2d output size: {original_net_cam.avgpool.output_size}')
-            else:
-                logger.warning(f'Unexpected pooling layer: {type(original_net_cam.avgpool)}')
-                original_net_cam.avgpool = nn.AdaptiveAvgPool2d((1, 1)).to(args.device).float()
-
+        ''' Train CAM proxy'''
+        # 代理模型
+        net_cam = get_network(args.proxy_model, channel, num_classes, im_size).to(args.device)  # get a random model
+        # # 检查并访问原始模型的features
+        # if isinstance(net_cam, torch.nn.DataParallel):
+        #     model = net_cam.module
         net_cam.train()
-        logger.info('Starting CAM proxy training...')
+
+        # 真实数据上训练这个代理模型
         train_CAM(model=net_cam, trainloader=trainloader, args=args)
-        logger.info('CAM proxy training finished!')
 
-        try:
-            if args.proxy_model == 'ConvNet':
-                target_layer = original_net_cam.features[-1] if hasattr(original_net_cam, 'features') else \
-                original_net_cam.layer4[-1]
-            elif args.proxy_model == 'ResNet18':
-                target_layer = original_net_cam.layer4[-1]
-            else:
-                target_layer = original_net_cam.layer4[-1] if hasattr(original_net_cam, 'layer4') else \
-                original_net_cam.features[-1]
+        # 选择目标层
+        if args.proxy_model == 'ConvNet':
+            target_layer = net_cam.features[-1]  # 最后一个卷积层之前的激活层
+        elif args.proxy_model == 'ResNet18':
+            target_layer = net_cam.layer4[-1]
 
-            target_layer = target_layer.to(args.device).float()
-            logger.info(f'Selected CAM target layer: {target_layer.__class__.__name__}')
-        except Exception as e:
-            logger.error(f'Error selecting target layer: {str(e)}')
-            raise
-
-        try:
-            if args.cam_type == 'GradCAM':
-                cam = GradCAM(model=net_cam, target_layers=[target_layer])
-            elif args.cam_type == 'GradCAM++':
-                cam = GradCAMPlusPlus(model=net_cam, target_layers=[target_layer])
-            elif args.cam_type == 'XGradCAM':
-                cam = XGradCAM(model=net_cam, target_layers=[target_layer])
-            logger.info(f'Initialized {args.cam_type} successfully (use_cuda={args.device == "cuda"})')
-        except Exception as e:
-            logger.error(f'Error initializing CAM: {str(e)}')
-            raise
-
-        DWT = DWTForward(J=1, wave='haar').to(args.device).float()
-        IDWT = DWTInverse(wave='haar').to(args.device).float()
-        logger.info('Wavelet transform modules initialized (float32)')
-
-        logger.info('=' * 50)
-        logger.info('Starting main training loop (total iterations: {})'.format(args.Iteration))
-        logger.info('Will evaluate at iterations: {}'.format(eval_it_pool))
-
-        cam_error_count = 0
-        for it in range(args.Iteration + 1):
-            if it % 100 == 0 and it != 0:
-                logger.info(
-                    'Progress: {}/{} iterations ({}%)'.format(it, args.Iteration, int(it / args.Iteration * 100)))
-                if cam_error_count > 0:
-                    logger.warning(f'CAM generation errors so far: {cam_error_count}')
-                    cam_error_count = 0
-
-            if it % 1000 == 0:
-                logger.info('=' * 30)
+        # 初始化 GradCAM
+        if args.cam_type == 'GradCAM':
+            cam = GradCAM(model=net_cam, target_layers=[target_layer])
+        elif args.cam_type == 'GradCAM++':
+            cam = GradCAMPlusPlus(model=net_cam, target_layers=[target_layer])
+        elif args.cam_type == 'XGradCAM':
+            cam = XGradCAM(model=net_cam, target_layers=[target_layer])
+        for it in range(args.Iteration+1):
+            if it%1000==0:
                 logger.info('Epoch: {}'.format(it))
-
             ''' Evaluate synthetic data '''
-            save_path_cms = './cms_' + args.method
-            if it in eval_it_pool:
-                logger.info('=' * 50)
-                logger.info('Starting evaluation at iteration {}'.format(it))
-                logger.info('This may take some time (evaluating {} random models)...'.format(args.num_eval))
 
+            # 评估合成数据
+            save_path_cms = './cms_'+args.method
+            if it in eval_it_pool:
                 for model_eval in model_eval_pool:
-                    logger.info(
-                        '-------------------------\nEvaluation\nmodel_train = %s, model_eval = %s, iteration = %d' % (
-                            args.model, model_eval, it))
+                    logger.info('-------------------------\nEvaluation\nmodel_train = %s, model_eval = %s, iteration = %d'%(args.model, model_eval, it))
+
                     logger.info('DSA augmentation strategy: \n{}'.format(args.dsa_strategy))
                     logger.info('DSA augmentation parameters: \n{}'.format(args.dsa_param.__dict__))
 
+                    # 指标
                     accs = []
                     sens = []
                     spes = []
                     f1s = []
                     cms = []
+
+                    # 多次训练新模型
                     for it_eval in range(args.num_eval):
-                        if it_eval % 5 == 0:
-                            logger.info('Evaluating model {}/{}'.format(it_eval + 1, args.num_eval))
-
-                        net_eval = get_network(model_eval, channel, num_classes, im_size).to(args.device)
-                        net_eval = net_eval.float()
-                        image_syn_eval = copy.deepcopy(image_syn.detach())
-                        image_syn_eval = ensure_float32(image_syn_eval, args.device)
-                        label_syn_eval = copy.deepcopy(label_syn.detach())
-
-                        _, acc_train, acc_test, sensitivity, specificity, f1, cm = evaluate_synset(it_eval, net_eval,
-                                                                                                   image_syn_eval,
-                                                                                                   label_syn_eval,
-                                                                                                   testloader, args)
+                        net_eval = get_network(model_eval, channel, num_classes, im_size).to(args.device) # get a random model
+                        image_syn_eval, label_syn_eval = copy.deepcopy(image_syn.detach()), copy.deepcopy(label_syn.detach()) # avoid any unaware modification
+                        # _, acc_train, acc_test = evaluate_synset(it_eval, net_eval, image_syn_eval, label_syn_eval, testloader, args)
+                        _, acc_train, acc_test, sensitivity, specificity, f1,cm  = evaluate_synset(it_eval, net_eval, image_syn_eval, label_syn_eval, testloader, args)
                         accs.append(acc_test)
                         sens.append(sensitivity)
                         spes.append(specificity)
                         f1s.append(f1)
                         cms.append(cm)
+                    logger.info('Evaluate %d random %s, ACCmean = %.4f ACCstd = %.4f\n-------------------------'%(len(accs), model_eval, np.mean(accs), np.std(accs)))
+                    logger.info('Evaluate %d random %s, SENmean = %.4f SENstd = %.4f\n-------------------------'%(len(accs), model_eval, np.mean(sens), np.std(sens)))
+                    logger.info('Evaluate %d random %s, SPEmean = %.4f SPEstd = %.4f\n-------------------------'%(len(accs), model_eval, np.mean(spes), np.std(spes)))
+                    logger.info('Evaluate %d random %s, F1mean = %.4f F1std = %.4f\n-------------------------'%(len(accs), model_eval, np.mean(f1s), np.std(f1s)))
 
-                    logger.info('=' * 30)
-                    logger.info('Evaluation Results at iteration {}'.format(it))
-                    logger.info('Evaluate %d random %s' % (len(accs), model_eval))
-                    logger.info('ACCmean = %.4f ACCstd = %.4f' % (np.mean(accs), np.std(accs)))
-                    logger.info('SENmean = %.4f SENstd = %.4f' % (np.mean(sens), np.std(sens)))
-                    logger.info('SPEmean = %.4f SPEstd = %.4f' % (np.mean(spes), np.std(spes)))
-                    logger.info('F1mean = %.4f F1std = %.4f' % (np.mean(f1s), np.std(f1s)))
-                    logger.info('=' * 30)
-
+                    # 最后一次验证画一下混淆矩阵
                     if it == eval_it_pool[-1]:
-                        combined_cm = np.sum(cms, axis=0)
-                        plot_and_save_confusion_matrix(combined_cm, class_names, save_path_cms, args, exp)
+                        combined_cm =  np.sum(cms, axis=0)
+                        plot_and_save_confusion_matrix(combined_cm, class_names, save_path_cms, args,exp)
 
-                    if it == args.Iteration:
+
+                    if it == args.Iteration: # record the final results
                         accs_all_exps[model_eval] += accs
 
-                save_name = os.path.join(args.save_path,
-                                         'vis_%s_%s_%s_%dipc_exp%d_iter%d.png' % (args.method, args.dataset, args.model,
-                                                                                  args.ipc, exp, it))
+                ''' visualize and save '''
+                save_name = os.path.join(args.save_path, 'vis_%s_%s_%s_%dipc_exp%d_iter%d.png'%(args.method, args.dataset, args.model, args.ipc, exp, it))
                 image_syn_vis = copy.deepcopy(image_syn.detach().cpu())
-                image_syn_vis = ensure_float32(image_syn_vis, 'cpu')
                 for ch in range(channel):
-                    image_syn_vis[:, ch] = image_syn_vis[:, ch] * std[ch] + mean[ch]
-                image_syn_vis = torch.clamp(image_syn_vis, 0.0, 1.0)
-                save_image(image_syn_vis, save_name, nrow=args.ipc)
-                logger.info('Synthetic images saved to: {}'.format(save_name))
+                    image_syn_vis[:, ch] = image_syn_vis[:, ch]  * std[ch] + mean[ch]
+                image_syn_vis[image_syn_vis<0] = 0.0
+                image_syn_vis[image_syn_vis>1] = 1.0
+                save_image(image_syn_vis, save_name, nrow=args.ipc) # Trying normalize = True/False may get better visual effects.
 
-            ''' Train target network'''
-            net = get_network(args.model, channel, num_classes, im_size).to(args.device)
-            net = net.float()
+            ''' Train target  network'''
+            net = get_network(args.model, channel, num_classes, im_size).to(args.device) # get a random model
             net.train()
-            original_net = get_original_model(net)
+            # train_CAM(model=net, trainloader=trainloader, args=args)
+            # # 选择目标层（通常是最后一个卷积层）
+            # target_layer = net.features[-1]  # 最后一个卷积层之前的激活层
+            # # 初始化 GradCAM，移除 use_cuda 参数
+            # cam = GradCAM(model=net, target_layers=[target_layer])
 
+            '''Freeze Net and optimize images'''
             for param in list(net.parameters()):
                 param.requires_grad = False
 
-            embed = original_net.embed if hasattr(original_net, 'embed') else original_net.features
+            embed = net.module.embed if torch.cuda.device_count() > 1 else net.embed # for GPU parallel
 
             loss_avg = 0
-            if 'BN' not in args.model:
-                loss = torch.tensor(0.0, dtype=torch.float32, device=args.device)
+            # 定义小波变换和逆小波变换的模块
+            DWT = DWTForward(J=1, wave='haar').to(image_syn.device)  # J表示分解的层数
+            IDWT = DWTInverse(wave='haar').to(image_syn.device)
+            ''' update synthetic data '''
+            if 'BN' not in args.model: # for ConvNet
+                loss = torch.tensor(0.0).to(args.device)
                 cam_list = []
-
                 for c in range(num_classes):
                     img_real = get_images(c, args.batch_real)
-                    img_real = ensure_float32(img_real, args.device)
-
-                    img_syn = image_syn[c * args.ipc:(c + 1) * args.ipc].reshape(
-                        (args.ipc, channel, im_size[0], im_size[1]))
-                    img_syn = ensure_float32(img_syn, args.device)
-
+                    img_syn = image_syn[c*args.ipc:(c+1)*args.ipc].reshape((args.ipc, channel, im_size[0], im_size[1]))
                     if args.dsa:
                         seed = int(time.time() * 1000) % 100000
                         img_real = DiffAugment(img_real, args.dsa_strategy, seed=seed, param=args.dsa_param)
                         img_syn = DiffAugment(img_syn, args.dsa_strategy, seed=seed, param=args.dsa_param)
-                        img_real = ensure_float32(img_real, args.device)
-                        img_syn = ensure_float32(img_syn, args.device)
 
-                    ''' Gen CAM for img_syn '''
-                    try:
-                        batch_size_cam = min(32, img_syn.shape[0])
-                        grayscale_cam = []
 
-                        for i in range(0, img_syn.shape[0], batch_size_cam):
-                            batch_img = img_syn[i:i + batch_size_cam]
-                            batch_img = ensure_float32(batch_img, args.device)
-
-                            # === FIX 2: 使用 ClassifierOutputTarget 包装类别索引 ===
-                            targets = [ClassifierOutputTarget(c) for _ in range(batch_img.shape[0])]
-                            # ====================================================
-
-                            with torch.no_grad():
-                                cam_batch = cam(input_tensor=batch_img, targets=targets)
-
-                            grayscale_cam.append(cam_batch)
-
-                        grayscale_cam = np.concatenate(grayscale_cam, axis=0)
-                        grayscale_cam = 1 - grayscale_cam
-                        cam_list.append(grayscale_cam)
-
-                    except Exception as e:
-                        cam_error_count += 1
-                        logger.error(f"Error generating CAM for class {c} (iter {it}): {str(e)}")
-                        logger.error(f"  - img_syn dtype: {img_syn.dtype}")
-                        logger.error(f"  - img_syn device: {img_syn.device}")
-                        logger.error(f"  - model dtype: {next(net_cam.parameters()).dtype}")
-                        logger.error(f"  - model device: {next(net_cam.parameters()).device}")
-
-                        grayscale_cam = np.ones((img_syn.shape[0], im_size[0], im_size[1]))
-                        cam_list.append(grayscale_cam)
-
+                    ''' Gen CAM for img_syn'''
+                    # 生成 Grad-CAM 热力图（会为批次中的每个图像生成一个热力图）
+                    grayscale_cam = 1-cam(input_tensor=img_syn)
+                    # grayscale_cam_ori = cam(input_tensor=img_syn)
+                    cam_list.append(grayscale_cam)
+                    # 遍历批次中的每张图像，显示或处理热力图
+                    # for i in range(len(img_syn)):
+                    # if it % 1000 == 0 and c ==2:
+                    #     logger.info('VIS_Epoch: {}'.format(it))
+                    #     grayscale_cam_image = grayscale_cam_ori[0, :]
+                    #     img_syn_vis = copy.deepcopy(img_syn.detach().cpu())
+                    #     plt.imshow(img_syn_vis[0].permute(1, 2, 0).cpu().numpy())
+                    #     plt.axis('off')
+                    #     # plt.title("image epoch:{}".format(it))
+                    #     save_path = os.path.join(args.cam_path,"image epoch:{}.png".format(it))
+                    #     plt.savefig(save_path)
+                    #     plt.close()
+                    #     for ch in range(channel):
+                    #         img_syn_vis[:, ch] = img_syn_vis[:, ch] * std[ch] + mean[ch]
+                    #     img_syn_vis[img_syn_vis < 0] = 0.0
+                    #     img_syn_vis[img_syn_vis > 1] = 1.0
+                    #     # 获取批次中第 i 张图像的热力图
+                    #     visualization = show_cam_on_image(img_syn_vis[0].permute(1, 2, 0).cpu().numpy(), grayscale_cam_image, use_rgb=True)
+                    #
+                    #     plt.imshow(visualization)
+                    #     plt.axis('off')
+                    #     # plt.title("Grad-CAM for image epoch:{}".format(it))
+                    #     save_path = os.path.join(args.cam_path, "Grad-CAM for image epoch:{}.png".format(it))
+                    #     plt.savefig(save_path)
+                    #     # plt.show()
                     output_real = embed(img_real).detach()
                     output_syn = embed(img_syn)
-                    loss += torch.sum((torch.mean(output_real, dim=0) - torch.mean(output_syn, dim=0)) ** 2)
+                    #############################################################################
 
-                optimizer_img.zero_grad()
-                loss.backward()
+                    loss += torch.sum((torch.mean(output_real, dim=0) - torch.mean(output_syn, dim=0))**2)
 
-                ''' Apply CAM mask to gradient '''
-                try:
-                    cam_tensor = torch.tensor(np.concatenate(cam_list, axis=0),
-                                              dtype=torch.float32, device=args.device).unsqueeze(1)
-                    if image_syn.grad is not None:
-                        image_syn.grad = image_syn.grad.float()
-                        with torch.no_grad():
-                            image_syn.grad = image_syn.grad * cam_tensor
-                    else:
-                        logger.warning("No gradient for image_syn at iteration %d" % it)
-                except Exception as e:
-                    logger.error(f"Error applying CAM mask: {str(e)}")
+            optimizer_img.zero_grad()
+            loss.backward()
+            cam_tensor = torch.tensor(np.concatenate(cam_list, axis=0)).unsqueeze(1).to(args.device)
+            with torch.no_grad():
+                image_syn.grad = image_syn.grad * cam_tensor
 
-                ''' Wavelet domain update '''
+            #################################################
+            for i in range(image_syn.shape[0]):
+                img = image_syn[i].unsqueeze(0) # 需要将图像增加维度 (B, C, H, W)
+                grad = image_syn.grad[i].unsqueeze(0)
+
+                # 对image_syn和其梯度进行小波变换
+                img_low, img_high = DWT(img)  # 低频和高频分量
+                grad_low, grad_high = DWT(grad)  # 梯度的低频和高频分量
+
+                # 在小波域上手动更新：使用grad_wavelet直接调整img_wavelet的分量
+                # 更新低频分量
+                updated_low = img_low - args.lr_w * grad_low
+
+                # # 更新高频分量
+                # updated_high = []
+                # for img_h, grad_h in zip(img_high, grad_high):
+                #     updated_high.append(img_h - args.lr_w * grad_h)
+
+                # 逆小波变换，获得更新后的image_syn
+                # updated_img = IDWT((updated_low, updated_high))  # 逆变换
+                updated_img = IDWT((updated_low, img_high))  # 逆变换
                 with torch.no_grad():
-                    for i in range(image_syn.shape[0]):
-                        img = image_syn[i].unsqueeze(0)
-                        img = ensure_float32(img, args.device)
+                    image_syn[i].copy_(updated_img.squeeze(0))
 
-                        if image_syn.grad is not None:
-                            grad = image_syn.grad[i].unsqueeze(0)
-                            grad = ensure_float32(grad, args.device)
+            # ##################################################
+            optimizer_img.step()
+            loss_avg += loss.item()
+            loss_avg /= (num_classes)
+            # print('1 Round OPT Finished')
+            # logger.info('Loss: {}'.format(loss_avg))
+            if it%10 == 0:
+                logging.info('%s iter = %05d, loss = %.4f' % (get_time(), it, loss_avg))
 
-                            img_low, img_high = DWT(img)
-                            grad_low, grad_high = DWT(grad)
-
-                            img_low = img_low.float()
-                            grad_low = grad_low.float()
-
-                            updated_low = img_low - args.lr_w * grad_low
-                            updated_img = IDWT((updated_low, img_high))
-                            updated_img = ensure_float32(updated_img, args.device)
-                            image_syn[i].copy_(updated_img.squeeze(0))
-
-                optimizer_img.step()
-                loss_avg = loss.item() / num_classes
-
-            if it % 10 == 0:
-                logger.info('%s iter = %05d, loss = %.4f' % (get_time(), it, loss_avg))
-
-            if it == args.Iteration:
-                logger.info('=' * 50)
-                logger.info('Training completed! Saving results...')
+            if it == args.Iteration: # only record the final results
                 data_save.append([copy.deepcopy(image_syn.detach().cpu()), copy.deepcopy(label_syn.detach().cpu())])
-                save_file = os.path.join(args.save_path, 'res_%s_%s_%s_%dipc_%s_%s_exp%d.pt' % (
-                    args.method, args.dataset, args.model, args.ipc,
-                    args.proxy_model, args.cam_type, exp))
-                torch.save({
-                    'data': data_save,
-                    'accs_all_exps': accs_all_exps,
-                    'cam_proxy': net_cam.state_dict(),
-                    'args': args.__dict__
-                }, save_file)
-                logger.info('Results saved to: {}'.format(save_file))
-                logger.info('=' * 50)
+                torch.save({'data': data_save, 'accs_all_exps': accs_all_exps, 'cam_proxy': net_cam.state_dict()}, os.path.join(args.save_path, 'res_%s_%s_%s_%dipc_%s_%s_%d.pt'%(args.method, args.dataset, args.model, args.ipc,args.proxy_model,args.cam_type,args.epoch_proxy)))
 
-    logger.info('\n' + '=' * 60)
-    logger.info('==================== Final Results ====================')
-    logger.info('=' * 60)
+
+    logging.info('\n==================== Final Results ====================\n')
     for key in model_eval_pool:
         accs = accs_all_exps[key]
-        logger.info('Run %d experiments, train on %s' % (args.num_exp, args.model))
-        logger.info('Evaluate %d random %s models' % (len(accs), key))
-        logger.info('Final Accuracy - Mean = %.2f%%, Std = %.2f%%' % (np.mean(accs) * 100, np.std(accs) * 100))
-        logger.info('=' * 60)
+        logger.info('Run %d experiments, train on %s, evaluate %d random %s, mean  = %.2f%%  std = %.2f%%'%(args.num_exp, args.model, len(accs), key, np.mean(accs)*100, np.std(accs)*100))
+
 
 
 if __name__ == '__main__':
     main()
+

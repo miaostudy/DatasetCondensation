@@ -10,7 +10,7 @@ from sklearn.metrics import confusion_matrix, f1_score
 from scipy.ndimage.interpolation import rotate as scipyrotate
 from networks import MLP, ConvNet, LeNet, AlexNet, AlexNetBN, VGG11, VGG11BN, ResNet18, ResNet18BN_AP, ResNet18BN, ViTTinyWithEmbedding
 
-from medmnist import  PathMNIST, OCTMNIST, ChestMNIST, BreastMNIST, TissueMNIST, BloodMNIST, PneumoniaMNIST, OrganAMNIST, OrganCMNIST, OrganSMNIST, RetinaMNIST, DermaMNIST
+from medmnist import  PathMNIST, OCTMNIST, ChestMNIST, BreastMNIST, TissueMNIST, BloodMNIST, PneumoniaMNIST, OrganAMNIST, OrganCMNIST, OrganSMNIST
 import pickle
 from PIL import Image
 import pywt
@@ -30,21 +30,6 @@ def inverse_wavelet_transform(coeffs, wavelet='haar', mode='symmetric'):
 def get_optimizer(params, lr=0.01):
     return torch.optim.SGD(params, lr=lr)
 
-
-def _load_medmnist_as_tensor(data_raw, channel):
-    # 1. 归一化并转为 Tensor
-    imgs = torch.tensor(data_raw.imgs).float() / 255.0
-
-    # 2. 调整维度 (N, H, W) 或 (N, H, W, C) -> (N, C, H, W)
-    if imgs.ndim == 3:
-        imgs = imgs.unsqueeze(1)  # (N, H, W) -> (N, 1, H, W)
-    elif imgs.ndim == 4:
-        imgs = imgs.permute(0, 3, 1, 2)  # (N, H, W, 3) -> (N, 3, H, W)
-
-    # 3. 处理标签
-    labels = torch.tensor([item[0] for item in data_raw.labels]).long()
-
-    return imgs, labels
 
 train_path = '/mnt/lyp/whole_oct_train.pkl'
 test_path = '/mnt/lyp/whole_oct_test.pkl'
@@ -124,86 +109,15 @@ class TensorDataset(Dataset):
 
     def __len__(self):
         return len(self.images)
-
-
-def _load_medmnist_as_tensor(data_raw, channel):
-    """
-    辅助函数：将 MedMNIST 的 numpy 数据转换为 (N, C, H, W) 的 PyTorch Tensor
-    """
-    # 1. 归一化并转为 Float Tensor
-    imgs = torch.tensor(data_raw.imgs).float() / 255.0
-
-    # 2. 调整维度
-    # MedMNIST 原始格式:
-    # 灰度图: (N, 28, 28) -> 需要变为 (N, 1, 28, 28)
-    # 彩色图: (N, 28, 28, 3) -> 需要变为 (N, 3, 28, 28)
-    if imgs.ndim == 3:
-        imgs = imgs.unsqueeze(1)
-    elif imgs.ndim == 4:
-        imgs = imgs.permute(0, 3, 1, 2)
-
-    # 3. 处理标签
-    labels = torch.tensor([item[0] for item in data_raw.labels]).long()
-
-    return imgs, labels
-
-
 def get_dataset_med(dataset, data_path):
-    # ================== 1. MedMNIST 系列数据集配置 ==================
-    # 格式: {数据集名: {通道数, 类别数, 均值, 方差}}
-    # 均值和方差沿用了你原始代码中的设定，Retina/Derma 使用 0.5
-    medmnist_config = {
-        'PathMNIST': {'channel': 3, 'cls': 9, 'mean': [0.4823] * 3, 'std': [0.2309] * 3},
-        'OCTMNIST': {'channel': 1, 'cls': 4, 'mean': [0.4850], 'std': [0.2292]},
-        'ChestMNIST': {'channel': 1, 'cls': 2, 'mean': [0.6101], 'std': [0.2075]},
-        'BreastMNIST': {'channel': 1, 'cls': 2, 'mean': [0.1751], 'std': [0.3048]},
-        'TissueMNIST': {'channel': 1, 'cls': 8, 'mean': [0.5], 'std': [0.5]},
-        'BloodMNIST': {'channel': 3, 'cls': 8, 'mean': [0.7569], 'std': [0.2054]},
-        'PneumoniaMNIST': {'channel': 1, 'cls': 2, 'mean': [0.4737], 'std': [0.2511]},
-        'OrganAMNIST': {'channel': 1, 'cls': 11, 'mean': [0.1220], 'std': [0.3023]},
-        'OrganCMNIST': {'channel': 1, 'cls': 11, 'mean': [0.5581], 'std': [0.2413]},
-        'OrganSMNIST': {'channel': 1, 'cls': 11, 'mean': [0.0762], 'std': [0.2054]},
-        'RetinaMNIST': {'channel': 3, 'cls': 5, 'mean': [0.5] * 3, 'std': [0.5] * 3},
-        'DermaMNIST': {'channel': 3, 'cls': 7, 'mean': [0.5] * 3, 'std': [0.5] * 3}
-    }
-
-    if dataset in medmnist_config:
-        cfg = medmnist_config[dataset]
-        channel = cfg['channel']
-        im_size = (28, 28)
-        num_classes = cfg['cls']
-        mean = cfg['mean']
-        std = cfg['std']
-        class_names = [str(i) for i in range(num_classes)]
-
-        # 动态导入 medmnist
-        import medmnist
-        # 获取对应的数据集类，例如 medmnist.PathMNIST
-        DataClass = getattr(medmnist, dataset)
-
-        # 加载原始数据
-        dst_train_raw = DataClass(split='train', download=True, root=data_path)
-        dst_test_raw = DataClass(split='test', download=True, root=data_path)
-
-        # === 核心转换：转为 Tensor (N, C, H, W) ===
-        train_imgs, train_labels = _load_medmnist_as_tensor(dst_train_raw, channel)
-        test_imgs, test_labels = _load_medmnist_as_tensor(dst_test_raw, channel)
-
-        # 封装为 TensorDataset
-        dst_train = TensorDataset(train_imgs, train_labels)
-        dst_test = TensorDataset(test_imgs, test_labels)
-
-        print(f'Loaded MedMNIST dataset: {dataset} (Train: {len(dst_train)}, Test: {len(dst_test)})')
-
-    # ================== 2. 通用/自然图像数据集 ==================
-    elif dataset == 'MNIST':
+    if dataset == 'MNIST':
         channel = 1
         im_size = (28, 28)
         num_classes = 10
         mean = [0.1307]
         std = [0.3081]
         transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=mean, std=std)])
-        dst_train = datasets.MNIST(data_path, train=True, download=True, transform=transform)
+        dst_train = datasets.MNIST(data_path, train=True, download=True, transform=transform) # no augmentation
         dst_test = datasets.MNIST(data_path, train=False, download=True, transform=transform)
         class_names = [str(c) for c in range(num_classes)]
 
@@ -214,7 +128,7 @@ def get_dataset_med(dataset, data_path):
         mean = [0.2861]
         std = [0.3530]
         transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=mean, std=std)])
-        dst_train = datasets.FashionMNIST(data_path, train=True, download=True, transform=transform)
+        dst_train = datasets.FashionMNIST(data_path, train=True, download=True, transform=transform) # no augmentation
         dst_test = datasets.FashionMNIST(data_path, train=False, download=True, transform=transform)
         class_names = dst_train.classes
 
@@ -225,7 +139,7 @@ def get_dataset_med(dataset, data_path):
         mean = [0.4377, 0.4438, 0.4728]
         std = [0.1980, 0.2010, 0.1970]
         transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=mean, std=std)])
-        dst_train = datasets.SVHN(data_path, split='train', download=True, transform=transform)
+        dst_train = datasets.SVHN(data_path, split='train', download=True, transform=transform)  # no augmentation
         dst_test = datasets.SVHN(data_path, split='test', download=True, transform=transform)
         class_names = [str(c) for c in range(num_classes)]
 
@@ -236,7 +150,7 @@ def get_dataset_med(dataset, data_path):
         mean = [0.4914, 0.4822, 0.4465]
         std = [0.2023, 0.1994, 0.2010]
         transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=mean, std=std)])
-        dst_train = datasets.CIFAR10(data_path, train=True, download=True, transform=transform)
+        dst_train = datasets.CIFAR10(data_path, train=True, download=True, transform=transform) # no augmentation
         dst_test = datasets.CIFAR10(data_path, train=False, download=True, transform=transform)
         class_names = dst_train.classes
 
@@ -247,62 +161,306 @@ def get_dataset_med(dataset, data_path):
         mean = [0.5071, 0.4866, 0.4409]
         std = [0.2673, 0.2564, 0.2762]
         transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=mean, std=std)])
-        dst_train = datasets.CIFAR100(data_path, train=True, download=True, transform=transform)
+        dst_train = datasets.CIFAR100(data_path, train=True, download=True, transform=transform) # no augmentation
         dst_test = datasets.CIFAR100(data_path, train=False, download=True, transform=transform)
         class_names = dst_train.classes
 
     elif dataset == 'TinyImageNet':
+
         channel = 3
-        im_size = (64, 64)
+
+        im_size = (64, 64)  # TinyImageNet图像尺寸
+
+        # 标准均值方差
+
         mean = [0.485, 0.456, 0.406]
+
         std = [0.229, 0.224, 0.225]
+
+        # 定义transform
+
         transform = transforms.Compose([
+
             transforms.Resize((64, 64)),
+
             transforms.ToTensor(),
+
             transforms.Normalize(mean=mean, std=std)
+
         ])
 
-        # 假设 data_path 下有 train 和 val 目录
+        # 1. 加载训练集（train文件夹，按类别分）
+
         train_dir = os.path.join(data_path, 'train')
+
         dst_train = datasets.ImageFolder(root=train_dir, transform=transform)
 
+        # 2. 加载测试集（用val文件夹，因为val是按类别分的，和train一致）
+
         val_dir = os.path.join(data_path, 'val')
+
         dst_test = datasets.ImageFolder(root=val_dir, transform=transform)
 
-        num_classes = len(dst_train.classes)
-        # 尝试读取类别名映射
-        words_file = os.path.join(data_path, 'words.txt')
-        wnid_to_name = {}
-        if os.path.exists(words_file):
-            with open(words_file, 'r') as f:
-                for line in f:
-                    parts = line.strip().split('\t')
-                    if len(parts) >= 2:
-                        wnid_to_name[parts[0]] = parts[1].split(',')[0]
+        # 3. 获取类别数和类名
 
-        class_names = [wnid_to_name.get(wnid, wnid) for wnid in dst_train.classes]
-        print(f"Loaded TinyImageNet: {len(dst_train)} train, {len(dst_test)} test, {num_classes} classes")
+        num_classes = len(dst_train.classes)  # 自动获取200类
+
+        wnids = dst_train.classes  # 按文件夹名排序的wnid列表
+
+        # 4. 加载人类可读类名（从words.txt映射）
+
+        words_file = os.path.join(data_path, 'words.txt')
+
+        wnid_to_name = {}
+
+        with open(words_file, 'r') as f:
+            for line in f:
+
+                parts = line.strip().split('\t')
+
+                if len(parts) >= 2:
+                    wnid = parts[0]
+
+                    name = parts[1].split(',')[0]  # 取第一个名称
+
+                    wnid_to_name[wnid] = name
+
+        # 生成最终类名列表
+
+        class_names = [wnid_to_name.get(wnid, wnid) for wnid in wnids]
+
+        # 打印加载信息
+
+        print(f"Loaded TinyImageNet successfully!")
+
+        print(f"Train images: {len(dst_train)}, Test images (val): {len(dst_test)}")
+
+        print(f"Number of classes: {num_classes}")
+
+        print(f"First 5 classes: {class_names[:5]}")
 
     elif dataset == 'oct':
         channel = 3
-        im_size = (64, 64)
+        im_size = (64,64)
         num_classes = 5
         mean = [0.3124, 0.3124, 0.3124]
-        std = [0.2206, 0.2206, 0.2206]
-
+        std =  [0.2206, 0.2206, 0.2206]
+        transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=mean, std=std)])
         dst_train = OCTDataset(img_size=im_size[0], data_list=train_path)
         dst_test = OCTDataset(img_size=im_size[0], data_list=test_path)
-        class_names = ['mild inflammation', 'cyst', 'ectropion', 'high-grade squamous intraepithelial lesion',
-                       'cervical cancer']
+        class_names = ['mild inflammation','cyst','ectropion','high-grade squamous intraepithelial lesion','cervical cancer']
+    elif dataset =='PathMNIST':
+        channel = 3
+        im_size = (28,28)
+        num_classes = 9
+        mean = [0.4823, 0.4823, 0.4823]
+        std = [0.2309, 0.2309, 0.2309]
+        dst_train_raw = PathMNIST(split='train',download=True)
+        dst_test_raw = PathMNIST(split='test',download=True)
+        train_imgs = dst_train_raw.imgs/255.0
+        train_labels = [item[0] for item in dst_train_raw.labels]
+        dst_train = list(zip(train_imgs, train_labels))
+        # dst_train = TensorDataset(train_imgs,train_labels)
+        test_imgs = dst_test_raw.imgs/255.0
+        test_labels = [item[0] for item in dst_test_raw.labels]
+        dst_test = list(zip(test_imgs.transpose(0,3,1,2), test_labels))
+        # class_names = [str(i) for i in range(num_classes)]
+        class_names = [str(i) for i in range(num_classes)]
+        print('Loaded the dataset:{}'.format(dataset))
+
+    elif dataset == 'OCTMNIST':
+        channel = 1
+        im_size = (28, 28)
+        num_classes = 4
+        mean = [0.4850]
+        std = [0.2292]
+        dst_train_raw = OCTMNIST(split='train', download=True)
+
+        dst_test_raw = OCTMNIST(split='test', download=True)
+
+        train_imgs = np.expand_dims(dst_train_raw.imgs/255.0,axis=-1)
+        train_labels = [item[0] for item in dst_train_raw.labels]
+        dst_train = list(zip(train_imgs,train_labels))
+        test_imgs = np.expand_dims(dst_test_raw.imgs/255.0, axis=-1)
+        test_labels = [item[0] for item in dst_test_raw.labels]
+        dst_test = list(zip(test_imgs.transpose(0,3,1,2), test_labels))
+        class_names = [str(i) for i in range(num_classes)]
+        print('Loaded the dataset:{}'.format(dataset))
+    elif dataset == 'ChestMNIST':
+        channel = 1
+        im_size = (28, 28)
+        num_classes = 2
+        mean = [0.6101]
+        std = [0.2075]
+        dst_train_raw = ChestMNIST(split='train', download=True)
+
+        dst_test_raw = ChestMNIST(split='test', download=True)
+
+        train_imgs = np.expand_dims(dst_train_raw.imgs/255.0, axis=-1)
+        train_labels = [item[0] for item in dst_train_raw.labels]
+        dst_train = list(zip(train_imgs, train_labels))
+        test_imgs = np.expand_dims(dst_test_raw.imgs/255.0, axis=-1)
+        test_labels = [item[0] for item in dst_test_raw.labels]
+        dst_test = list(zip(test_imgs.transpose(0,3,1,2), test_labels))
+
+        class_names = [str(i) for i in range(num_classes)]
+        print('Loaded the dataset:{}'.format(dataset))
+    elif dataset == 'BreastMNIST':
+        channel = 1
+        im_size = (28, 28)
+        num_classes = 2
+        mean = [0.1751]
+        std = [0.3048]
+        dst_train_raw = BreastMNIST(split='train', download=True)
+
+        dst_test_raw = BreastMNIST(split='test', download=True)
+
+        train_imgs = np.expand_dims(dst_train_raw.imgs / 255.0, axis=-1)
+        train_labels = [item[0] for item in dst_train_raw.labels]
+        dst_train = list(zip(train_imgs, train_labels))
+        test_imgs = np.expand_dims(dst_test_raw.imgs / 255.0, axis=-1)
+        test_labels = [item[0] for item in dst_test_raw.labels]
+        dst_test = list(zip(test_imgs.transpose(0, 3, 1, 2), test_labels))
+
+        class_names = [str(i) for i in range(num_classes)]
+        print('Loaded the dataset:{}'.format(dataset))
+    elif dataset == 'BloodMNIST':
+        channel = 3  # <--- 修改 1:
+        im_size = (28, 28)
+        num_classes = 8
+
+        mean = [0.7569, 0.7569, 0.7569]
+        std = [0.2054, 0.2054, 0.2054]
+
+        dst_train_raw = BloodMNIST(split='train', download=True)
+        dst_test_raw = BloodMNIST(split='test', download=True)
+
+        train_imgs = dst_train_raw.imgs / 255.0
+        train_labels = [item[0] for item in dst_train_raw.labels]
+
+        dst_train = list(zip(train_imgs.transpose(0, 3, 1, 2), train_labels))
+
+        test_imgs = dst_test_raw.imgs / 255.0
+        test_labels = [item[0] for item in dst_test_raw.labels]
+        dst_test = list(zip(test_imgs.transpose(0, 3, 1, 2), test_labels))
+
+        class_names = [str(i) for i in range(num_classes)]
+        print('Loaded the dataset:{}'.format(dataset))
+
+    elif dataset == 'TissueMNIST':
+        channel = 1
+        im_size = (28, 28)
+        num_classes = 8
+        mean = [0.5]
+        std = [0.5]
+        dst_train_raw = TissueMNIST(split='train', download=True)
+
+        dst_test_raw = TissueMNIST(split='test', download=True)
+
+        train_imgs = np.expand_dims(dst_train_raw.imgs / 255.0, axis=-1)
+        train_labels = [item[0] for item in dst_train_raw.labels]
+        dst_train = list(zip(train_imgs, train_labels))
+        test_imgs = np.expand_dims(dst_test_raw.imgs / 255.0, axis=-1)
+        test_labels = [item[0] for item in dst_test_raw.labels]
+        dst_test = list(zip(test_imgs.transpose(0, 3, 1, 2), test_labels))
+
+        class_names = [str(i) for i in range(num_classes)]
+        print('Loaded the dataset:{}'.format(dataset))
+    elif dataset == 'PneumoniaMNIST':
+        channel = 1
+        im_size = (28, 28)
+        num_classes = 2
+        mean = [0.4737]
+        std = [0.2511]
+        dst_train_raw = PneumoniaMNIST(split='train', download=True)
+
+        dst_test_raw = PneumoniaMNIST(split='test', download=True)
+
+        train_imgs = np.expand_dims(dst_train_raw.imgs / 255.0, axis=-1)
+        train_labels = [item[0] for item in dst_train_raw.labels]
+        dst_train = list(zip(train_imgs, train_labels))
+        test_imgs = np.expand_dims(dst_test_raw.imgs / 255.0, axis=-1)
+        test_labels = [item[0] for item in dst_test_raw.labels]
+        dst_test = list(zip(test_imgs.transpose(0, 3, 1, 2), test_labels))
+
+        class_names = [str(i) for i in range(num_classes)]
+        print('Loaded the dataset:{}'.format(dataset))
+    elif dataset == 'OrganAMNIST':
+        channel = 1
+        im_size = (28, 28)
+        num_classes = 11
+        mean = [0.1220]
+        std = [0.3023]
+        dst_train_raw = OrganAMNIST(split='train', download=True)
+
+        dst_test_raw = OrganAMNIST(split='test', download=True)
+
+        train_imgs = np.expand_dims(dst_train_raw.imgs / 255.0, axis=-1)
+        train_labels = [item[0] for item in dst_train_raw.labels]
+        dst_train = list(zip(train_imgs, train_labels))
+        test_imgs = np.expand_dims(dst_test_raw.imgs / 255.0, axis=-1)
+        test_labels = [item[0] for item in dst_test_raw.labels]
+        dst_test = list(zip(test_imgs.transpose(0, 3, 1, 2), test_labels))
+
+        class_names = [str(i) for i in range(num_classes)]
+        print('Loaded the dataset:{}'.format(dataset))
+    elif dataset == 'OrganCMNIST':
+        channel = 1
+        im_size = (28, 28)
+        num_classes = 11
+        mean = [0.5581]
+        std = [0.2413]
+        dst_train_raw = OrganCMNIST(split='train', download=True)
+
+        dst_test_raw = OrganCMNIST(split='test', download=True)
+
+        train_imgs = np.expand_dims(dst_train_raw.imgs / 255.0, axis=-1)
+        train_labels = [item[0] for item in dst_train_raw.labels]
+        dst_train = list(zip(train_imgs, train_labels))
+        test_imgs = np.expand_dims(dst_test_raw.imgs / 255.0, axis=-1)
+        test_labels = [item[0] for item in dst_test_raw.labels]
+        dst_test = list(zip(test_imgs.transpose(0, 3, 1, 2), test_labels))
+
+        class_names = [str(i) for i in range(num_classes)]
+        print('Loaded the dataset:{}'.format(dataset))
+    elif dataset == 'OrganSMNIST':
+        channel = 1
+        im_size = (28, 28)
+        num_classes = 11
+        mean = [0.0762]
+        std = [0.2054]
+        dst_train_raw = OrganSMNIST(split='train', download=True)
+
+        dst_test_raw = OrganSMNIST(split='test', download=True)
+
+        train_imgs = np.expand_dims(dst_train_raw.imgs / 255.0, axis=-1)
+        train_labels = [item[0] for item in dst_train_raw.labels]
+        dst_train = list(zip(train_imgs, train_labels))
+        test_imgs = np.expand_dims(dst_test_raw.imgs / 255.0, axis=-1)
+        test_labels = [item[0] for item in dst_test_raw.labels]
+        dst_test = list(zip(test_imgs.transpose(0, 3, 1, 2), test_labels))
+
+        class_names = [str(i) for i in range(num_classes)]
+        print('Loaded the dataset:{}'.format(dataset))
 
     else:
-        exit('unknown dataset: %s' % dataset)
+        exit('unknown dataset: %s'%dataset)
 
-    # 构造 DataLoader
+
+
+    # ######### randomly select train and valid set with 8:2 ########
+    # # random.shuffle(dst_train)
+    # split_point = int(len(dst_train) * 0.8)
+    # train_selected = Subset(dst_train,range(split_point))
+    # valid_selected = Subset(dst_train,range(split_point,len(dst_train)))
+    # ######################################################################
+
     testloader = torch.utils.data.DataLoader(dst_test, batch_size=128, shuffle=False, num_workers=0)
+    # valid_loader = torch.utils.data.DataLoader(valid_selected, batch_size=256, shuffle=False, num_workers=0)
     trainloader = torch.utils.data.DataLoader(dst_train, batch_size=128, shuffle=False, num_workers=0)
-
+    # train_proxy_loader = torch.utils.data.DataLoader(train_selected, batch_size=256, shuffle=False, num_workers=0)
     return channel, im_size, num_classes, class_names, mean, std, dst_train, dst_test, testloader, trainloader
+
 def get_dataset(dataset, data_path):
     if dataset == 'MNIST':
         channel = 1
@@ -634,60 +792,34 @@ def epoch(mode, dataloader, net, optimizer, criterion, args, aug):
 
     return loss_avg, acc_avg
 
-
 def evaluate_synset(it_eval, net, images_train, labels_train, testloader, args):
     net = net.to(args.device)
     images_train = images_train.to(args.device)
     labels_train = labels_train.to(args.device)
     lr = float(args.lr_net)
     Epoch = int(args.epoch_eval_train)
-    lr_schedule = [Epoch // 2 + 1]
+    lr_schedule = [Epoch//2+1]
     optimizer = torch.optim.SGD(net.parameters(), lr=lr, momentum=0.9, weight_decay=0.0005)
     criterion = nn.CrossEntropyLoss().to(args.device)
 
+    dst_train = TensorDataset(images_train, labels_train)
+    trainloader = torch.utils.data.DataLoader(dst_train, batch_size=args.batch_train, shuffle=True, num_workers=0)
+
     start = time.time()
-    for ep in range(Epoch + 1):
-        loss_train, acc_train = epoch('train', testloader, net, optimizer, criterion, args, aug=False)
+    for ep in range(Epoch+1):
+        loss_train, acc_train = epoch('train', trainloader, net, optimizer, criterion, args, aug = True)
         if ep in lr_schedule:
             lr *= 0.1
             optimizer = torch.optim.SGD(net.parameters(), lr=lr, momentum=0.9, weight_decay=0.0005)
 
     time_train = time.time() - start
-    loss_test, acc_test = epoch('test', testloader, net, optimizer, criterion, args, aug=False)
+    # loss_test, acc_test = epoch('test', testloader, net, optimizer, criterion, args, aug = False)
+    loss_test, acc_test, sensitivity, specificity, f1,cm = epoch_full('test', testloader, net, optimizer, criterion, args, aug = False)
+    # args.logger.info('%s Evaluate_%02d: epoch = %04d train time = %d s train loss = %.6f train acc = %.4f, test acc = %.4f, test_sen =%.4f, test_spe =%.4f, test_f1 =%.4f' % (get_time(), it_eval, Epoch, int(time_train), loss_train, acc_train, acc_test, sensitivity, specificity, f1))
+    print('%s Evaluate_%02d: epoch = %04d train time = %d s train loss = %.6f train acc = %.4f, test acc = %.4f, test_sen =%.4f, test_spe =%.4f, test_f1 =%.4f' % (get_time(), it_eval, Epoch, int(time_train), loss_train, acc_train, acc_test, sensitivity, specificity, f1))
 
-    # Calculate F1, Sensitivity, Specificity, Confusion Matrix
-    net.eval()
-    preds = []
-    targets = []
-    with torch.no_grad():
-        for i, (input, target) in enumerate(testloader):
-            input = input.to(args.device)
-            target = target.to(args.device)
-            output = net(input)
-            _, pred = torch.max(output, 1)
-            preds.extend(pred.cpu().numpy())
-            targets.extend(target.cpu().numpy())
+    return net, acc_train, acc_test, sensitivity, specificity, f1,cm
 
-    cm = confusion_matrix(targets, preds)
-    # Handle multi-class case for Sensitivity/Specificity (using macro avg)
-    fp = cm.sum(axis=0) - np.diag(cm)
-    fn = cm.sum(axis=1) - np.diag(cm)
-    tp = np.diag(cm)
-    tn = cm.sum() - (fp + fn + tp)
-
-    with np.errstate(divide='ignore', invalid='ignore'):
-        sen = tp / (tp + fn)
-        spe = tn / (tn + fp)
-    sen = np.nanmean(sen)
-    spe = np.nanmean(spe)
-    f1 = f1_score(targets, preds, average='macro')
-
-    print(
-        '%s Evaluate_%02d: epoch = %04d train time = %d s train loss = %.6f train acc = %.4f, test acc = %.4f, test_sen =%.4f, test_spe =%.4f, test_f1 =%.4f' % (
-            get_time(), it_eval, Epoch, int(time_train), loss_train, acc_train, acc_test, sen, spe, f1))
-
-    # FIX: 必须返回 7 个值以匹配 mWCAMDM.py
-    return loss_train, acc_train, acc_test, sen, spe, f1, cm
 
 
 def epoch_full(mode, dataloader, net, optimizer, criterion, args, aug):
@@ -906,119 +1038,125 @@ def get_eval_pool(eval_mode, model, model_eval):
 
 class ParamDiffAug():
     def __init__(self):
-        self.aug_mode = 'S' # 'S' or 'M'
+        self.aug_mode = 'S' #'multiple or single'
         self.prob_flip = 0.5
         self.ratio_scale = 1.2
         self.ratio_rotate = 15.0
         self.ratio_crop_pad = 0.125
-        self.ratio_cutout = 0.5
+        self.ratio_cutout = 0.5 # the size would be 0.5x0.5
         self.brightness = 1.0
         self.saturation = 2.0
         self.contrast = 0.5
-        self.batchmode = False
-        self.latestseed = -1  # <--- CRITICAL FIX: 补充缺失的属性
 
-    def set_mode(self, mode):
-        self.aug_mode = mode
 
 def set_seed_DiffAug(param):
-    if param.batchmode:
-        torch.manual_seed(0)
+    if param.latestseed == -1:
+        return
+    else:
+        torch.random.manual_seed(param.latestseed)
+        param.latestseed += 1
+
+
 def DiffAugment(x, strategy='', seed = -1, param = None):
-    if strategy == 'None' or strategy is None:
+    if strategy == 'None' or strategy == 'none' or strategy == '':
         return x
 
     if seed == -1:
-        param.batchmode = False
-    elif seed == 0:
-        param.batchmode = True  # use a fixed random seed
+        param.Siamese = False
     else:
-        param.batchmode = True  # use a fixed random seed with specific value
+        param.Siamese = True
 
-    if param.batchmode and seed != 0:
-        torch.manual_seed(seed)
-
-    AUGMENT_FNS = {
-        'color': [rand_brightness, rand_saturation, rand_contrast],
-        'crop': [rand_crop],
-        'cutout': [rand_cutout],
-        'flip': [rand_flip],
-        'scale': [rand_scale],
-        'rotate': [rand_rotate],
-    }
+    param.latestseed = seed
 
     if strategy:
-        if param.aug_mode == 'M': # single
+        if param.aug_mode == 'M': # original
             for p in strategy.split('_'):
                 for f in AUGMENT_FNS[p]:
                     x = f(x, param)
-        elif param.aug_mode == 'S': # multiple
-            for p in strategy.split('_'):
-                for f in AUGMENT_FNS[p]:
-                    x = f(x, param)
+        elif param.aug_mode == 'S':
+            pbties = strategy.split('_')
+            set_seed_DiffAug(param)
+            p = pbties[torch.randint(0, len(pbties), size=(1,)).item()]
+            for f in AUGMENT_FNS[p]:
+                x = f(x, param)
         else:
             exit('unknown augmentation mode: %s'%param.aug_mode)
         x = x.contiguous()
     return x
+
+
 # We implement the following differentiable augmentation strategies based on the code provided in https://github.com/mit-han-lab/data-efficient-gans.
 def rand_scale(x, param):
+    # x>1, max scale
+    # sx, sy: (0, +oo), 1: orignial size, 0.5: enlarge 2 times
     ratio = param.ratio_scale
     set_seed_DiffAug(param)
     sx = torch.rand(x.shape[0]) * (ratio - 1.0/ratio) + 1.0/ratio
+    set_seed_DiffAug(param)
     sy = torch.rand(x.shape[0]) * (ratio - 1.0/ratio) + 1.0/ratio
-    theta = [[[sx[i], 0,  0], [0,  sy[i], 0],] for i in range(x.shape[0])]
+    theta = [[[sx[i], 0,  0],
+            [0,  sy[i], 0],] for i in range(x.shape[0])]
     theta = torch.tensor(theta, dtype=torch.float)
-    if param.batchmode: # batch-wise:
-        theta[:] = theta[0].clone() # FIX
+    if param.Siamese: # Siamese augmentation:
+        theta[:] = theta[0]
     grid = F.affine_grid(theta, x.shape).to(x.device)
-    x = F.grid_sample(x, grid)
+    x = F.grid_sample(x.double(), grid.double(),align_corners=True).float()
     return x
 
-def rand_rotate(x, param): # rotate
+
+def rand_rotate(x, param): # [-180, 180], 90: anticlockwise 90 degree
     ratio = param.ratio_rotate
     set_seed_DiffAug(param)
     theta = (torch.rand(x.shape[0]) - 0.5) * 2 * ratio / 180 * float(np.pi)
-    theta = [[[torch.cos(theta[i]), torch.sin(-theta[i]), 0], [torch.sin(theta[i]), torch.cos(theta[i]),  0],]  for i in range(x.shape[0])]
+    theta = [[[torch.cos(theta[i]), torch.sin(-theta[i]), 0],
+        [torch.sin(theta[i]), torch.cos(theta[i]),  0],]  for i in range(x.shape[0])]
     theta = torch.tensor(theta, dtype=torch.float)
-    if param.batchmode: # batch-wise:
-        theta[:] = theta[0].clone() # FIX
-    grid = F.affine_grid(theta, x.shape).to(x.device)
-    x = F.grid_sample(x, grid)
+    if param.Siamese: # Siamese augmentation:
+        theta[:] = theta[0]
+    grid = F.affine_grid(theta, x.shape,align_corners=True).to(x.device)
+    x = F.grid_sample(x.double(), grid.double()).float()
     return x
+
 
 def rand_flip(x, param):
     prob = param.prob_flip
     set_seed_DiffAug(param)
     randf = torch.rand(x.size(0), 1, 1, 1, device=x.device)
-    if param.batchmode: # batch-wise:
-        randf[:] = randf[0].clone() # FIX: Added .clone()
+    if param.Siamese: # Siamese augmentation:
+        randf[:] = randf[0].clone()
     return torch.where(randf < prob, x.flip(3), x)
+
 
 def rand_brightness(x, param):
     ratio = param.brightness
     set_seed_DiffAug(param)
     randb = torch.rand(x.size(0), 1, 1, 1, dtype=x.dtype, device=x.device)
-    if param.batchmode:  # batch-wise:
-        randb[:] = randb[0].clone() # FIX
-    return x + (randb - 0.5)*ratio
+    if param.Siamese:  # Siamese augmentation:
+        randb[:] = randb[0].clone()
+    x = x + (randb - 0.5)*ratio
+    return x
+
 
 def rand_saturation(x, param):
     ratio = param.saturation
     x_mean = x.mean(dim=1, keepdim=True)
     set_seed_DiffAug(param)
     rands = torch.rand(x.size(0), 1, 1, 1, dtype=x.dtype, device=x.device)
-    if param.batchmode:  # batch-wise:
-        rands[:] = rands[0].clone() # FIX
-    return (x - x_mean) * (rands * ratio) + x_mean
+    if param.Siamese:  # Siamese augmentation:
+        rands[:] = rands[0].clone()
+    x = (x - x_mean) * (rands * ratio) + x_mean
+    return x
+
 
 def rand_contrast(x, param):
     ratio = param.contrast
     x_mean = x.mean(dim=[1, 2, 3], keepdim=True)
     set_seed_DiffAug(param)
     randc = torch.rand(x.size(0), 1, 1, 1, dtype=x.dtype, device=x.device)
-    if param.batchmode:  # batch-wise:
-        randc[:] = randc[0].clone() # FIX
-    return (x - x_mean) * (randc + 0.1) * ratio + x_mean
+    if param.Siamese:  # Siamese augmentation:
+        randc[:] = randc[0].clone()
+    x = (x - x_mean) * (randc + ratio) + x_mean
+    return x
 
 
 def rand_crop(x, param):
@@ -1029,9 +1167,9 @@ def rand_crop(x, param):
     translation_x = torch.randint(-shift_x, shift_x + 1, size=[x.size(0), 1, 1], device=x.device)
     set_seed_DiffAug(param)
     translation_y = torch.randint(-shift_y, shift_y + 1, size=[x.size(0), 1, 1], device=x.device)
-    if param.batchmode:  # batch-wise:
-        translation_x[:] = translation_x[0].clone() # FIX
-        translation_y[:] = translation_y[0].clone() # FIX
+    if param.Siamese:  # Siamese augmentation:
+        translation_x[:] = translation_x[0].clone()
+        translation_y[:] = translation_y[0].clone()
     grid_batch, grid_x, grid_y = torch.meshgrid(
         torch.arange(x.size(0), dtype=torch.long, device=x.device),
         torch.arange(x.size(2), dtype=torch.long, device=x.device),
@@ -1043,6 +1181,7 @@ def rand_crop(x, param):
     x = x_pad.permute(0, 2, 3, 1).contiguous()[grid_batch, grid_x, grid_y].permute(0, 3, 1, 2)
     return x
 
+
 def rand_cutout(x, param):
     ratio = param.ratio_cutout
     cutout_size = int(x.size(2) * ratio + 0.5), int(x.size(3) * ratio + 0.5)
@@ -1050,16 +1189,16 @@ def rand_cutout(x, param):
     offset_x = torch.randint(0, x.size(2) + (1 - cutout_size[0] % 2), size=[x.size(0), 1, 1], device=x.device)
     set_seed_DiffAug(param)
     offset_y = torch.randint(0, x.size(3) + (1 - cutout_size[1] % 2), size=[x.size(0), 1, 1], device=x.device)
-    if param.batchmode:  # batch-wise:
-        offset_x[:] = offset_x[0].clone() # FIX
-        offset_y[:] = offset_y[0].clone() # FIX
+    if param.Siamese:  # Siamese augmentation:
+        offset_x[:] = offset_x[0].clone()
+        offset_y[:] = offset_y[0].clone()
     grid_batch, grid_x, grid_y = torch.meshgrid(
         torch.arange(x.size(0), dtype=torch.long, device=x.device),
         torch.arange(cutout_size[0], dtype=torch.long, device=x.device),
         torch.arange(cutout_size[1], dtype=torch.long, device=x.device),
     )
-    grid_x = torch.clamp(grid_x + offset_x - cutout_size[0] // 2, 0, x.size(2) - 1)
-    grid_y = torch.clamp(grid_y + offset_y - cutout_size[1] // 2, 0, x.size(3) - 1)
+    grid_x = torch.clamp(grid_x + offset_x - cutout_size[0] // 2, min=0, max=x.size(2) - 1)
+    grid_y = torch.clamp(grid_y + offset_y - cutout_size[1] // 2, min=0, max=x.size(3) - 1)
     mask = torch.ones(x.size(0), x.size(2), x.size(3), dtype=x.dtype, device=x.device)
     mask[grid_batch, grid_x, grid_y] = 0
     x = x * mask.unsqueeze(1)
@@ -1081,7 +1220,7 @@ def load_or_train_model(model, args, train_loader):
         return model
     else:
         print(f"No checkpoint found at {args.checkpoint_path}, training model...")
-        # 如果没有找到预训练的模型，执行训练
+
         train_CAM(model, train_loader, args)
         return model
         # 训练完毕后保存模型参数
@@ -1095,24 +1234,23 @@ def train_CAM(model, trainloader, args):
     device = args.device
     for param in list(model.parameters()):
         param.requires_grad = True
-    # 定义损失函数和优化器
+
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
     print('Training CAM')
-    for epoch in range(num_epochs):  # 简单训练2个epoch以节省时间
+    for epoch in range(num_epochs):
         running_loss = 0.0
         for i, data in enumerate(trainloader, 0):
             inputs, labels = data[0].to(device), data[1].to(device)
-            # 梯度清零
             optimizer.zero_grad()
-            # 前向传播
             # outputs = model(inputs.permute(0,3,1,2).float())
+            if inputs.shape[-1] == 1 or inputs.shape[-1] == 3:  # 如果是 (H, W, C)
+                inputs = inputs.permute(0, 3, 1, 2)
             outputs = model(inputs.float())
             loss = criterion(outputs, labels)
-            # 反向传播
             loss.backward()
             optimizer.step()
-            # 打印统计信息
+
             running_loss += loss.item()
             if i % 100 == 4:  # 每5批次打印一次
                 # print(f'[Epoch_CAM: {epoch + 1}, Batch: {i + 1}] loss: {running_loss / 200:.3f}')
